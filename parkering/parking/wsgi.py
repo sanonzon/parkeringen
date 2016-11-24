@@ -1,5 +1,5 @@
 """
-WSGI config for parkering project.
+WSGI config for parking project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "parkering.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "parking.settings")
 
 application = get_wsgi_application()
