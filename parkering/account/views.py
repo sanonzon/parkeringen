@@ -24,8 +24,8 @@ Register = 'account/Register_screen.html'
 
 
 # Render account login/registration page on request
-"""def index(request):
-    return render(request, Logreg)"""
+def Index(request):
+    return render(request, Logreg)
 
 # Render login screen
 def Login_screen(request):
@@ -72,39 +72,49 @@ def update_password(request):
     return render(request, logreg)"""
 
 # Create new user
-"""def register(request):
-    username = request.POST.get('username', '')
-    password = request.POST.get('password', '')
-    password_repeat = request.POST.get('password_repeat', '')
-    email = request.POST.get('email', '')
+"""def Register(request):
+    Username = request.POST.get('Username', '')
+    Password = request.POST.get('Password', '')
+    Email = request.POST.get('Email_address', '')
+    First_name = request.POST.get('First_name', '')
+    Last_name = request.POST.get('Last_name', '')
+    Phone_number = request.POST.get('Phone_number', '')
+    Parking_number = request.POST.get('Parking_number', '')
+    Repeat_password = request.POST.get('Repeat_password', '')
 
     if request.user.is_authenticated():
-        return redirect('<redirect to next page>')
+        return redirect(Login)
     else:
         if not User.objects.filter(username=username).exists() and username != "":
-            user = User(username=username)
-            user.email = email
-            if password == password_repeat and password != "":
-                user.set_password(password)
+            User = User(username=username)
+            User.email = Email
+            if Password == Repeat_password and Password != "":
+                User.set_password(Password)
             else:
-                return render(request, logreg_error)
-            user.is_active = True
-            user.save()
-            userdata = User_data(user=user)
-            userdata.save()
-            return render(request, logreg_success)
+                return render(request, Logreg)
+            User.is_active = True
+            User.save()
+            Userdata = User_data(user=User)
+            Userdata.save()
+            return render(request, Logreg)
         else:
-            return render(request, logreg_error)"""
+            return render(request, Logreg)"""
 
 # Log in for registered users
-"""
-    def authview(request):
-        username = request.POST.get('username', '')
-        password = request.POST.get('password', '')
-        user = auth.authenticate(username = username, password = password)
-        if user:
-            auth.login(request, user)
-            return redirect('<redirect to next page>')
-        else:
-            return render(request, logreg_error)
-"""
+def Login_check(request):
+    Username = request.POST.get('Username', '')
+    Password = request.POST.get('Password', '')
+    print(Username)
+    print(Password)
+
+    user = auth.authenticate(username = Username, password = Password)
+    if user:
+        auth.login(request, user)
+        return render(request,Register) # TODO: add redirect here
+        #return redirect('Redirect_login')
+    else:
+        return render(request, Login) # TODO: add error redirect here
+
+# Log in for registered users
+def Redirect_login(request):
+    return render(request, Register)

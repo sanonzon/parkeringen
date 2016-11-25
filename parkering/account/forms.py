@@ -6,7 +6,7 @@ class UserDataForm(forms.ModelForm):
 
 	class Meta:
 		model = User_data
-		fields = ('date_of_birth', 'parking_number', 'phone_number')
+		fields = ('parking_number', 'phone_number')
 
 class UserForm(forms.ModelForm):
 

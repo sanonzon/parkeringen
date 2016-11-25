@@ -8,6 +8,5 @@ from django import forms
 
 class User_data(models.Model):
     user = models.OneToOneField(User, unique=True)
-    date_of_birth = models.DateField(blank="True", null=True)
     parking_number = models.CharField(max_length=20, blank="True", null=True)
     phone_number = models.CharField(max_length=20, blank="True", null=True)
