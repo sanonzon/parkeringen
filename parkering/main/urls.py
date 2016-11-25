@@ -5,4 +5,5 @@ app_name = 'main'
 
 urlpatterns = [
     url(r'^$', views.Let_there_be_light, name='Render_all'),
+    url(r'^test$', views.Test, name='Test'),
 ]

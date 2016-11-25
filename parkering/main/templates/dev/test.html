@@ -1,0 +1,26 @@
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <title>TEST</title>
+    <!--/static files-->
+    <!-- Latest compiled and minified CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!--/static files-->
+  </head>
+
+  <body>
+    <div class="devtest">
+      <h1>It's alive!</h1><br>
+      {% if not user.is_authenticated %}
+        <h1>You're not logged in, sucks to be you</h1>
+        <a href="{% url 'account:Index' %}" class="btn btn-success green" role="button">Return</a>
+      {% elif user.is_authenticated %}
+        {% include 'account/Logout.html' %}
+      {% endif %}
+      </div>
+  </body>
+
+</html>

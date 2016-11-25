@@ -21,6 +21,9 @@ Logreg = 'account/Logreg.html'
 Login = 'account/Login_screen.html'
 Register = 'account/Register_screen.html'
 
+# development only
+Devtest = 'dev/test.html'
+
 
 
 # Render account login/registration page on request
@@ -66,13 +69,8 @@ def update_password(request):
         return render(request, <add page here>, context)
 """
 
-
-"""def logout_view(request):
-    logout(request)
-    return render(request, logreg)"""
-
 # Create new user
-"""def Register(request):
+def Register_account(request):
     Username = request.POST.get('Username', '')
     Password = request.POST.get('Password', '')
     Email = request.POST.get('Email_address', '')
@@ -83,38 +81,48 @@ def update_password(request):
     Repeat_password = request.POST.get('Repeat_password', '')
 
     if request.user.is_authenticated():
-        return redirect(Login)
+        return redirect('/test')
     else:
-        if not User.objects.filter(username=username).exists() and username != "":
-            User = User(username=username)
-            User.email = Email
-            if Password == Repeat_password and Password != "":
-                User.set_password(Password)
+        if not User.objects.filter(username=Username).exists() and Username != "":
+            user = User(username=Username)
+            User_Data = User_data(user=user)
+            if not User_data.objects.filter(parking_number=Parking_number).exists():
+                user.email = Email
+                user.first_name = First_name
+                user.last_name = Last_name
+                if Password == Repeat_password and Password != "":
+                    user.set_password(Password)
+                else:
+                    return redirect("/") # TODO: render error page
+                user.is_active = True
+                user.save()
+                User_Data = User_data(user=user)
+                User_Data.phone_number = Phone_number
+                User_Data.parking_number = Parking_number
+                User_Data.save()
+                user = auth.authenticate(username = Username, password = Password)
+                if user:
+                    auth.login(request, user)
+                    return redirect('/test')
+                else:
+                    return redirect('/') # TODO: render error page
             else:
-                return render(request, Logreg)
-            User.is_active = True
-            User.save()
-            Userdata = User_data(user=User)
-            Userdata.save()
-            return render(request, Logreg)
+                return redirect('/') # TODO: render error page
         else:
-            return render(request, Logreg)"""
+            return redirect("/") # TODO: render error page
 
 # Log in for registered users
 def Login_check(request):
     Username = request.POST.get('Username', '')
     Password = request.POST.get('Password', '')
-    print(Username)
-    print(Password)
 
     user = auth.authenticate(username = Username, password = Password)
     if user:
         auth.login(request, user)
-        return render(request,Register) # TODO: add redirect here
-        #return redirect('Redirect_login')
+        return redirect('/test')
     else:
-        return render(request, Login) # TODO: add error redirect here
+        return redirect('/login') # TODO: render login error page
 
-# Log in for registered users
-def Redirect_login(request):
-    return render(request, Register)
+def Logout(request):
+    logout(request)
+    return redirect('/')
