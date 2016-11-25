@@ -2,4 +2,6 @@
 *.py~
 *.pyc~
 *.sqlite3
-parkering/migrations/
+parkering/account/migrations/
+parkering/main/migrations/
+
