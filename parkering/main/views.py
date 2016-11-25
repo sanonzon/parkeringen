@@ -6,6 +6,5 @@ def Let_there_be_light(request):
     return render(request, 'main/base.html')
 
 # development page for testing
-@login_required
 def Test(request):
     return render(request, 'dev/test.html')
