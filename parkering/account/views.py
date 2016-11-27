@@ -17,9 +17,13 @@ from django.contrib.auth import logout
 # variables to html pages have been altered aswell
 
 # File locations set as variables due to frequent usage
-Logreg = 'account/Logreg.html'
+Index = 'account/Index_screen.html'
 Login = 'account/Login_screen.html'
 Register = 'account/Register_screen.html'
+Account_management = 'account/Account_screen.html'
+
+# error
+Authentication_error = 'account/error/Not_authorized.html'
 
 # development only
 Devtest = 'dev/test.html'
@@ -27,8 +31,8 @@ Devtest = 'dev/test.html'
 
 
 # Render account login/registration page on request
-def Index(request):
-    return render(request, Logreg)
+def Index_screen(request):
+    return render(request, Index)
 
 # Render login screen
 def Login_screen(request):
@@ -38,23 +42,36 @@ def Login_screen(request):
 def Register_screen(request):
     return render(request, Register)
 
-# Update user password and update page
-"""@login_required
-def update_password(request):
-    current_password = request.POST.get('current_password', '')
-    new_password = request.POST.get('new_password', '')
-    repeat_password = request.POST.get('repeat_password', '')
+# render account management page
+@login_required(login_url='/not_authorized')
+def Account_screen(request):
+    return render(request, Account_management)
 
-    password_valid = request.user.check_password(current_password)
-    if password_valid:
-        if new_password == repeat_password:
-            request.user.set_password(new_password)
+# render authentication error page
+def Authorization_failed(request):
+    return render(request, Authentication_error)
+
+# Update user password and update page
+@login_required(login_url='/not_authorized')
+def Update_password(request):
+    Current_password = request.POST.get('Current_password', '')
+    New_password = request.POST.get('New_password', '')
+    Repeat_password = request.POST.get('Repeat_password', '')
+
+    print("current password: " + Current_password)
+    print("new password: " + New_password)
+    print("repeated password: " + Repeat_password)
+
+    Password_valid = request.user.check_password(Current_password)
+    if Password_valid:
+        if New_password == Repeat_password:
+            request.user.set_password(New_password)
             request.user.save()
-            return render(request, logreg_updatepass)
+            return redirect('/logout')
         else:
-            return render(request, account_error)
+            return render(request, Account_management)
     else:
-        return render(request, account_error)"""
+        return redirect('/')
 
 """work in progress below this line"""
 

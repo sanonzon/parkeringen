@@ -1,0 +1,24 @@
+{% load staticfiles %}
+
+<html> 
+
+  <head>
+    {% include 'meta/Meta.html' %}
+    <title>Not authorized</title>
+  </head>
+
+  <body>
+    <div class="authentication-error">
+      <h1>Not authorized</h1>
+      <h4>Please log in to proceed</h4>
+      <a href="{% url 'account:Index_screen' %}" class="btn btn-success green" role="button">Return</a>
+      <a href="{% url 'account:Login_screen' %}" class="btn btn-success green" role="button">Log in</a>
+    </div>
+
+    <!--/static files-->
+      <!--Bootstrap-->
+        {% include 'assets/bootstrap/Bootstrap.html' %}
+    <!--/static files-->
+  </body>
+
+</html>
