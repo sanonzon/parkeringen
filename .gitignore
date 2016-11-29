@@ -1,7 +1,7 @@
 *.pyc
 *.py~
 *.pyc~
-*.sqlite3
+parkering/*.sqlite3
 parkering/account/migrations/
 parkering/main/migrations/
 
