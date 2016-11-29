@@ -4,23 +4,21 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import auth
 from account.models import User_data
-from account.forms import UserDataForm
-from account.forms import UserForm
+from account.forms import UserDataForm, UserForm, PasswordResetRequestForm, PasswordChangeForm
 from django.contrib.auth import logout
-
-
-# Note to people messing around with the code: 
-
-# in older version Management within authview/register was named 'management'
-# accmanage was renamed to accmanage_regauth along with the url name change from management to Management
-
-# variables to html pages have been altered aswell
+from django.core.mail import EmailMessage
+from django.contrib.auth.views import password_reset, password_reset_confirm
+from django.core.urlresolvers import reverse
 
 # File locations set as variables due to frequent usage
 Index = 'account/Index_screen.html'
 Login = 'account/Login_screen.html'
 Register = 'account/Register_screen.html'
 Account_management = 'account/Account_screen.html'
+Forgot_password = 'account/Password_reset_screen.html'
+# here be dragons
+Password_confirm = 'account/Password_reset_confirm.html'
+# end of dragons
 
 # error
 Authentication_error = 'account/error/Not_authorized.html'
@@ -38,9 +36,14 @@ def Index_screen(request):
 def Login_screen(request):
     return render(request, Login)
 
-# Render login screen
+# Render register screen
 def Register_screen(request):
     return render(request, Register)
+
+# Render forgot password screen
+def Forgot_password_screen(request):
+    context = {'form': PasswordResetRequestForm}
+    return render(request, Forgot_password, context)
 
 # render account management page
 @login_required(login_url='/not_authorized')
@@ -58,10 +61,6 @@ def Update_password(request):
     New_password = request.POST.get('New_password', '')
     Repeat_password = request.POST.get('Repeat_password', '')
 
-    print("current password: " + Current_password)
-    print("new password: " + New_password)
-    print("repeated password: " + Repeat_password)
-
     Password_valid = request.user.check_password(Current_password)
     if Password_valid:
         if New_password == Repeat_password:
@@ -73,9 +72,6 @@ def Update_password(request):
     else:
         return redirect('/')
 
-"""work in progress below this line"""
-
-# Load forms and account management page, used in register and authview(log in)
 """
     @login_required
     def accmanage_regauth(request):
@@ -94,7 +90,6 @@ def Register_account(request):
     First_name = request.POST.get('First_name', '')
     Last_name = request.POST.get('Last_name', '')
     Phone_number = request.POST.get('Phone_number', '')
-    Parking_number = request.POST.get('Parking_number', '')
     Repeat_password = request.POST.get('Repeat_password', '')
 
     if request.user.is_authenticated():
@@ -103,26 +98,22 @@ def Register_account(request):
         if not User.objects.filter(username=Username).exists() and Username != "":
             user = User(username=Username)
             User_Data = User_data(user=user)
-            if not User_data.objects.filter(parking_number=Parking_number).exists():
-                user.email = Email
-                user.first_name = First_name
-                user.last_name = Last_name
-                if Password == Repeat_password and Password != "":
-                    user.set_password(Password)
-                else:
-                    return redirect("/") # TODO: render error page
-                user.is_active = True
-                user.save()
-                User_Data = User_data(user=user)
-                User_Data.phone_number = Phone_number
-                User_Data.parking_number = Parking_number
-                User_Data.save()
-                user = auth.authenticate(username = Username, password = Password)
-                if user:
-                    auth.login(request, user)
-                    return redirect('/test')
-                else:
-                    return redirect('/') # TODO: render error page
+            user.email = Email
+            user.first_name = First_name
+            user.last_name = Last_name
+            if Password == Repeat_password and Password != "":
+                user.set_password(Password)
+            else:
+                return redirect("/") # TODO: render error page
+            user.is_active = True
+            user.save()
+            User_Data = User_data(user=user)
+            User_Data.phone_number = Phone_number
+            User_Data.save()
+            user = auth.authenticate(username = Username, password = Password)
+            if user:
+                auth.login(request, user)
+                return redirect('/test')
             else:
                 return redirect('/') # TODO: render error page
         else:
@@ -140,6 +131,31 @@ def Login_check(request):
     else:
         return redirect('/login') # TODO: render login error page
 
+
+#logout
 def Logout(request):
     logout(request)
     return redirect('/')
+
+# here be dragons, registration
+
+# TODO: change to uidb64 where applicable
+def reset(request):
+    # Wrap the built-in password reset view and pass it the arguments
+    # like the template name, email template name, subject template name
+    # and the url to redirect after the password reset is initiated.
+    return password_reset(request, template_name='account/Password_reset_screen.html',
+        email_template_name='account/Password_reset_email.html',
+        subject_template_name='account/Password_reset_subject.txt',
+        post_reset_redirect='/login')
+
+# This view handles password reset confirmation links. See urls.py file for the mapping.
+# This view is not used here because the password reset emails with confirmation links
+# cannot be sent from this application.
+def reset_confirm(request, uidb64=None, token=None):
+    # Wrap the built-in reset confirmation view and pass to it all the captured parameters like uidb64, token
+    # and template name, url to redirect after password reset is confirmed.
+    return password_reset_confirm(request, template_name='account/Password_reset_confirm.html',
+        uidb64=uidb64, token=token, post_reset_redirect='/login')
+
+# end of dragons
