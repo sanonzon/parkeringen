@@ -6,23 +6,28 @@ from django import forms
 
 # this file extends User and contains additional user data.
 
-class User_data(models.Model):
-    user = models.OneToOneField(User, unique=True)
-    date_of_birth = models.DateField(blank="True", null=True)
-    parking_number = models.CharField(max_length=20, blank="True", null=True)
-    phone_number = models.CharField(max_length=20, blank="True", null=True)
-
 class Parking_space(models.Model):
     number = models.IntegerField(unique=True)
     owner = models.ForeignKey(User)
     
+    def __str__(self):
+        return "%s - %s %s"%(str(self.number),str(self.owner.first_name),str(self.owner.last_name))
+
+class User_data(models.Model):
+    user = models.OneToOneField(User, unique=True)
+    phone_number = models.CharField(max_length=20, blank="True", null=True)
+
+
     
 class Booking(models.Model):
     space = models.ForeignKey(Parking_space)
-    taken = models.BooleanField()
-    start_date = models.DateField()
-    stop_date = models.DateField()
+    taken = models.BooleanField(default=False)
+    start_date = models.DateTimeField()
+    stop_date = models.DateTimeField()
     
+    def __str__(self):
+        return "%s - %s"%(self.space.number, "Taken" if self.taken is True else "Available")
+
     
 
     
