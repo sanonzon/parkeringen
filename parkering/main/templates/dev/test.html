@@ -1,3 +1,5 @@
+<!-- dev test view -->
+
 {% load staticfiles %}
 
 <html>
@@ -12,7 +14,7 @@
       <h1>It's alive!</h1><br>
       {% if not user.is_authenticated %}
         <h1>You're not logged in, sucks to be you</h1>
-        <a href="{% url 'account:Index' %}" class="btn btn-success green" role="button">Return</a>
+        <a href="{% url 'account:Index_screen' %}" class="btn btn-success green" role="button">Return</a>
       {% elif user.is_authenticated %}
         {% include 'account/Logout.html' %}
       {% endif %}
@@ -22,7 +24,7 @@
         <!--Bootstrap-->
           {% include 'assets/bootstrap/Bootstrap.html' %}
         <!--file specific-->
-          <link rel="stylesheet" type="text/css" href="{% static 'parking/css/main/dev/test.css' %}"/>
+          <link rel="stylesheet" type="text/css" href="{% static 'main/css/main/dev/test.css' %}"/>
       <!--/static files-->
   </body>
 

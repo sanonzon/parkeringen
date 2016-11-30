@@ -6,6 +6,7 @@ from django import forms
 
 # this file extends User and contains additional user data.
 
+# extend user model with additional fields
 class User_data(models.Model):
     user = models.OneToOneField(User, unique=True)
     phone_number = models.CharField(max_length=20, blank="True", null=True)

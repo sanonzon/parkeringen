@@ -1,3 +1,7 @@
+# password email reset base: 
+#   http://code.runnable.com/UqMu5Wsrl3YsAAfX/using-django-s-built-in-views-for-password-reset-for-python
+
+
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
@@ -16,9 +20,9 @@ Login = 'account/Login_screen.html'
 Register = 'account/Register_screen.html'
 Account_management = 'account/Account_screen.html'
 Forgot_password = 'account/Password_reset_screen.html'
-# here be dragons
+
+# currently not used
 Password_confirm = 'account/Password_reset_confirm.html'
-# end of dragons
 
 # error
 Authentication_error = 'account/error/Not_authorized.html'
@@ -68,19 +72,9 @@ def Update_password(request):
             request.user.save()
             return redirect('/logout')
         else:
-            return render(request, Account_management)
+            return render(request, Account_management) # TODO: render error
     else:
-        return redirect('/')
-
-"""
-    @login_required
-    def accmanage_regauth(request):
-        user_form = UserForm(instance=request.user)
-        user_data_form = UserDataForm(instance=request.user.User_data)
-
-        context = {'user_form': user_form, 'User_data_form': User_data_form}
-        return render(request, <add page here>, context)
-"""
+        return redirect('/') # TODO: render error page
 
 # Create new user
 def Register_account(request):
@@ -93,7 +87,7 @@ def Register_account(request):
     Repeat_password = request.POST.get('Repeat_password', '')
 
     if request.user.is_authenticated():
-        return redirect('/test')
+        return redirect('/test') # TODO: redirect to post-login page
     else:
         if not User.objects.filter(username=Username).exists() and Username != "":
             user = User(username=Username)
@@ -113,7 +107,7 @@ def Register_account(request):
             user = auth.authenticate(username = Username, password = Password)
             if user:
                 auth.login(request, user)
-                return redirect('/test')
+                return redirect('/test') # TODO: redirect to post-login page
             else:
                 return redirect('/') # TODO: render error page
         else:
@@ -127,7 +121,7 @@ def Login_check(request):
     user = auth.authenticate(username = Username, password = Password)
     if user:
         auth.login(request, user)
-        return redirect('/test')
+        return redirect('/test') # TODO: redirect to post-login page
     else:
         return redirect('/login') # TODO: render login error page
 
@@ -137,9 +131,7 @@ def Logout(request):
     logout(request)
     return redirect('/')
 
-# here be dragons, registration
-
-# TODO: change to uidb64 where applicable
+# reset password view using django built in functionality
 def reset(request):
     # Wrap the built-in password reset view and pass it the arguments
     # like the template name, email template name, subject template name
@@ -149,13 +141,10 @@ def reset(request):
         subject_template_name='account/Password_reset_subject.txt',
         post_reset_redirect='/login')
 
+# display reset confirm view using django built in functionality
 # This view handles password reset confirmation links. See urls.py file for the mapping.
-# This view is not used here because the password reset emails with confirmation links
-# cannot be sent from this application.
 def reset_confirm(request, uidb64=None, token=None):
     # Wrap the built-in reset confirmation view and pass to it all the captured parameters like uidb64, token
     # and template name, url to redirect after password reset is confirmed.
     return password_reset_confirm(request, template_name='account/Password_reset_confirm.html',
         uidb64=uidb64, token=token, post_reset_redirect='/login')
-
-# end of dragons

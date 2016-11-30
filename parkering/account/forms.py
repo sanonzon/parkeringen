@@ -2,6 +2,7 @@ from django import forms
 from account.models import User_data
 from django.contrib.auth.models import User
 
+# modelforms for displaying / accessing extended user model
 class UserDataForm(forms.ModelForm):
 
 	class Meta:
@@ -14,6 +15,8 @@ class UserForm(forms.ModelForm):
 		model = User
 		fields = ('first_name', 'last_name')
 
+
+# used for forgot password email view
 class PasswordResetRequestForm(forms.Form):
     email_address = forms.CharField(
     	label=(""), 
@@ -22,6 +25,8 @@ class PasswordResetRequestForm(forms.Form):
 
 # here be dragons
 
+# used for forgot password email link view
+# remove if no longer required
 class PasswordChangeForm(forms.Form):
     password = forms.CharField(
     	label=(""), 
