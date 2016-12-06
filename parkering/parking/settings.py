@@ -110,9 +110,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# auth profile module, extend user model
-AUTH_PROFILE_MODULE = 'account.User_data'
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 

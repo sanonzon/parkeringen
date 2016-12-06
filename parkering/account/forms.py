@@ -9,6 +9,7 @@ class UserDataForm(forms.ModelForm):
 		model = User_data
 		fields = ('phone_number',)
 
+# remove if not required
 class UserForm(forms.ModelForm):
 
 	class Meta:
@@ -23,8 +24,6 @@ class PasswordResetRequestForm(forms.Form):
     	widget=forms.TextInput(attrs={'placeholder': 'Email-address'}),
          max_length=254)
 
-# here be dragons
-
 # used for forgot password email link view
 # remove if no longer required
 class PasswordChangeForm(forms.Form):
@@ -36,5 +35,3 @@ class PasswordChangeForm(forms.Form):
     	label=(""), 
     	widget=forms.TextInput(attrs={'placeholder': 'Repeat password'}),
          max_length=254)
-
-# end of dragons
