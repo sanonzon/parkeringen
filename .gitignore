@@ -5,3 +5,4 @@
 parkering/account/migrations/
 parkering/main/migrations/
 
+parkering/db.sqlite3
