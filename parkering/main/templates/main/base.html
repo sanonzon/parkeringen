@@ -6,7 +6,7 @@
 
   <head>
     {% include 'meta/Meta.html' %}
-    <title>Kombo</title>
+    {% include '/navbar.html' %}
   </head>
 
   <body>
@@ -20,7 +20,7 @@
 
       <div class="Authenticated">
         <h1>Post-login goes here</h1>
-        {% include 'body.html' %}
+        {% include '/body.html' %}
       </div>
 
     {% endif %}
