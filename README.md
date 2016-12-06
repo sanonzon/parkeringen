@@ -1,5 +1,12 @@
 # parkeringen
 
+#/account
+Everything related to user
+#/main
+Everything connected
+#/kombo_parking
+Everything related to the komboparking project
+
 python manage.py runserver<br>
   starts local server.
   
