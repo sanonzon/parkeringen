@@ -1,5 +1,5 @@
 from django import forms
-from account.models import User_data, Booking, Parking_space
+from account.models import User_data
 from django.contrib.auth.models import User
 
 # modelforms for displaying / accessing extended user model
@@ -17,11 +17,6 @@ class UserForm(forms.ModelForm):
 		fields = ('first_name', 'last_name')
 
 
-class Booking_Form(forms.ModelForm):
-    
-    class Meta:
-        model = Booking
-        fields = ('space','start_date','stop_date')
 
 # used for forgot password email view
 class PasswordResetRequestForm(forms.Form):
