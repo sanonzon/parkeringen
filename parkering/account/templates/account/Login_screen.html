@@ -1,0 +1,30 @@
+<!-- user login view -->
+
+{% load staticfiles %}
+
+<html> 
+
+  <head>
+    {% include 'meta/Meta.html' %}
+    <title>Log in</title>
+  </head>
+
+  <body>
+    <div class="Login">
+      <form action="{% url 'account:Login_check' %}" method="post" enctype='multipart/form-data'> {% csrf_token %}
+        <!--Username:<br>-->
+        <input type="text" placeholder="Username" name="Username"><br>
+        <!--Password:<br>-->
+        <input type="Password" placeholder="Password" name="Password"><br>
+        <a href="{% url 'account:Index_screen' %}" class="btn btn-success green" role="button">Return</a>
+        <input id="submit_button" class="btn btn-success green" type="submit" value="Log in">
+      </form>
+    </div>
+
+    <!--/static files-->
+      <!--Bootstrap-->
+        {% include 'assets/bootstrap/Bootstrap.html' %}
+    <!--/static files-->
+  </body>
+
+</html>

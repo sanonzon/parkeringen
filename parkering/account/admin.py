@@ -13,7 +13,7 @@ class UserDataInline(admin.StackedInline):
 class UserAdmin(UserAdmin):
     inlines = (UserDataInline, )
 
-# Re-register UserAdmin
+# Re-register admin with new fields
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 admin.site.register(Booking)

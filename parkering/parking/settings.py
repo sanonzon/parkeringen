@@ -30,6 +30,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+# installed applications
 INSTALLED_APPS = [
     'account.apps.AccountConfig',
     'main.apps.MainConfig',
@@ -51,12 +52,17 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# root urls
 ROOT_URLCONF = 'parking.urls'
 
+# template options & directories & loaders & backend
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            'django.template.loaders.filesystem.Loader',
+            'django.template.loaders.app_directories.Loader',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -69,12 +75,14 @@ TEMPLATES = [
     },
 ]
 
+# wsgi
 WSGI_APPLICATION = 'parking.wsgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
+# database in use
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -86,6 +94,7 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
 
+# password validators
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -100,8 +109,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
-AUTH_PROFILE_MODULE = 'account.User_data'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
@@ -120,14 +127,28 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
+# set url for media & static
+#MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
 
-"""
 STATICFILES_DIRS = (
-    "parking/static/parking/",
+    "/main/static/main/",
+    os.path.join(
+        os.path.dirname(__file__),
+        'static',
+    ),
 )
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# set media root
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-MEDIA_URL = '/media/'
-"""
+
+# configure email
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'komboparking@gmail.com'
+SERVER_EMAIL = 'komboparking@gmail.com'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'komboparking@gmail.com'
+EMAIL_HOST_PASSWORD = '4H8FyXrArf'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

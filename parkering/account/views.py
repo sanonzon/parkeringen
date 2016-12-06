@@ -1,110 +1,150 @@
+# password email reset base: 
+#   http://code.runnable.com/UqMu5Wsrl3YsAAfX/using-django-s-built-in-views-for-password-reset-for-python
+
+
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import auth
 from account.models import User_data
-from account.forms import UserDataForm
-from account.forms import UserForm
+from account.forms import UserDataForm, UserForm, PasswordResetRequestForm, PasswordChangeForm
 from django.contrib.auth import logout
-
-
-# Note to people messing around with the code: 
-
-# in older version Management within authview/register was named 'management'
-# accmanage was renamed to accmanage_regauth along with the url name change from management to Management
-
-# variables to html pages have been altered aswell
+from django.core.mail import EmailMessage
+from django.contrib.auth.views import password_reset, password_reset_confirm
+from django.core.urlresolvers import reverse
 
 # File locations set as variables due to frequent usage
-Logreg = 'account/Logreg.html'
+Index = 'account/Index_screen.html'
 Login = 'account/Login_screen.html'
 Register = 'account/Register_screen.html'
+Account_management = 'account/Account_screen.html'
+Forgot_password = 'account/Password_reset_screen.html'
+
+# currently not used
+Password_confirm = 'account/Password_reset_confirm.html'
+
+# error
+Authentication_error = 'account/error/Not_authorized.html'
+
+# development only
+Devtest = 'dev/test.html'
 
 
 
 # Render account login/registration page on request
-"""def index(request):
-    return render(request, Logreg)"""
+def Index_screen(request):
+    return render(request, Index)
 
 # Render login screen
 def Login_screen(request):
     return render(request, Login)
 
-# Render login screen
+# Render register screen
 def Register_screen(request):
     return render(request, Register)
 
+# Render forgot password screen
+def Forgot_password_screen(request):
+    context = {'form': PasswordResetRequestForm}
+    return render(request, Forgot_password, context)
+
+# render account management page
+@login_required(login_url='/not_authorized')
+def Account_screen(request):
+    return render(request, Account_management)
+
+# render authentication error page
+def Authorization_failed(request):
+    return render(request, Authentication_error)
+
 # Update user password and update page
-"""@login_required
-def update_password(request):
-    current_password = request.POST.get('current_password', '')
-    new_password = request.POST.get('new_password', '')
-    repeat_password = request.POST.get('repeat_password', '')
+@login_required(login_url='/not_authorized')
+def Update_password(request):
+    Current_password = request.POST.get('Current_password', '')
+    New_password = request.POST.get('New_password', '')
+    Repeat_password = request.POST.get('Repeat_password', '')
 
-    password_valid = request.user.check_password(current_password)
-    if password_valid:
-        if new_password == repeat_password:
-            request.user.set_password(new_password)
+    Password_valid = request.user.check_password(Current_password)
+    if Password_valid:
+        if New_password == Repeat_password:
+            request.user.set_password(New_password)
             request.user.save()
-            return render(request, logreg_updatepass)
+            return redirect('/logout')
         else:
-            return render(request, account_error)
+            return render(request, Account_management) # TODO: render error
     else:
-        return render(request, account_error)"""
-
-"""work in progress below this line"""
-
-# Load forms and account management page, used in register and authview(log in)
-"""
-    @login_required
-    def accmanage_regauth(request):
-        user_form = UserForm(instance=request.user)
-        user_data_form = UserDataForm(instance=request.user.User_data)
-
-        context = {'user_form': user_form, 'User_data_form': User_data_form}
-        return render(request, <add page here>, context)
-"""
-
-
-"""def logout_view(request):
-    logout(request)
-    return render(request, logreg)"""
+        return redirect('/') # TODO: render error page
 
 # Create new user
-"""def register(request):
-    username = request.POST.get('username', '')
-    password = request.POST.get('password', '')
-    password_repeat = request.POST.get('password_repeat', '')
-    email = request.POST.get('email', '')
+def Register_account(request):
+    Username = request.POST.get('Username', '')
+    Password = request.POST.get('Password', '')
+    Email = request.POST.get('Email_address', '')
+    First_name = request.POST.get('First_name', '')
+    Last_name = request.POST.get('Last_name', '')
+    Phone_number = request.POST.get('Phone_number', '')
+    Repeat_password = request.POST.get('Repeat_password', '')
 
     if request.user.is_authenticated():
-        return redirect('<redirect to next page>')
+        return redirect('/test') # TODO: redirect to post-login page
     else:
-        if not User.objects.filter(username=username).exists() and username != "":
-            user = User(username=username)
-            user.email = email
-            if password == password_repeat and password != "":
-                user.set_password(password)
+        if not User.objects.filter(username=Username).exists() and Username != "":
+            user = User(username=Username)
+            User_Data = User_data(user=user)
+            user.email = Email
+            user.first_name = First_name
+            user.last_name = Last_name
+            if Password == Repeat_password and Password != "":
+                user.set_password(Password)
             else:
-                return render(request, logreg_error)
+                return redirect("/") # TODO: render error page
             user.is_active = True
             user.save()
-            userdata = User_data(user=user)
-            userdata.save()
-            return render(request, logreg_success)
+            User_Data = User_data(user=user)
+            User_Data.phone_number = Phone_number
+            User_Data.save()
+            user = auth.authenticate(username = Username, password = Password)
+            if user:
+                auth.login(request, user)
+                return redirect('/test') # TODO: redirect to post-login page
+            else:
+                return redirect('/') # TODO: render error page
         else:
-            return render(request, logreg_error)"""
+            return redirect("/") # TODO: render error page
 
 # Log in for registered users
-"""
-    def authview(request):
-        username = request.POST.get('username', '')
-        password = request.POST.get('password', '')
-        user = auth.authenticate(username = username, password = password)
-        if user:
-            auth.login(request, user)
-            return redirect('<redirect to next page>')
-        else:
-            return render(request, logreg_error)
-"""
+def Login_check(request):
+    Username = request.POST.get('Username', '')
+    Password = request.POST.get('Password', '')
+
+    user = auth.authenticate(username = Username, password = Password)
+    if user:
+        auth.login(request, user)
+        return redirect('/test') # TODO: redirect to post-login page
+    else:
+        return redirect('/login') # TODO: render login error page
+
+
+#logout
+def Logout(request):
+    logout(request)
+    return redirect('/')
+
+# reset password view using django built in functionality
+def reset(request):
+    # Wrap the built-in password reset view and pass it the arguments
+    # like the template name, email template name, subject template name
+    # and the url to redirect after the password reset is initiated.
+    return password_reset(request, template_name='account/Password_reset_screen.html',
+        email_template_name='account/Password_reset_email.html',
+        subject_template_name='account/Password_reset_subject.txt',
+        post_reset_redirect='/login')
+
+# display reset confirm view using django built in functionality
+# This view handles password reset confirmation links. See urls.py file for the mapping.
+def reset_confirm(request, uidb64=None, token=None):
+    # Wrap the built-in reset confirmation view and pass to it all the captured parameters like uidb64, token
+    # and template name, url to redirect after password reset is confirmed.
+    return password_reset_confirm(request, template_name='account/Password_reset_confirm.html',
+        uidb64=uidb64, token=token, post_reset_redirect='/login')
