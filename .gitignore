@@ -1,8 +1,7 @@
 *.pyc
 *.py~
 *.pyc~
-parkering/*.sqlite3
 parkering/account/migrations/
 parkering/main/migrations/
-
+parkering/kombo_parking/migrations/
 parkering/db.sqlite3
