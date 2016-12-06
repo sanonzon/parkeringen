@@ -11,13 +11,18 @@
 
   <body>
     {% if not user.is_authenticated %}
+
       <div class="Logreg">
         {% include 'account/Index_screen.html' %}
       </div>
+
     {% elif user.is_authenticated %}
+
       <div class="Authenticated">
         <h1>Post-login goes here</h1>
+        {% include 'body.html' %}
       </div>
+
     {% endif %}
 
     <!--/static files-->
