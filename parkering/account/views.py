@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import auth
 from account.models import User_data
-from account.forms import UserDataForm, UserForm, LoginForm, PasswordResetRequestForm, PasswordChangeForm
+from account.forms import UserDataForm, LoginForm, PasswordResetRequestForm, PasswordChangeForm
 from django.contrib.auth import logout
 from django.core.mail import EmailMessage
 from django.contrib.auth.views import password_reset, password_reset_confirm
