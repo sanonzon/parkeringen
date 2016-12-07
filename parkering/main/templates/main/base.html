@@ -5,8 +5,13 @@
 <html>
 
   <head>
+  {% if not user.is_authenticated %}
+    
     {% include 'meta/Meta.html' %}
-    {% include '/navbar.html' %}
+  {% elif user.is_authenticated %}
+    {% include 'meta/Meta.html' %}
+    {% include 'main/navbar.html' %}
+  {% endif %}
   </head>
 
   <body>
@@ -19,12 +24,12 @@
     {% elif user.is_authenticated %}
 
       <div class="Authenticated">
-        <h1>Post-login goes here</h1>
-        {% include '/body.html' %}
+        <h1>Post-login goes here</h1>    
+        {% include 'main/body.html' %}
+        {% include 'main/footer.html' %}
       </div>
 
     {% endif %}
-
     <!--/static files-->
       <!--Bootstrap-->
         {% include 'assets/bootstrap/Bootstrap.html' %}
