@@ -1,4 +1,4 @@
-# password email reset base: 
+# password email reset base:
 #   http://code.runnable.com/UqMu5Wsrl3YsAAfX/using-django-s-built-in-views-for-password-reset-for-python
 
 
