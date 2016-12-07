@@ -43,7 +43,7 @@ def Login_screen(request):
 
 # Render register screen
 def Register_screen(request):
-    context = {'RegForm': RegisterForm, 'DataForm': UserDataForm}
+    context = {'DataForm': UserDataForm, 'RegForm': RegisterForm}
     return render(request, Register, context)
 
 # Render forgot password screen

@@ -12,12 +12,12 @@ class UserDataForm(forms.ModelForm):
         model = User_data
         fields = ('phone_number',)
 
-    widgets = { 
-            'phone_number': forms.TextInput(attrs={'placeholder': 'Username'}),
+        widgets = { 
+            'phone_number': forms.TextInput(attrs={'placeholder': 'Phone number'}),
          }
 
     def __init__(self, *args, **kwargs):
-        super(LoginForm, self).__init__(*args, **kwargs)
+        super(UserDataForm, self).__init__(*args, **kwargs)
 
         # add custom error messages
         self.fields['phone_number'].error_messages = {'required': 'This field is required'}
@@ -60,7 +60,11 @@ class RegisterForm(forms.ModelForm):
         super(RegisterForm, self).__init__(*args, **kwargs)
 
         # add custom error messages
-        self.fields['username', 'email', 'first_name', 'last_name', 'password'].error_messages = {'required': 'This field is required'}
+        self.fields['username'].error_messages = {'required': 'This field is required'}
+        self.fields['password'].error_messages = {'required': 'This field is required'}
+        self.fields['email'].error_messages = {'required': 'This field is required'}
+        self.fields['first_name'].error_messages = {'required': 'This field is required'}
+        self.fields['last_name'].error_messages = {'required': 'This field is required'}
 
 # used for forgot password email view
 class PasswordResetRequestForm(forms.Form):

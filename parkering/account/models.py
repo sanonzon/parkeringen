@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 
 class User_data(models.Model):
     user = models.OneToOneField(User, unique=True)
-    phone_number = models.CharField(max_length=20, blank="True", null=True)
+    phone_number = models.CharField(max_length=20)
 
 
     
