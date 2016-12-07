@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import auth
 from account.models import User_data
-from account.forms import UserDataForm, UserForm, PasswordResetRequestForm, PasswordChangeForm
+from account.forms import UserDataForm, UserForm, LoginForm, PasswordResetRequestForm, PasswordChangeForm
 from django.contrib.auth import logout
 from django.core.mail import EmailMessage
 from django.contrib.auth.views import password_reset, password_reset_confirm
@@ -38,7 +38,8 @@ def Index_screen(request):
 
 # Render login screen
 def Login_screen(request):
-    return render(request, Login)
+    context = {'form': LoginForm}
+    return render(request, Login, context)
 
 # Render register screen
 def Register_screen(request):
@@ -113,18 +114,26 @@ def Register_account(request):
         else:
             return redirect("/") # TODO: render error page
 
+# here be dragons
+
 # Log in for registered users
 def Login_check(request):
-    Username = request.POST.get('Username', '')
-    Password = request.POST.get('Password', '')
+    Form = LoginForm(request.POST)
+    if Form.is_valid():
+        Username = Form.cleaned_data['username']
+        Password = Form.cleaned_data['password']
 
-    user = auth.authenticate(username = Username, password = Password)
-    if user:
-        auth.login(request, user)
-        return redirect('/test') # TODO: redirect to post-login page
+        user = auth.authenticate(username = Username, password = Password)
+        if user:
+            auth.login(request, user)
+            return redirect('/test') # TODO: redirect to post-login page
+        else:
+            return redirect('/login') # TODO: render login error page
     else:
-        return redirect('/login') # TODO: render login error page
+        return redirect('/login')
 
+
+# end of dragons
 
 #logout
 def Logout(request):
