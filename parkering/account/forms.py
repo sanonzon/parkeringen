@@ -5,21 +5,31 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
 
-# modelforms for displaying / accessing extended user model
+# dynamic form for displaying extended user model
 class UserDataForm(forms.ModelForm):
 
-	class Meta:
-		model = User_data
-		fields = ('phone_number',)
+    class Meta:
+        model = User_data
+        fields = ('phone_number',)
 
-# remove if not required
+    widgets = { 
+            'phone_number': forms.TextInput(attrs={'placeholder': 'Username'}),
+         }
+
+    def __init__(self, *args, **kwargs):
+        super(LoginForm, self).__init__(*args, **kwargs)
+
+        # add custom error messages
+        self.fields['phone_number'].error_messages = {'required': 'This field is required'}
+
+# dynamic loginform with custom validation error messages
 class LoginForm(forms.ModelForm):
 
-	class Meta:
-		model = User
-		fields = ['username', 'password']
+    class Meta:
+        model = User
+        fields = ['username', 'password']
 
-		widgets = { 
+        widgets = { 
             'username': forms.TextInput(attrs={'placeholder': 'Username'}),
             'password': forms.PasswordInput(attrs={'placeholder': 'Password'}),
          }
@@ -28,42 +38,45 @@ class LoginForm(forms.ModelForm):
         super(LoginForm, self).__init__(*args, **kwargs)
 
         # add custom error messages
-        self.fields['username'].error_messages = {'required': 'This field is required'}
+        self.fields['username','password'].error_messages = {'required': 'This field is required'}
 
-# her be dragons
-"""
-# login form
-class LoginForm(forms.Form):
-    # username field
-    username = forms.CharField(
-        label=(""), 
-        widget=forms.TextInput(attrs={'placeholder': 'Username'}),
-         max_length=254, validators=[validate_username_unique])
 
-    # password field
-    password = forms.CharField(
-        label=(""), 
-        widget=forms.PasswordInput(attrs={'placeholder': 'Password'}),
-         max_length=254)
-"""
+# dynamic register form with custom validation error messages
+class RegisterForm(forms.ModelForm):
 
-# here be dragons
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name', 'password']
+
+        widgets = { 
+            'username': forms.TextInput(attrs={'placeholder': 'Username'}),
+            'password': forms.PasswordInput(attrs={'placeholder': 'Password'}),
+            'email': forms.TextInput(attrs={'placeholder': 'E-mail address'}),
+            'first_name': forms.TextInput(attrs={'placeholder': 'first name'}),
+            'last_name': forms.TextInput(attrs={'placeholder': 'last name'}),
+         }
+
+    def __init__(self, *args, **kwargs):
+        super(RegisterForm, self).__init__(*args, **kwargs)
+
+        # add custom error messages
+        self.fields['username', 'email', 'first_name', 'last_name', 'password'].error_messages = {'required': 'This field is required'}
 
 # used for forgot password email view
 class PasswordResetRequestForm(forms.Form):
     email_address = forms.CharField(
-    	label=(""), 
-    	widget=forms.TextInput(attrs={'placeholder': 'Email-address'}),
+        label=(""), 
+        widget=forms.TextInput(attrs={'placeholder': 'Email-address'}),
          max_length=254)
 
 # used for forgot password email link view
 # remove if no longer required
 class PasswordChangeForm(forms.Form):
     password = forms.CharField(
-    	label=(""), 
-    	widget=forms.TextInput(attrs={'placeholder': 'Password'}),
+        label=(""), 
+        widget=forms.TextInput(attrs={'placeholder': 'Password'}),
          max_length=254),
     repeat_password = forms.CharField(
-    	label=(""), 
-    	widget=forms.TextInput(attrs={'placeholder': 'Repeat password'}),
+        label=(""), 
+        widget=forms.TextInput(attrs={'placeholder': 'Repeat password'}),
          max_length=254)

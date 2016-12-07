@@ -13,10 +13,8 @@
     <div class="Login">
       <form action="{% url 'account:Login_check' %}" method="post" enctype='multipart/form-data'> {% csrf_token %}
         <!--Username:<br>-->
-        <!--<input type="text" placeholder="Username" name="Username"><br>-->
         {{ form.username }}<br>
         <!--Password:<br>-->
-        <!--<input type="Password" placeholder="Password" name="Password"><br>-->
         {{ form.password }}<br>
         <a href="{% url 'account:Index_screen' %}" class="btn btn-success green" role="button">Return</a>
         <input id="submit_button" class="btn btn-success green" type="submit" value="Log in">
