@@ -28,12 +28,7 @@
         <a href="{% url 'account:Index_screen' %}" class="btn btn-success green" role="button">Return</a>
         <input id="submit_button" class="btn btn-success green" type="submit" value="Register">
         <!--display error messages-->
-        {{ RegForm.username.errors }}
-        {{ RegForm.email.errors }}
-        {{ RegForm.first_name.errors }}
-        {{ RegForm.last_name.errors }}
-        {{ DataForm.phone_number.errors }}
-        {{ RegForm.password.errors }}
+        {% include 'account/error/Error_messages.html' %}
       </form>
     </div>
 

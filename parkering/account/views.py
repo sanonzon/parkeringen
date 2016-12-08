@@ -30,7 +30,29 @@ Authentication_error = 'account/error/Not_authorized.html'
 # development only
 Devtest = 'dev/test.html'
 
+### Error messages ###
 
+# list of error messages, empty if no errors
+# always add ErrorMessages.clear() on initial use
+# to avoid old errors being displayed
+ErrorMessages = list()
+
+# incorrect login details
+IncorrectDetails = "IncorrectDetails"
+
+# user exists
+UserExists = "UserExists"
+
+# user exists
+PasswordMismatch = "PasswordMismatch"
+
+# invalid registerForm
+InvalidForm = "InvalidForm"
+
+# unexpected error
+Unexpected = "Unexpected"
+
+### Error messages ###
 
 # Render account login/registration page on request
 def Index_screen(request):
@@ -38,12 +60,16 @@ def Index_screen(request):
 
 # Render login screen
 def Login_screen(request):
-    context = {'LogForm': LoginForm}
+    ErrorMessages.clear()
+
+    context = {'LogForm': LoginForm, 'ErrorMessages': ErrorMessages }
     return render(request, Login, context)
 
 # Render register screen
 def Register_screen(request):
-    context = {'DataForm': UserDataForm,'RegForm': RegisterForm}
+    ErrorMessages.clear()
+
+    context = {'DataForm': UserDataForm,'RegForm': RegisterForm, 'ErrorMessages': ErrorMessages }
     return render(request, Register, context)
 
 # Render forgot password screen
@@ -80,13 +106,35 @@ def Update_password(request):
 
 # Create new user
 def Register_account(request):
+    ErrorMessages.clear()
 
     RegForm = RegisterForm(request.POST or None)
     DataForm = UserDataForm(request.POST or None)
-    context = {'DataForm': UserDataForm,'RegForm': RegisterForm}
+    context = {'DataForm': UserDataForm,'RegForm': RegisterForm, 'ErrorMessages': ErrorMessages }
+
+    ### Validation ###
+
+    # check if username already exists
+    Username = RegForm.data['username']
+    if not User.objects.filter(username=Username).exists() and Username != "":
+        pass
+    else:
+        # error messages to display
+        ErrorMessages.append(UserExists)
+        return render(request, Register, context)
+
+    Password = RegForm.data['password']
+    Repeat_password = request.POST.get('Repeat_password', '')
+    if Password == Repeat_password and Password != "":
+            pass
+    else:
+        # error messages to display
+        ErrorMessages.append(PasswordMismatch)
+        return render(request, Register, context)
+
+    ### End Validation ###
 
     if request.POST and RegForm.is_valid() and DataForm.is_valid():
-        Username = RegForm.cleaned_data['username']
         Password = RegForm.cleaned_data['password']
         Email = RegForm.cleaned_data['email']
         First_name = RegForm.cleaned_data['first_name']
@@ -97,59 +145,52 @@ def Register_account(request):
         if request.user.is_authenticated():
             return redirect('/test') # TODO: redirect to post-login page
         else:
-            if not User.objects.filter(username=Username).exists() and Username != "":
-                user = User(username=Username)
-                User_Data = User_data(user=user)
-                user.email = Email
-                user.first_name = First_name
-                user.last_name = Last_name
-                if Password == Repeat_password and Password != "":
-                    user.set_password(Password)
-                else:
-                    return redirect("/") # TODO: render error page
-                user.is_active = True
-                user.save()
-                User_Data = User_data(user=user)
-                User_Data.phone_number = Phone_number
-                User_Data.save()
-                user = auth.authenticate(username = Username, password = Password)
-                if user:
-                    auth.login(request, user)
-                    return redirect('/test') # TODO: redirect to post-login page
-                else:
-                    return render(request, Register, context)
+            user = User(username=Username)
+            User_Data = User_data(user=user)
+            user.email = Email
+            user.first_name = First_name
+            user.last_name = Last_name
+            user.set_password(Password)
+            user.is_active = True
+            user.save()
+            User_Data = User_data(user=user)
+            User_Data.phone_number = Phone_number
+            User_Data.save()
+            user = auth.authenticate(username = Username, password = Password)
+            if user:
+                auth.login(request, user)
+                return redirect('/test') # TODO: redirect to post-login page
             else:
+                # error messages to display
+                ErrorMessages.append(Unexpected)
                 return render(request, Register, context)
 
+    # error messages to display
+    ErrorMessages.append(InvalidForm)
     return render(request, Register, context)
 
 # Log in for registered users
 def Login_check(request):
+    ErrorMessages.clear()
 
     LogForm = LoginForm(request.POST)
-    context = { 'LogForm': LoginForm }
-
-    print("checking if form is valid")
-    if request.POST:
-        print("request.POST is true")
-    else:
-        print("request.POST is false")
+    context = { 'LogForm': LoginForm, 'ErrorMessages': ErrorMessages }
 
     if request.POST and LogForm.is_valid():
         Username = LogForm.cleaned_data['username']
         Password = LogForm.cleaned_data['password']
-
-        print(Username)
-        print(Password)
 
         user = auth.authenticate(username = Username, password = Password)
         if user:
             auth.login(request, user)
             return redirect('/test') # TODO: redirect to post-login page
         else:
+            # error messages to display
+            ErrorMessages.append(Unexpected)
             return render(request, Login, context)
 
-    print("form validation failed")
+    # error messages to display
+    ErrorMessages.append(IncorrectDetails)
     return render(request, Login, context)
     
 

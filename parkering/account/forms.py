@@ -2,8 +2,9 @@ from django import forms
 from account.models import User_data
 from django.forms import ModelForm
 from django.contrib.auth.models import User
+from django.contrib import auth
 from django.core.exceptions import ValidationError
-from django.contrib.auth.forms import AuthenticationForm 
+from django.contrib.auth.forms import AuthenticationForm
 
 # dynamic form for displaying extended user model
 class UserDataForm(forms.ModelForm):
@@ -24,16 +25,20 @@ class UserDataForm(forms.ModelForm):
 
 
 # dynamic loginform
-class LoginForm(forms.ModelForm):
-    
-    class Meta:
-        model = User
-        fields = ['username', 'password']
+class LoginForm(forms.Form):
+    username = forms.CharField(
+        label=(""), 
+        widget=forms.TextInput(attrs={'placeholder': 'Username'}))
 
-        widgets = { 
-            'username': forms.TextInput(attrs={'placeholder': 'Username'}),
-            'password': forms.PasswordInput(attrs={'placeholder': 'Password'}),
-         }
+    password = forms.CharField(
+        label=(""), 
+        widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
+
+    def clean(self):
+        user = auth.authenticate(username = self.cleaned_data['username'], password = self.cleaned_data['password'])
+        if not user:
+            raise forms.ValidationError("Incorrect login, please try again or register an account.")
+        return self.cleaned_data
 
 
 # dynamic register form

@@ -19,8 +19,8 @@
         {{ LogForm.password }}<br>
         <a href="{% url 'account:Index_screen' %}" class="btn btn-success green" role="button">Return</a>
         <input id="submit_button" class="btn btn-success green" type="submit" value="Log in">
-        {{ LogForm.username.errors }}
-        {{ LogForm.password.errors }}
+        <!-- display error messages -->
+        {% include 'account/error/Error_messages.html' %}
       </form>
     </div>
 

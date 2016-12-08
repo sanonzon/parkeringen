@@ -10,7 +10,7 @@ urlpatterns = [
 	url(r'^$', views.Index_screen, name='Index_screen'),
 
     # used for login function
-	url(r'^auth$', views.Login_check, name='Login_check'),
+	url(r'^login/auth$', views.Login_check, name='Login_check'),
 
     # used for logout function
 	url(r'^logout$', views.Logout, name='Logout'),
