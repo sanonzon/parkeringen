@@ -3,7 +3,7 @@ from account.models import User_data
 from django.forms import ModelForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-
+from django.contrib.auth.forms import AuthenticationForm 
 
 # dynamic form for displaying extended user model
 class UserDataForm(forms.ModelForm):
@@ -22,9 +22,10 @@ class UserDataForm(forms.ModelForm):
         # add custom error messages
         self.fields['phone_number'].error_messages = {'required': 'This field is required'}
 
-# dynamic loginform with custom validation error messages
-class LoginForm(forms.ModelForm):
 
+# dynamic loginform
+class LoginForm(forms.ModelForm):
+    
     class Meta:
         model = User
         fields = ['username', 'password']
@@ -34,14 +35,8 @@ class LoginForm(forms.ModelForm):
             'password': forms.PasswordInput(attrs={'placeholder': 'Password'}),
          }
 
-    def __init__(self, *args, **kwargs):
-        super(LoginForm, self).__init__(*args, **kwargs)
 
-        # add custom error messages
-        self.fields['username','password'].error_messages = {'required': 'This field is required'}
-
-
-# dynamic register form with custom validation error messages
+# dynamic register form
 class RegisterForm(forms.ModelForm):
 
     class Meta:
@@ -55,16 +50,6 @@ class RegisterForm(forms.ModelForm):
             'first_name': forms.TextInput(attrs={'placeholder': 'first name'}),
             'last_name': forms.TextInput(attrs={'placeholder': 'last name'}),
          }
-
-    def __init__(self, *args, **kwargs):
-        super(RegisterForm, self).__init__(*args, **kwargs)
-
-        # add custom error messages
-        self.fields['username'].error_messages = {'required': 'This field is required'}
-        self.fields['password'].error_messages = {'required': 'This field is required'}
-        self.fields['email'].error_messages = {'required': 'This field is required'}
-        self.fields['first_name'].error_messages = {'required': 'This field is required'}
-        self.fields['last_name'].error_messages = {'required': 'This field is required'}
 
 # used for forgot password email view
 class PasswordResetRequestForm(forms.Form):

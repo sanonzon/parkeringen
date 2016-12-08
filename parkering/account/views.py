@@ -38,12 +38,12 @@ def Index_screen(request):
 
 # Render login screen
 def Login_screen(request):
-    context = {'form': LoginForm}
+    context = {'LogForm': LoginForm}
     return render(request, Login, context)
 
 # Render register screen
 def Register_screen(request):
-    context = {'DataForm': UserDataForm, 'RegForm': RegisterForm}
+    context = {'DataForm': UserDataForm,'RegForm': RegisterForm}
     return render(request, Register, context)
 
 # Render forgot password screen
@@ -81,15 +81,17 @@ def Update_password(request):
 # Create new user
 def Register_account(request):
 
-    RegForm = RegisterForm(request.POST)
-    DataForm = UserDataForm(request.POST)
-    if RegForm.is_valid() and DataForm.is_valid():
-        Username = Form.cleaned_data['username']
-        Password = Form.cleaned_data['password']
-        Email = Form.cleaned_data['email']
-        First_name = Form.cleaned_data['first_name']
-        Last_name = Form.cleaned_data['last_name']
-        Phone_number = Form.cleaned_data['phone_number']
+    RegForm = RegisterForm(request.POST or None)
+    DataForm = UserDataForm(request.POST or None)
+    context = {'DataForm': UserDataForm,'RegForm': RegisterForm}
+
+    if request.POST and RegForm.is_valid() and DataForm.is_valid():
+        Username = RegForm.cleaned_data['username']
+        Password = RegForm.cleaned_data['password']
+        Email = RegForm.cleaned_data['email']
+        First_name = RegForm.cleaned_data['first_name']
+        Last_name = RegForm.cleaned_data['last_name']
+        Phone_number = DataForm.cleaned_data['phone_number']
         Repeat_password = request.POST.get('Repeat_password', '')
 
         if request.user.is_authenticated():
@@ -115,27 +117,41 @@ def Register_account(request):
                     auth.login(request, user)
                     return redirect('/test') # TODO: redirect to post-login page
                 else:
-                    return redirect('/') # TODO: render error page
+                    return render(request, Register, context)
             else:
-                return redirect("/") # TODO: render error page
-    else:
-        return redirect("/register")
+                return render(request, Register, context)
+
+    return render(request, Register, context)
 
 # Log in for registered users
 def Login_check(request):
-    Form = LoginForm(request.POST)
-    if Form.is_valid():
-        Username = Form.cleaned_data['username']
-        Password = Form.cleaned_data['password']
+
+    LogForm = LoginForm(request.POST)
+    context = { 'LogForm': LoginForm }
+
+    print("checking if form is valid")
+    if request.POST:
+        print("request.POST is true")
+    else:
+        print("request.POST is false")
+
+    if request.POST and LogForm.is_valid():
+        Username = LogForm.cleaned_data['username']
+        Password = LogForm.cleaned_data['password']
+
+        print(Username)
+        print(Password)
 
         user = auth.authenticate(username = Username, password = Password)
         if user:
             auth.login(request, user)
             return redirect('/test') # TODO: redirect to post-login page
         else:
-            return redirect('/login') # TODO: render login error page
-    else:
-        return redirect('/login')
+            return render(request, Login, context)
+
+    print("form validation failed")
+    return render(request, Login, context)
+    
 
 #logout
 def Logout(request):
