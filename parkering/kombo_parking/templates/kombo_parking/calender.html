@@ -1,0 +1,14 @@
+<table>
+    <th>nummer</th>
+    <th>ledig</th>
+    <th>tills</th>
+    <th>ta den</th>
+{% for booking in bookings %}
+    <tr>
+        <td>{{booking.space.number}}</td>
+        <td>{{booking.start_date}}</td>
+        <td>{{booking.stop_date}}</td>
+        <td><a href='bookthatspace/{{booking.id}}'><button>ta den lol</button></a></td>
+    </tr>
+
+{% endfor %}
