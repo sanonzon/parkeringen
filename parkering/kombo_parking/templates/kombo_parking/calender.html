@@ -12,3 +12,22 @@
     </tr>
 
 {% endfor %}
+</table>
+form 1 
+<form action="/calender/makespaceavailable/" method="post">
+    {% csrf_token %}
+    
+    
+    {%if spaces %}
+        {%if spaces|length > 1%}
+            Dina platser är: {% for space in spaces %} {{space}}, {%endfor%}
+        {%else %}
+            Din plats är: {% for space in spaces %} {{space}} {%endfor%}
+        {% endif %}
+    
+    {% endif %}
+    {{ booking_form.as_p}} 
+    
+    <input type="submit" value="Submit" />
+</form>
+
