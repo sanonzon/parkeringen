@@ -1,0 +1,22 @@
+<table>
+
+<tr>
+    <th>User</th>
+    <th>Space</th>
+    <th>registerkey??</th>
+</tr>
+
+
+{%for element in spaces %}
+<tr>
+    {% if element.owner.first_name and element.owner.last_name %}
+        <td>{{element.owner.first_name}} {{element.owner.last_name}}</td>
+    {%else%}
+        <td>{{element.owner.username}}</td>
+    {%endif%}
+    </td>
+    <td>{{element.number}}</td>
+    <td>{{secret_key}}</td>
+</tr>
+{%endfor%}
+</table>
