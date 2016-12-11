@@ -10,32 +10,79 @@ from django.core.mail import EmailMessage
 from django.contrib.auth.views import password_reset, password_reset_confirm
 from django.core.urlresolvers import reverse
 from .forms import Booking_Form,Space_available_form
-# Create your views here.
+from django.template import loader
 
-def Bookthatspace(request, bookid):
-    booking = Booking.objects.filter(id=bookid,taken=False).get()
-    print bookid
-    if booking:
-        booking.taken=True
-        booking.save()
-    return redirect('/calender')
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
 
-def Calender(request):
-    bookings = Booking.objects.filter(taken=False)
-    print request.user.id
-    spaces = list(Parking_space.objects.values_list('number',flat=True).filter(owner=request.user.id))
-    print spaces
+def calendar(request):
+    #~ if request.user.is_authenticated():
+    if request.is_ajax():
+        if request.POST['date']:
+            print "\n\ndateclick event date: %s\n" % request.POST['date']
+            #~ print Booking.objects.filter(start_date__contains(request.POST['date']))
+            datelist = Booking.objects.filter(start_date__startswith=request.POST['date'],taken=False)
+            #~ print datelist
+            calendar = []
+
+            if datelist:
+                for event in datelist:                    
+                    calendar.append({
+                        'id':event.id,
+                        'number': event.space.number,
+                        'start_date': event.start_date.strftime("%Y-%m-%d %H:%M"),                            
+                        'stop_date': event.stop_date.strftime("%Y-%m-%d %H:%M"),                                                        
+                    })
+            #~ print "\n\n%s\n\n" % calendar
+            html = loader.render_to_string('kombo_parking/calendarmodal.html', {
+                    'list': calendar,
+                })
+            return HttpResponse(html)
+        #~ elif request.POST['event_id']:
+            #~ print request.POST['event_id']
+            #~ html = loader.render_to_string('kalenderparkeringen/calendarmodal.html', {
+                    #~ 'list': Booking.objects.filter(taken=False),
+                #~ })
+            #~ return HttpResponse(html)
+    else:
+        #~ events = Booking.objects.filter(taken = False).all()
+        bookings = Booking.objects.filter(taken=False)
+        
+        calendar = []            
+
+        if bookings:
+            for event in bookings:                    
+                calendar.append({
+                    'id':event.id,
+                    'number': event.space.number,
+                    'start': event.start_date.isoformat(),
+                    'stop': event.stop_date.isoformat(),
+                })
+            return render(request, 'kombo_parking/calendar.html', {
+                    'list': calendar or None,
+                })
+                
+        return render(request, 'kombo_parking/calendar.html')
+    #~ else:
+        #~ return redirect("/")
     
-    return render(request,'kombo_parking/calender.html',
-        {
-        'bookings':bookings,
-         'spaces':spaces,
-         'booking_form':Space_available_form,
-         })
-
+def grab_parkingspace(request):
+    if request.is_ajax():        
+        if request.POST['booking_id']:
+            item = Booking.objects.filter(id=int(request.POST['booking_id'])).update(taken=True)
+            #~ item.save()
+            
+        #~ print Booking.objects.filter(id=int(request.POST['booking_id'])
+            #~ html = loader.redirect('kombo_parking/calendar.html')
+            return HttpResponse(loader.render_to_string('kombo_parking/calendar.html'))
+    else:
+        return redirect("/")
+        
+        
 def makespaceavailable(request):
     ## TODO, form hantering
     if request.method == 'POST':
+        spaces = list(Parking_space.objects.values_list('number',flat=True).filter(owner=request.user.id))
+        
         # create a form instance and populate it with data from the request:
         form = Space_available_form(request.POST)
         print form

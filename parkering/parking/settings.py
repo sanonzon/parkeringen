@@ -132,6 +132,10 @@ USE_TZ = True
 #MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
 
+#~ STATICFILES_DIRS = (
+    #~ os.path.join(os.path.dirname(__file__), 'static').replace('\\','/'),
+#~ )
+
 STATICFILES_DIRS = (
     "/main/static/main/",
     os.path.join(

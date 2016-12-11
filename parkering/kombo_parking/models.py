@@ -15,8 +15,8 @@ class Parking_space(models.Model):
 class Booking(models.Model):
     space = models.ForeignKey(Parking_space)
     taken = models.BooleanField(default=False)
-    start_date = models.DateField()
-    stop_date = models.DateField()
+    start_date = models.DateTimeField()
+    stop_date = models.DateTimeField()
     
     def __str__(self):
-        return "%s - %s"%(self.space.number, "Taken" if self.taken is True else "Available")
+        return "%s - %s, %s -> %s"%(self.space.number, "Taken" if self.taken is True else "Available", self.start_date, self.stop_date)

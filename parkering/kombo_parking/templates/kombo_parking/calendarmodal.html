@@ -1,0 +1,79 @@
+{% load staticfiles %}
+
+<div id="calendarmodal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Register Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <div class="modal-body">
+          {% if list %}
+          <table>
+            <tr>
+                <th>Plats</th>
+                <th>Start</th>
+                <th>Slut</th>            
+            </tr>
+            {% for item in list %}
+            <tr>
+                <td class="dootfacetwentyseven hidden">{{item.id}}</td>
+                <td>{{item.number}}</td>
+                <td>{{item.start_date}}</td>
+                <td>{{item.stop_date}}</td>
+                <td><button class="fancyButtonclicker">ta ID {{item.id}}</button></td>
+            </tr>
+            {% endfor %}         
+          </table>
+            {% else %}
+            <p>Det finns inga platser denna dagen, insert forumlär eller något.</p>
+            {% endif %}
+          
+        
+        
+      </div> <!-- MODAL BODY END -->
+      <div class="modal-footer">
+        <div class="row">
+          <div id="fb-root"></div>
+
+            </div>
+          </div>
+          <div class="col-6">
+            <button type="button" class="btn btn-default" id="register-button" data-dismiss="modal">Stäng</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    $(".fancyButtonclicker").click(function() {
+        var $item = $(this).closest("tr").find(".dootfacetwentyseven").text();  // Find row of clicked button, get td containing magic id with silly class name.
+        console.log($item);
+        
+        $.ajax({
+            type: "POST",
+            url: "/grab_parkingspace/",
+            data: {
+                'booking_id': $item,
+                'csrfmiddlewaretoken': csrftoken,
+            },
+            success: function(data) {
+               alert("Bokat, gör en häftigare notis eller redirect eller något.")           
+            }
+       })
+    });
+    //~ function(date, jsEvent, view) {
+             //~ $.ajax({
+                //~ type: "POST",
+                //~ url: "/grab_parkingspace/",
+                //~ data: {
+                    //~ 'booking_id': ,
+                    //~ 'csrfmiddlewaretoken': csrftoken,
+                //~ },
+                //~ success: function(newData) {
+                    //~ alert('Farsågod.');
+                //~ }
+           //~ })
+        //~ },
+</script>
