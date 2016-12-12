@@ -5,6 +5,6 @@ from django.contrib.auth.decorators import login_required
 def Let_there_be_light(request):
     return render(request, 'main/base.html')
 
-# development page for testing
+# Render Frontpage
 def frontpage(request):
     return render(request, 'main/base.html')

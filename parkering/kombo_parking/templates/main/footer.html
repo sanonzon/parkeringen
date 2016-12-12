@@ -1,11 +1,14 @@
 {% load staticfiles %}
 
-<footer class="footer">
-    <div class="container">
-        <p class="text-muted">Place sticky footer content here.</p>
-    </div>
-    <!--/static files-->
-      <!--Bootstrap-->
-        {% include 'assets/bootstrap/Bootstrap.html' %}
-    <!--/static files-->
-</footer>
+
+
+<div class="navbar navbar-inverse navbar-fixed-bottom" role="navigation">
+	<div class="navbar-text pull-left">
+		<p>© Komboparking</p>
+	</div>
+</div>
+<!--/static files-->
+<!--Bootstrap-->
+{% include 'assets/bootstrap/Bootstrap.html' %}
+<link rel="stylesheet"  href="{% static 'css/main/dev/sticky-footer.css' %}" />
+<!--/static files-->
