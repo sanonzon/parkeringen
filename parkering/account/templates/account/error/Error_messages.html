@@ -1,26 +1,24 @@
-{% block error %}
-	{% for error in ErrorMessages %}
+{% for error in ErrorMessages %}
 
-		{% if error == 'IncorrectDetails' %}
-			<p>Incorrect login details, please try again</p>
-		{% endif %}
+	{% if error == 'IncorrectDetails' %}
+		<p>Incorrect login details, please try again</p>
+	{% endif %}
 
-		{% if error == 'InvalidForm' %}
-			<p>Your registration details are not valid, please check your input and try again.</p>
-		{% endif %}
+	{% if error == 'InvalidForm' %}
+		<p>Your registration details are not valid, please check your input and try again.</p>
+	{% endif %}
 
-		{% if error == 'UserExists' %}
-			<p>A user with this username already exists, please try another one.</p>
-		{% endif %}
+	{% if error == 'UserExists' %}
+		<p>A user with this username already exists, please try another one.</p>
+	{% endif %}
 
-		{% if error == 'PasswordMismatch' %}
-			<p>The passwords did not match, please try again.</p>
-		{% endif %}
+	{% if error == 'PasswordMismatch' %}
+		<p>The passwords did not match, please try again.</p>
+	{% endif %}
 
-		{% if error == 'Unexpected' %}
-			<p>An unexpected error occured, restart your browser and try again.</p>
-			<p>If the problem persists please contact your system administrator</p>
-		{% endif %}
+	{% if error == 'Unexpected' %}
+		<p>An unexpected error occured, restart your browser and try again.</p>
+		<p>If the problem persists please contact your system administrator</p>
+	{% endif %}
 
-	{% endfor %}
-{% endblock error %}
+{% endfor %}

@@ -17,6 +17,7 @@ class UserDataForm(forms.ModelForm):
             'phone_number': forms.TextInput(attrs={'placeholder': 'Phone number'}),
          }
 
+    # remove when no longer required
     def __init__(self, *args, **kwargs):
         super(UserDataForm, self).__init__(*args, **kwargs)
 
@@ -34,11 +35,14 @@ class LoginForm(forms.Form):
         label=(""), 
         widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
 
+    # remove when no longer required
+    # access to this but no validation error is displayed in html, with or without tags
     def clean(self):
-        user = auth.authenticate(username = self.cleaned_data['username'], password = self.cleaned_data['password'])
+        cleaned_data = self.cleaned_data
+        user = auth.authenticate(username = cleaned_data['username'], password = cleaned_data['password'])
         if not user:
             raise forms.ValidationError("Incorrect login, please try again or register an account.")
-        return self.cleaned_data
+        return cleaned_data
 
 
 # dynamic register form
@@ -51,10 +55,16 @@ class RegisterForm(forms.ModelForm):
         widgets = { 
             'username': forms.TextInput(attrs={'placeholder': 'Username'}),
             'password': forms.PasswordInput(attrs={'placeholder': 'Password'}),
-            'email': forms.TextInput(attrs={'placeholder': 'E-mail address'}),
+            'email': forms.EmailInput(attrs={'placeholder': 'E-mail address'}),
             'first_name': forms.TextInput(attrs={'placeholder': 'first name'}),
             'last_name': forms.TextInput(attrs={'placeholder': 'last name'}),
          }
+
+    def __init__(self, *args, **kwargs):
+        super(RegisterForm, self).__init__(*args, **kwargs)
+
+        for key in self.fields:
+            self.fields[key].required = True
 
 # used for forgot password email view
 class PasswordResetRequestForm(forms.Form):
