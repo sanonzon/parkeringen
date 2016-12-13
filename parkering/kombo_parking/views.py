@@ -18,7 +18,7 @@ def calendar(request):
     #~ if request.user.is_authenticated():
     if request.is_ajax():
         if request.POST['date']:
-            print "\n\ndateclick event date: %s\n" % request.POST['date']
+            print ("\n\ndateclick event date: %s\n" % request.POST['date'])
             #~ print Booking.objects.filter(start_date__contains(request.POST['date']))
             datelist = Booking.objects.filter(start_date__startswith=request.POST['date'],taken=False)
             #~ print datelist
@@ -84,9 +84,9 @@ def makespaceavailable(request):
         
         # create a form instance and populate it with data from the request:
         form = Space_available_form(request.POST)
-        print form
+        print (form)
         
-        print "nummer: %s\nstart: %s\nStop: %s\n"%(form.space, form.start_date, form.stop_date)
+        print ("nummer: %s\nstart: %s\nStop: %s\n"%(form.space, form.start_date, form.stop_date))
         
     
     return redirect('/calender')
