@@ -79,7 +79,6 @@ def grab_parkingspace(request):
         
         
 def makespaceavailable(request):
-    ## TODO, form hantering
     if request.method == 'POST':
         spaces = list(Parking_space.objects.values_list('number',flat=True).filter(owner=request.user.id))
         
@@ -91,3 +90,4 @@ def makespaceavailable(request):
         
     
     return redirect('/calender')
+

@@ -2,28 +2,40 @@
 
 {% load staticfiles %}
 
-<html>
+<!DOCTYPE html>
 
-  <head>
-    {% include 'meta/Meta.html' %}
-    <title>Kombo</title>
-  </head>
+<head>
+<!--
+  <link rel="stylesheet"  href="{% static 'css/main/dev/sticky-footer.css' %}" />
+-->
+{% include 'kombo_parking/header.html' %}
+  {% include 'meta/Meta.html' %}
+  
+</head>
 
-  <body>
-    {% if not user.is_authenticated %}
-      <div class="Logreg">
-        {% include 'account/Index_screen.html' %}
-      </div>
-    {% elif user.is_authenticated %}
-      <div class="Authenticated">
-        <h1>Post-login goes here</h1>
-      </div>
-    {% endif %}
+<body>
+    {% if user.is_authenticated %}
 
-    <!--/static files-->
-      <!--Bootstrap-->
-        {% include 'assets/bootstrap/Bootstrap.html' %}
-    <!--/static files-->
-  </body>
+  <div class="Authenticated">
+    {% include 'main/navbar.html' %}
+    {% include 'main/body.html' %}
+    
+    </div>
+    
+  
+  {% else %}
+  <div class="Logreg">
+    {% include 'account/Index_screen.html' %}
+  </div>
+
+  {% endif %}
+
+  <!--/static files-->
+  <!--Bootstrap-->
+  <!--/static files-->
+
+
+</body>
+
 
 </html>

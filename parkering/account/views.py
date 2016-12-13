@@ -1,4 +1,4 @@
-# password email reset base: 
+# password email reset base:
 #   http://code.runnable.com/UqMu5Wsrl3YsAAfX/using-django-s-built-in-views-for-password-reset-for-python
 
 
@@ -87,7 +87,7 @@ def Register_account(request):
     Repeat_password = request.POST.get('Repeat_password', '')
 
     if request.user.is_authenticated():
-        return redirect('/test') # TODO: redirect to post-login page
+        return redirect('/') # TODO: redirect to post-login page
     else:
         if not User.objects.filter(username=Username).exists() and Username != "":
             user = User(username=Username)
@@ -107,7 +107,7 @@ def Register_account(request):
             user = auth.authenticate(username = Username, password = Password)
             if user:
                 auth.login(request, user)
-                return redirect('/test') # TODO: redirect to post-login page
+                return redirect('/') # TODO: redirect to post-login page
             else:
                 return redirect('/') # TODO: render error page
         else:
@@ -121,7 +121,7 @@ def Login_check(request):
     user = auth.authenticate(username = Username, password = Password)
     if user:
         auth.login(request, user)
-        return redirect('/test') # TODO: redirect to post-login page
+        return redirect('/') # TODO: redirect to post-login page
     else:
         return redirect('/login') # TODO: render login error page
 

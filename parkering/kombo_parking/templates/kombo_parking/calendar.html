@@ -1,8 +1,8 @@
-{% include "kombo_parking/header.html" %}
-
 <div id="calendar"></div>
 
 <script>
+    $(document).ready(function () {
+
     function getCookie(name) {
         var cookieValue = null;
         if (document.cookie && document.cookie != '') {
@@ -19,6 +19,27 @@
         return cookieValue;
     }
     var csrftoken = getCookie('csrftoken');
+    $('#calendar').fullCalendar({
+        header: {
+            left: 'month,agendaWeek,agendaDay',
+            center: 'title',
+            right:  'today prev,next,prevYear,nextYear'
+        },
+        dayClick: function(date, jsEvent, view) {
+             $.ajax({
+                type: "POST",
+                url: "/calendar/",
+                data: {
+                    'date': date.format(),
+                    'csrfmiddlewaretoken': csrftoken,
+                },
+                success: function(newData) {
+                    $('#modalArea').html(newData);
+                    $('#calendarmodal').modal('show');
+                }
+           })
+        }        
+    });
 
     $('#calendar').fullCalendar({
         header: {
@@ -26,7 +47,7 @@
             center: 'title',
             right:  'today prev,next,prevYear,nextYear'
         },
-        events: {{ list|safe }},
+        //~ events: {{ list|safe }},
         dayClick: function(date, jsEvent, view) {
              $.ajax({
                 type: "POST",
@@ -57,9 +78,10 @@
         //~ }
         
     });
+});
 </script>
 
 <div id="modalArea">
     
 </div>
-{% include "kombo_parking/footer.html" %}
+
