@@ -20,6 +20,7 @@
         <a href="{% url 'account:Index_screen' %}" class="btn btn-success green" role="button">Return</a>
         <input id="submit_button" class="btn btn-success green" type="submit" value="Log in">
         <!-- display error messages -->
+        {{ LogForm.password.errors }}
         {% include 'account/error/Error_messages.html' %}
       </form>
     </div>
@@ -29,5 +30,4 @@
         {% include 'assets/bootstrap/Bootstrap.html' %}
     <!--/static files-->
   </body>
-
 </html>

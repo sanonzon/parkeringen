@@ -16,7 +16,7 @@ class UserDataForm(forms.ModelForm):
         widgets = { 
             'phone_number': forms.TextInput(attrs={'placeholder': 'Phone number'}),
             'apartment': forms.TextInput(attrs={'placeholder': 'Apartment number'}),
-         }
+        }
 
 
 # dynamic loginform

@@ -211,7 +211,7 @@ class Login:
     def Login_check(request):
         errorMessages.clear()
 
-        context = { 'LogForm': LoginForm, 'ErrorMessages': errorMessages }
+        #~ context = { 'LogForm': LogForm, 'ErrorMessages': errorMessages }
 
         if request.method == 'POST':
             LogForm = LoginForm(request.POST)
@@ -223,16 +223,16 @@ class Login:
                 if user:
                     auth.login(request, user)
                     return redirect('/test') # TODO: redirect to post-login page
-                else:
-                    # if incorrect details
-                    errorMessages.append(unexpected)
-                    return render(request, login, context)
+                #~ else:
+                    #~ # if incorrect details
+                    #~ errorMessages.append(unexpected)
+                    #~ return render(request, login, context)
         else:
             LogForm = LoginForm()
 
         # if invalid form
         errorMessages.append(incorrectDetails)
-        return render(request, login, context)
+        return render(request, login, { 'LogForm': LogForm, 'ErrorMessages': errorMessages })
     
 
 # class for handling logout functionality
