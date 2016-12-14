@@ -81,6 +81,7 @@ class Register:
         register_form = RegisterForm(request.POST or None)
         
         if request.POST and register_form.is_valid():
+            username = register_form.cleaned_data['username']
             password = register_form.cleaned_data['password']
             email = register_form.cleaned_data['email']
             first_name = register_form.cleaned_data['first_name']
@@ -155,18 +156,25 @@ class ForgotPassword:
     # Render forgot password screen
     # remove if no longer required
     def Forgot_password_screen(request):
-        context = {'form': PasswordResetRequestForm}
+        context = {'ResetForm': PasswordResetRequestForm}
         return render(request, forgot_password, context)
 
     # reset password view using django built in functionality
     def Reset(request):
+        if request.POST:
+            reset_form = PasswordResetRequestForm(request.POST)
+            
+            if not reset_form.is_valid():
+                return render(request, forgot_password, {'ResetForm': reset_form})
+                
         # Wrap the built-in password reset view and pass it the arguments
         # like the template name, email template name, subject template name
         # and the url to redirect after the password reset is initiated.
         return password_reset(request, template_name='account/Password_reset_screen.html',
             email_template_name='account/Password_reset_email.html',
             subject_template_name='account/Password_reset_subject.txt',
-            post_reset_redirect='/login')
+            post_reset_redirect='/login',
+            extra_context={'ResetForm': PasswordResetRequestForm})
 
     # display reset confirm view using django built in functionality
     # This view handles password reset confirmation links. See urls.py file for the mapping.
@@ -174,4 +182,5 @@ class ForgotPassword:
         # Wrap the built-in reset confirmation view and pass to it all the captured parameters like uidb64, token
         # and template name, url to redirect after password reset is confirmed.
         return password_reset_confirm(request, template_name='account/Password_reset_confirm.html',
-            uidb64=uidb64, token=token, post_reset_redirect='/login')
+            uidb64=uidb64, token=token, post_reset_redirect='/login',
+            extra_context={'ResetForm': PasswordResetRequestForm})

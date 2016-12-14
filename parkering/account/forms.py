@@ -7,6 +7,8 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.validators import RegexValidator
 
+minimum_password_length = 8
+
 # dynamic loginform
 class LoginForm(forms.Form):
     username = forms.CharField(
@@ -97,11 +99,11 @@ class RegisterForm(forms.Form):
         widget=forms.EmailInput(attrs={'placeholder': 'E-mail address'}))
 
     password = forms.CharField(
-        min_length=8,
+        min_length=minimum_password_length,
         widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
 
     password_repeat = forms.CharField(
-        min_length=8,
+        min_length=minimum_password_length,
         widget=forms.PasswordInput(attrs={'placeholder': 'Repeat password'}))
 
     phone_number = forms.CharField(
@@ -144,11 +146,17 @@ class RegisterForm(forms.Form):
 # used for forgot password email view
 # remove if no longer required
 class PasswordResetRequestForm(forms.Form):
-    email_address = forms.CharField(
-        label=(""), 
-        widget=forms.TextInput(attrs={'placeholder': 'Email-address'}),
-         max_length=254)
+    email = forms.CharField(
+        widget=forms.EmailInput(attrs={'placeholder': 'E-mail adress'}),
+        max_length=254)
 
+    def clean_email(self):
+        cleaned_email = self.cleaned_data['email']
+        
+        if not User.objects.filter(email=cleaned_email).exists():
+            raise forms.ValidationError(u"No user related to this e-mail adress found.")
+            
+        return cleaned_email
 
 # used for forgot password email link view
 # remove if no longer required
@@ -156,8 +164,11 @@ class PasswordChangeForm(forms.Form):
     password = forms.CharField(
         label=(""), 
         widget=forms.TextInput(attrs={'placeholder': 'Password'}),
-         max_length=254),
+        max_length=254,
+        min_length=minimum_password_length)
+         
     repeat_password = forms.CharField(
         label=(""), 
         widget=forms.TextInput(attrs={'placeholder': 'Repeat password'}),
-         max_length=254)
+        max_length=254,
+        min_length=minimum_password_length)
