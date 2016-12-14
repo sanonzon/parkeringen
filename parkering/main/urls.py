@@ -8,6 +8,8 @@ urlpatterns = [
 	# display index view
     url(r'^$', views.Let_there_be_light, name='Render_all'),
 
+    url(r'^$', views.Showfullname, name='Showfullname'),
+
     # display test view
     url(r'^test$', views.Test, name='Test'),
 ]

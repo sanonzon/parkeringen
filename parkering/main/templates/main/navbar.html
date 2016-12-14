@@ -19,8 +19,9 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 
-  <!-- Modal Test-->
 
+  <!-- Modal Test-->
+  
   <div id="myModal" class="modal fade">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -31,14 +32,13 @@
         <div class="modal-body">
 
           <div class="form-group has-feedback">
-          <label class="control-label">Parking Space</label>
-            <input type="text" class="form-control" placeholder="Parking Space" />
+            <input type="text" class="form-control" placeholder="{% url 'main:Showfullname' %}{{fullname}}" readonly />
             <i class="glyphicons glyphicons-car form-control-feedback"></i>
           </div>
 
           <div class="form-group has-feedback">
-          <label class="control-label">User</label>
-            <input type="text" class="form-control" placeholder="User" />
+          <label class="control-label">Parking Space</label>
+            <input type="text" class="form-control" placeholder="Parking Space" />
             <i class="glyphicons glyphicons-car form-control-feedback"></i>
           </div>
 
@@ -56,7 +56,6 @@
       </div>
     </div>
   </div>
-
   <!--/static files-->
   <!--Bootstrap-->
   {% include 'assets/bootstrap/Bootstrap.html' %}
