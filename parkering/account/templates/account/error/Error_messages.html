@@ -1,24 +1,30 @@
 {% for error in ErrorMessages %}
-
 	{% if error == 'IncorrectDetails' %}
 		<p>Incorrect login details, please try again</p>
 	{% endif %}
-
 	{% if error == 'InvalidForm' %}
-		<p>Your registration details are not valid, please check your input and try again.</p>
+		<p>Your details are not valid, please check your input and try again.</p>
 	{% endif %}
-
 	{% if error == 'UserExists' %}
 		<p>A user with this username already exists, please try another one.</p>
 	{% endif %}
-
 	{% if error == 'PasswordMismatch' %}
 		<p>The passwords did not match, please try again.</p>
 	{% endif %}
-
 	{% if error == 'Unexpected' %}
 		<p>An unexpected error occured, restart your browser and try again.</p>
 		<p>If the problem persists please contact your system administrator</p>
 	{% endif %}
-
+	{% if error == 'InvalidNumber' %}
+		<p>The specified apartment number cannot be used, please contact your site administrator to resolve this issue.</p>
+	{% endif %}
+	{% if error == 'NumberInUse' %}
+		<p>This apartment number is already in use, if you feel this is incorrect please contact your system administrator.</p>
+	{% endif %}
+	{% if error == 'UsernameLength' %}
+		<p>Username may not be less than 3 letters or numbers.</p>
+	{% endif %}
+	{% if error == 'PasswordLength' %}
+		<p>Password may not be less than 4 letters or numbers.</p>
+	{% endif %}
 {% endfor %}
