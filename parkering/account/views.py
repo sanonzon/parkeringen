@@ -51,7 +51,7 @@ class AccountManagement:
 
     @login_required(login_url='/not_authorized')
     def UpdatePass_screen(request):
-        context = {'ChangePass': ChangePassword}
+        context = {'ChangePass': ChangePassword(request.user)}
         return render(request, updatePass, context)
 
     @login_required(login_url='/not_authorized')
@@ -67,63 +67,24 @@ class AccountManagement:
     # Update user password and update page
     @login_required(login_url='/not_authorized')
     def Update_password(request):
+        context = {'ChangePass': ChangePassword(request.user)}
 
         if request.POST:
-            ChangePasswordForm = ChangePassword(request.POST)
-            context = {'ChangePass': ChangePassword, 'ErrorMessages': errorMessages}
+            change_password_form = ChangePassword(request.user, request.POST)
 
-            ### Validation ###
-
-            # true if errors
-            error = False
-
-            # raw form data
-            current_password = ChangePasswordForm.data['current_password']
-            new_password = ChangePasswordForm.data['password']
-            repeat_password = ChangePasswordForm.data['repeat_password']
-
-            # check if password do not match
-            if new_password != repeat_password:
-                error = True
-                errorMessages.append(passwordMismatch)
-
-            # check if valid password
-            password_valid = request.user.check_password(current_password)
-            if not password_valid:
-                error = True
-                errorMessages.append(incorrectPassword)
-
-            # password minimum length
-            if len(new_password) < 4:
-                error = True
-                errorMessages.append(passwordLength)
-            
-            # re-render page with all the appended errors
-            if error:
-                return render(request, updatePass, context)
-            else:
-                pass
-
-            ### End Validation ###
-
-            if ChangePasswordForm.is_valid():
-                current_password = ChangePasswordForm.cleaned_data['current_password']
-                new_password = ChangePasswordForm.cleaned_data['password']
-                repeat_password = ChangePasswordForm.cleaned_data['repeat_password']
+            if change_password_form.is_valid():
+                current_password = change_password_form.cleaned_data['current_password']
+                new_password = change_password_form.cleaned_data['password']
+                repeat_password = change_password_form.cleaned_data['repeat_password']
 
                 request.user.set_password(new_password)
                 request.user.save()
                 logout(request)
-                return redirect('/login')          
+                return redirect('/login')
+            else:
+                context['ChangePass'] = change_password_form
 
-            # unexpected
-            errorMessages.append(unexpected)
-            return render(request, updatePass, context)
-
-        else:
-            ChangePasswordForm = ChangePassword()
-            context = {'ChangePass': ChangePassword, 'ErrorMessages': errorMessages}
-            return render(request, updatePass, context)
+        return render(request, updatePass, context)
 
     # Update user password and update page
     @login_required(login_url='/not_authorized')
@@ -132,12 +93,13 @@ class AccountManagement:
         context = {'ChangeDetails': ChangeDetails}
 
         if request.POST:
-            ChangeDetailsForm = ChangeDetails(request.POST)
-            if ChangeDetailsForm.is_valid():
-                first_name = ChangeDetailsForm.cleaned_data['first_name']
-                last_name = ChangeDetailsForm.cleaned_data['last_name']
-                email = ChangeDetailsForm.cleaned_data['email']
-                phone_number = ChangeDetailsForm.cleaned_data['phone_number']
+            change_details_form = ChangeDetails(request.POST)
+            
+            if change_details_form.is_valid():
+                first_name = change_details_form.cleaned_data['first_name']
+                last_name = change_details_form.cleaned_data['last_name']
+                email = change_details_form.cleaned_data['email']
+                phone_number = change_details_form.cleaned_data['phone_number']
                 user = User.objects.get(username=request.user.username)
                 user_data = User_data.objects.get(user=user)
 
@@ -155,9 +117,9 @@ class AccountManagement:
 
                 return redirect('/update_details')
             else:
-                return redirect('/update_details')
-        else:
-            return render(request, updateDetails, context)
+                context['ChangeDetails'] = change_details_form
+
+        return render(request, updateDetails, context)
 
 
 # class for handling register functionality

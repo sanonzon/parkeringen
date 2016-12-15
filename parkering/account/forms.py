@@ -101,16 +101,60 @@ class RegisterForm(forms.Form):
         return cleaned_apartment
 
 class ChangePassword(forms.Form):
-    current_password = forms.CharField(label=(""), widget=forms.PasswordInput(attrs={'placeholder': 'Current password'}))
-    password = forms.CharField(label=(""), widget=forms.PasswordInput(attrs={'placeholder': 'New password'}))
-    repeat_password = forms.CharField(label=(""), widget=forms.PasswordInput(attrs={'placeholder': 'Repeat password'}))
+    current_password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'placeholder': 'Current password'}))
+    
+    password = forms.CharField(
+        min_length=minimum_password_length,
+        widget=forms.PasswordInput(attrs={'placeholder': 'New password'}))
+        
+    repeat_password = forms.CharField(
+        min_length=minimum_password_length,
+        widget=forms.PasswordInput(attrs={'placeholder': 'Repeat password'}))
 
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super(ChangePassword, self).__init__(*args, **kwargs)
+        
+    def clean_current_password(self):
+        cleaned_username = self.user.username
+        cleaned_password = self.cleaned_data['current_password']
+
+        user = auth.authenticate(username = cleaned_username, password = cleaned_password)
+        
+        if user is None:
+            raise forms.ValidationError(u"Incorrect login, please try again.")
+
+        return cleaned_password
+
+    def clean_password_repeat(self):
+        #Check if the password was repeated, and if the repeated password is a match.
+        cleaned_password = self.cleaned_data.get('password')
+        cleaned_repeat_password = self.cleaned_data['repeat_password']
+
+        if not cleaned_repeat_password:
+            raise forms.ValidationError(u"Please repeat the password.")
+        if cleaned_password != cleaned_repeat_password:
+            raise forms.ValidationError(u"The passwords do not match.")
+            
+        return cleaned_repeat_password
 
 class ChangeDetails(forms.Form):
-    email = forms.EmailField(label=(""), widget=forms.TextInput(attrs={'placeholder': 'Email address'}))
-    first_name = forms.CharField(label=(""), widget=forms.TextInput(attrs={'placeholder': 'First name'}))
-    last_name = forms.CharField(label=(""), widget=forms.TextInput(attrs={'placeholder': 'Last name'}))
-    phone_number = forms.CharField(label=(""), widget=forms.TextInput(attrs={'placeholder': 'Phone number'}))
+    
+    phone_number_validator = RegexValidator(r'^(\+[0-9]{4}|0?[0-9]{3})(\ |\-)?([0-9]{1,2})(\ |\-)?([0-9]{1,2})(\ |\-)?([0-9]{1,3})$', 'The phone number entered is not valid.')
+    
+    email = forms.CharField(
+        widget=forms.EmailInput(attrs={'placeholder': 'E-mail address'}))
+        
+    first_name = forms.CharField(
+        widget=forms.TextInput(attrs={'placeholder': 'First name'}))
+    
+    last_name = forms.CharField(
+        widget=forms.TextInput(attrs={'placeholder': 'Last name'}))
+    
+    phone_number = forms.CharField(
+        validators=[phone_number_validator],
+        widget=forms.TextInput(attrs={'placeholder': 'Phone number'}))
 
     # extra validation through django native
     def __init__(self, *args, **kwargs):
