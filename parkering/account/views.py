@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import auth
 from account.models import User_data, Apartment_number
-from account.forms import LoginForm, PasswordResetRequestForm, RegisterForm
+from account.forms import LoginForm, PasswordResetRequestForm, RegisterForm, PasswordChangeForm
 from django.contrib.auth import logout
 from django.core.mail import EmailMessage
 from django.contrib.auth.views import password_reset, password_reset_confirm
@@ -19,9 +19,8 @@ login = 'account/Login_screen.html'
 register = 'account/Register_screen.html'
 account_management = 'account/Account_screen.html'
 forgot_password = 'account/Password_reset_screen.html'
-
-# currently not used
 password_confirm = 'account/Password_reset_confirm.html'
+
 # error
 authentication_error = 'account/error/Not_authorized.html'
 # development only
@@ -170,7 +169,7 @@ class ForgotPassword:
         # Wrap the built-in password reset view and pass it the arguments
         # like the template name, email template name, subject template name
         # and the url to redirect after the password reset is initiated.
-        return password_reset(request, template_name='account/Password_reset_screen.html',
+        return password_reset(request, template_name=forgot_password,
             email_template_name='account/Password_reset_email.html',
             subject_template_name='account/Password_reset_subject.txt',
             post_reset_redirect='/login',
@@ -181,6 +180,6 @@ class ForgotPassword:
     def Reset_confirm(request, uidb64=None, token=None):
         # Wrap the built-in reset confirmation view and pass to it all the captured parameters like uidb64, token
         # and template name, url to redirect after password reset is confirmed.
-        return password_reset_confirm(request, template_name='account/Password_reset_confirm.html',
+        return password_reset_confirm(request, template_name=password_confirm,
             uidb64=uidb64, token=token, post_reset_redirect='/login',
-            extra_context={'ResetForm': PasswordResetRequestForm})
+            set_password_form=PasswordChangeForm)

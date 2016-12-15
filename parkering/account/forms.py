@@ -4,7 +4,7 @@ from django.forms import ModelForm
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.core.exceptions import ValidationError
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, SetPasswordForm
 from django.core.validators import RegexValidator
 
 minimum_password_length = 8
@@ -162,13 +162,34 @@ class PasswordResetRequestForm(forms.Form):
 # remove if no longer required
 class PasswordChangeForm(forms.Form):
     password = forms.CharField(
-        label=(""), 
-        widget=forms.TextInput(attrs={'placeholder': 'Password'}),
+        widget=forms.PasswordInput(attrs={'placeholder': 'Password'}),
         max_length=254,
         min_length=minimum_password_length)
          
-    repeat_password = forms.CharField(
-        label=(""), 
-        widget=forms.TextInput(attrs={'placeholder': 'Repeat password'}),
+    password_repeat = forms.CharField(
+        widget=forms.PasswordInput(attrs={'placeholder': 'Repeat password'}),
         max_length=254,
         min_length=minimum_password_length)
+        
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super(PasswordChangeForm, self).__init__(*args, **kwargs)
+        
+    def clean_password_repeat(self):
+        #Check if the password was repeated, and if the repeated password is a match.
+        cleaned_password = self.cleaned_data.get('password')
+        cleaned_password_repeat = self.cleaned_data['password_repeat']
+
+        if not cleaned_password_repeat:
+            raise forms.ValidationError(u"Please repeat the password.")
+        if cleaned_password != cleaned_password_repeat:
+            raise forms.ValidationError(u"The passwords do not match.")
+            
+        return cleaned_password_repeat
+
+    def save(self, commit=True):
+        password = self.cleaned_data["password"]
+        self.user.set_password(password)
+        if commit:
+            self.user.save()
+        return self.user
