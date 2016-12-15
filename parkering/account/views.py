@@ -7,11 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import auth
 from account.models import User_data, Apartment_number
-<<<<<<< HEAD
-from account.forms import UserDataForm, LoginForm, PasswordResetRequestForm, RegisterForm, ChangePassword, ChangeDetails
-=======
-from account.forms import LoginForm, PasswordResetRequestForm, RegisterForm
->>>>>>> origin/account
+from account.forms import LoginForm, PasswordResetRequestForm, RegisterForm, ChangePassword, ChangeDetails
 from django.contrib.auth import logout
 from django.core.mail import EmailMessage
 from django.contrib.auth.views import password_reset, password_reset_confirm
