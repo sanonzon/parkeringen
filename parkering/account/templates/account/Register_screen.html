@@ -13,24 +13,34 @@
       {% csrf_token %}
         <!--Username:<br>-->
         {{ RegForm.username }}<br>
+        {{ RegForm.username.errors }}<br>
         <!--E-mail address:<br>-->
         {{ RegForm.email }}<br>
+        {{ RegForm.email.errors }}<br>
         <!--First name:<br>-->
         {{ RegForm.first_name }}<br>
+        {{ RegForm.first_name.errors }}<br>
         <!--Last name:<br>-->
         {{ RegForm.last_name }}<br>
+        {{ RegForm.last_name.errors }}<br>
         <!--Phone number:<br>-->
-        {{ DataForm.phone_number }}<br>
+        {{ RegForm.phone_number }}<br>
+        {{ RegForm.phone_number.errors }}<br>
         <!--Apartment number:<br>-->
-        {{ DataForm.apartment }}<br>
+        {{ RegForm.apartment }}<br>
+        {{ RegForm.apartment.errors }}<br>
         <!--Password:<br>-->
         {{ RegForm.password }}<br>
+        {{ RegForm.password.errors }}<br>
         <!--Repeat password:<br>-->
+        {{ RegForm.password_repeat }}<br>
+        {{ RegForm.password_repeat.errors }}<br>
+<!--
         <input type="password" placeholder="Repeat password" name="Repeat_password"><br>
+-->
         <a href="{% url 'account:Index_screen' %}" class="btn btn-success green" role="button">Return</a>
         <input id="submit_button" class="btn btn-success green" type="submit" value="Register">
         <!--display error messages-->
-        {% include 'account/error/Error_messages.html' %}
       </form>
     </div>
 

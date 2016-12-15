@@ -7,7 +7,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import auth
 from account.models import User_data, Apartment_number
+<<<<<<< HEAD
 from account.forms import UserDataForm, LoginForm, PasswordResetRequestForm, RegisterForm, ChangePassword, ChangeDetails
+=======
+from account.forms import LoginForm, PasswordResetRequestForm, RegisterForm
+>>>>>>> origin/account
 from django.contrib.auth import logout
 from django.core.mail import EmailMessage
 from django.contrib.auth.views import password_reset, password_reset_confirm
@@ -28,40 +32,6 @@ password_confirm = 'account/Password_reset_confirm.html'
 authentication_error = 'account/error/Not_authorized.html'
 # development only
 devtest = 'dev/test.html'
-
-### error messages ###
-
-# list of error messages, empty if no errors
-# always add errorMessages.clear() on initial use
-# to avoid old errors being displayed
-errorMessages = list()
-
-# incorrect login details
-incorrectDetails = "IncorrectDetails"
-# incorrect password
-incorrectPassword = "IncorrectPassword"
-# user exists
-userExists = "UserExists"
-# password exists
-passwordMismatch = "PasswordMismatch"
-# invalid registerForm
-invalidForm = "InvalidForm"
-# invalid apartment number
-invalidNumber = "InvalidNumber"
-# apartment number already in use
-numberInUse = "NumberInUse"
-# digits only
-digitOnly = "IsDigit"
-# short username
-phoneLength = "PhoneLength"
-# short username
-usernameLength = "UsernameLength"
-# short password
-passwordLength = "PasswordLength"
-# unexpected error
-unexpected = "Unexpected"
-
-### End error messages ###
 
 # class for handling index page functionality
 class Index:
@@ -102,7 +72,6 @@ class AccountManagement:
     # Update user password and update page
     @login_required(login_url='/not_authorized')
     def Update_password(request):
-        errorMessages.clear()
 
         if request.POST:
             ChangePasswordForm = ChangePassword(request.POST)
@@ -200,87 +169,22 @@ class AccountManagement:
 class Register:
     # Render register screen
     def Register_screen(request):
-        errorMessages.clear()
-
-        context = {'DataForm': UserDataForm,'RegForm': RegisterForm, 'ErrorMessages': errorMessages }
+        
+        context = { 'RegForm': RegisterForm }
         return render(request, register, context)
 
     # Create new user
     def Register_account(request):
-        errorMessages.clear()
-
-        RegForm = RegisterForm(request.POST or None)
-        DataForm = UserDataForm(request.POST or None)
-        context = {'DataForm': UserDataForm,'RegForm': RegisterForm, 'ErrorMessages': errorMessages }
-
-        ### Validation ###
-
-        # true if errors
-        error = False
-
-        # form raw data for validation
-        username = RegForm.data['username']
-        password = RegForm.data['password']
-        apartment_number = DataForm.data['apartment']
-        phone_number = DataForm.data['phone_number']
-        repeat_password = request.POST.get('Repeat_password', '')
-
-        # check if username already exists and is not empty
-        if User.objects.filter(username=username).exists():
-            error = True
-            errorMessages.append(userExists)
-
-        # username minimum length
-        if len(username) < 3:
-            error = True
-            errorMessages.append(usernameLength)
-
-        # password minimum length
-        if len(password) < 4:
-            error = True
-            errorMessages.append(passwordLength)
-
-        # check if provided passwords match
-        if password != repeat_password:
-            error = True
-            errorMessages.append(passwordMismatch)
-
-        # check that the number is not currently in use
-        if User_data.objects.filter(apartment=apartment_number).exists():
-            error = True
-            errorMessages.append(numberInUse)
-
-        # check that the provided apartment exist in Apartment_number
-        if not Apartment_number.objects.filter(apartment_number=apartment_number).exists():
-            error = True
-            errorMessages.append(invalidNumber)
-
-        # if phone number is numbers only
-        if phone_number.isdigit():
-            error = True
-            errorMessages.append(digitOnly)
-
-        # phone number length
-        if len(phone_number).strip('\n') < 6:
-            error = True
-            errorMessages.append(phoneLength)
-
-        # re-render page with all the appended errors
-        if error:
-            return render(request, register, context)
-        else:
-            pass
-
-        ### End Validation ###
-
-        if request.POST and RegForm.is_valid() and DataForm.is_valid():
-            password = RegForm.cleaned_data['password']
-            email = RegForm.cleaned_data['email']
-            first_name = RegForm.cleaned_data['first_name']
-            last_name = RegForm.cleaned_data['last_name']
-            phone_number = DataForm.cleaned_data['phone_number']
-            apartment = DataForm.cleaned_data['apartment']
-            repeat_password = request.POST.get('Repeat_password', '')
+        register_form = RegisterForm(request.POST or None)
+        
+        if request.POST and register_form.is_valid():
+            username = register_form.cleaned_data['username']
+            password = register_form.cleaned_data['password']
+            email = register_form.cleaned_data['email']
+            first_name = register_form.cleaned_data['first_name']
+            last_name = register_form.cleaned_data['last_name']
+            phone_number = register_form.cleaned_data['phone_number']
+            apartment = register_form.cleaned_data['apartment']
 
             if request.user.is_authenticated():
                 return redirect('/test') # TODO: redirect to post-login page
@@ -292,37 +196,31 @@ class Register:
                 user.set_password(password)
                 user.is_active = True
                 user.save()
+                
                 User_Data = User_data(user=user)
                 User_Data.phone_number = phone_number
                 User_Data.apartment = apartment
                 User_Data.save()
+                
                 user = auth.authenticate(username = username, password = password)
+                
                 if user:
                     auth.login(request, user)
                     return redirect('/test') # TODO: redirect to post-login page
-                else:
-                    errorMessages.append(unexpected)
-                    return render(request, register, context)
 
-        # error messages to display
-        errorMessages.append(invalidForm)
-        return render(request, register, context)
+        return render(request, register, { 'RegForm': register_form })
 
 
 # class for handling login functionality
 class Login:
     # Render login screen
     def Login_screen(request):
-        errorMessages.clear()
 
-        context = {'LogForm': LoginForm, 'ErrorMessages': errorMessages }
+        context = {'LogForm': LoginForm }
         return render(request, login, context)
 
     # Log in for registered users
     def Login_check(request):
-        errorMessages.clear()
-
-        context = { 'LogForm': LoginForm, 'ErrorMessages': errorMessages }
 
         if request.method == 'POST':
             LogForm = LoginForm(request.POST)
@@ -334,16 +232,12 @@ class Login:
                 if user:
                     auth.login(request, user)
                     return redirect('/test') # TODO: redirect to post-login page
-                else:
-                    # if incorrect details
-                    errorMessages.append(unexpected)
-                    return render(request, login, context)
+                    
         else:
             LogForm = LoginForm()
 
         # if invalid form
-        errorMessages.append(incorrectDetails)
-        return render(request, login, context)
+        return render(request, login, { 'LogForm': LogForm })
     
 
 # class for handling logout functionality
@@ -359,11 +253,17 @@ class ForgotPassword:
     # Render forgot password screen
     # remove if no longer required
     def Forgot_password_screen(request):
-        context = {'form': PasswordResetRequestForm}
+        context = {'ResetForm': PasswordResetRequestForm}
         return render(request, forgot_password, context)
 
     # reset password view using django built in functionality
     def Reset(request):
+        if request.POST:
+            reset_form = PasswordResetRequestForm(request.POST)
+            
+            if not reset_form.is_valid():
+                return render(request, forgot_password, {'ResetForm': reset_form})
+                
         # Wrap the built-in password reset view and pass it the arguments
         # like the template name, email template name, subject template name
         # and the url to redirect after the password reset is initiated.
@@ -371,7 +271,8 @@ class ForgotPassword:
         return password_reset(request, template_name='account/Password_reset_screen.html',
             email_template_name='account/Password_reset_email.html',
             subject_template_name='account/Password_reset_subject.txt',
-            post_reset_redirect='/login')
+            post_reset_redirect='/login',
+            extra_context={'ResetForm': PasswordResetRequestForm})
 
     # display reset confirm view using django built in functionality
     # This view handles password reset confirmation links. See urls.py file for the mapping.
@@ -379,4 +280,5 @@ class ForgotPassword:
         # Wrap the built-in reset confirmation view and pass to it all the captured parameters like uidb64, token
         # and template name, url to redirect after password reset is confirmed.
         return password_reset_confirm(request, template_name='account/Password_reset_confirm.html',
-            uidb64=uidb64, token=token, post_reset_redirect='/login')
+            uidb64=uidb64, token=token, post_reset_redirect='/login',
+            extra_context={'ResetForm': PasswordResetRequestForm})
