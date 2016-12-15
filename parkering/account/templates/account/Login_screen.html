@@ -11,6 +11,7 @@
 
   <body>
     <div class="Login">
+      <h3>Log in to your account</h3>
       <form action="{% url 'account:Login_check' %}" method="post" enctype='multipart/form-data'> 
       {% csrf_token %}
         <!--Username:<br>-->
@@ -22,6 +23,8 @@
         <!-- display error messages -->
         {{ LogForm.password.errors }}
       </form>
+      <a href="{% url 'account:Register_screen' %}">Don't have an account?</a><br>
+      <a href="{% url 'account:reset' %}">Forgot your password?</a>
     </div>
 
     <!--/static files-->

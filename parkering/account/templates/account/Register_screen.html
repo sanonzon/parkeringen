@@ -9,6 +9,7 @@
 
   <body>
     <div class="Register">
+      <h3>Register an account</h3>
       <form action="{% url 'account:Register_account' %}" method="post" enctype='multipart/form-data'> 
       {% csrf_token %}
         <!--Username:<br>-->
@@ -42,6 +43,7 @@
         <input id="submit_button" class="btn btn-success green" type="submit" value="Register">
         <!--display error messages-->
       </form>
+      <a href="{% url 'account:Login_screen' %}">Already have an account?</a>
     </div>
 
     <!--/static files-->

@@ -123,7 +123,7 @@ class ChangePassword(forms.Form):
         user = auth.authenticate(username = cleaned_username, password = cleaned_password)
         
         if user is None:
-            raise forms.ValidationError(u"Incorrect login, please try again.")
+            raise forms.ValidationError(u"Incorrect password, please try again.")
 
         return cleaned_password
 
