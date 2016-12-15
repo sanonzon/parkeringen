@@ -66,6 +66,26 @@ class RegisterForm(forms.ModelForm):
             self.fields[key].required = True
 
 
+class ChangePassword(forms.Form):
+    current_password = forms.CharField(label=(""), widget=forms.PasswordInput(attrs={'placeholder': 'Current password'}))
+    password = forms.CharField(label=(""), widget=forms.PasswordInput(attrs={'placeholder': 'New password'}))
+    repeat_password = forms.CharField(label=(""), widget=forms.PasswordInput(attrs={'placeholder': 'Repeat password'}))
+
+
+class ChangeDetails(forms.Form):
+    email = forms.EmailField(label=(""), widget=forms.TextInput(attrs={'placeholder': 'Email address'}))
+    first_name = forms.CharField(label=(""), widget=forms.TextInput(attrs={'placeholder': 'First name'}))
+    last_name = forms.CharField(label=(""), widget=forms.TextInput(attrs={'placeholder': 'Last name'}))
+    phone_number = forms.CharField(label=(""), widget=forms.TextInput(attrs={'placeholder': 'Phone number'}))
+
+    # extra validation through django native
+    def __init__(self, *args, **kwargs):
+        super(ChangeDetails, self).__init__(*args, **kwargs)
+
+        for key in self.fields:
+            self.fields[key].required = False
+
+
 # used for forgot password email view
 # remove if no longer required
 class PasswordResetRequestForm(forms.Form):

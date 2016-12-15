@@ -22,9 +22,18 @@
 		<p>This apartment number is already in use, if you feel this is incorrect please contact your system administrator.</p>
 	{% endif %}
 	{% if error == 'UsernameLength' %}
-		<p>Username may not be less than 3 letters or numbers.</p>
+		<p>Username may not be less than 3 characters.</p>
 	{% endif %}
 	{% if error == 'PasswordLength' %}
-		<p>Password may not be less than 4 letters or numbers.</p>
+		<p>Password may not be less than 4 characters.</p>
+	{% endif %}
+	{% if error == 'IncorrectPassword' %}
+		<p>Your password is incorrect, try again.</p>
+	{% endif %}
+	{% if error == 'IsDigit' %}
+		<p>only numbers are acceptable as phone number.</p>
+	{% endif %}
+	{% if error == 'PhoneLength' %}
+		<p>Your phone number must be atleast 6 numbers.</p>
 	{% endif %}
 {% endfor %}

@@ -33,8 +33,17 @@ urlpatterns = [
     # display not authorized page
     url(r'^not_authorized$', views.Error.Authorization_failed, name='Authorization_failed'),
 
+    # display update password page
+    url(r'^update_password$', views.AccountManagement.UpdatePass_screen, name='UpdatePass_screen'),
+
     # used for update password function
-    url(r'^update_password$', views.AccountManagement.Update_password, name='Update_password'),
+    url(r'^update_password/update$', views.AccountManagement.Update_password, name='Update_password'),
+
+    # display update password page
+    url(r'^update_details$', views.AccountManagement.UpdateDetails_screen, name='UpdateDetails_screen'),
+
+    # display update password page
+    url(r'^update_details/update$', views.AccountManagement.Update_details, name='Update_details'),
 
     # the built-in password reset view.
     url(r'^reset_password$', views.ForgotPassword.Reset, name='reset'),

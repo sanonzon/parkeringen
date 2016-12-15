@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import auth
 from account.models import User_data, Apartment_number
-from account.forms import UserDataForm, LoginForm, PasswordResetRequestForm, RegisterForm
+from account.forms import UserDataForm, LoginForm, PasswordResetRequestForm, RegisterForm, ChangePassword, ChangeDetails
 from django.contrib.auth import logout
 from django.core.mail import EmailMessage
 from django.contrib.auth.views import password_reset, password_reset_confirm
@@ -18,6 +18,8 @@ index = 'account/Index_screen.html'
 login = 'account/Login_screen.html'
 register = 'account/Register_screen.html'
 account_management = 'account/Account_screen.html'
+updatePass = 'account/Update_password.html'
+updateDetails = 'account/Update_details.html'
 forgot_password = 'account/Password_reset_screen.html'
 
 # currently not used
@@ -30,15 +32,17 @@ devtest = 'dev/test.html'
 ### error messages ###
 
 # list of error messages, empty if no errors
-# always add ErrorMessages.clear() on initial use
+# always add errorMessages.clear() on initial use
 # to avoid old errors being displayed
 errorMessages = list()
 
 # incorrect login details
 incorrectDetails = "IncorrectDetails"
+# incorrect password
+incorrectPassword = "IncorrectPassword"
 # user exists
 userExists = "UserExists"
-# user exists
+# password exists
 passwordMismatch = "PasswordMismatch"
 # invalid registerForm
 invalidForm = "InvalidForm"
@@ -46,6 +50,10 @@ invalidForm = "InvalidForm"
 invalidNumber = "InvalidNumber"
 # apartment number already in use
 numberInUse = "NumberInUse"
+# digits only
+digitOnly = "IsDigit"
+# short username
+phoneLength = "PhoneLength"
 # short username
 usernameLength = "UsernameLength"
 # short password
@@ -76,23 +84,116 @@ class AccountManagement:
     def Account_screen(request):
         return render(request, account_management)
 
+    @login_required(login_url='/not_authorized')
+    def UpdatePass_screen(request):
+        context = {'ChangePass': ChangePassword}
+        return render(request, updatePass, context)
+
+    @login_required(login_url='/not_authorized')
+    def UpdateDetails_screen(request):
+        context = {'ChangeDetails': ChangeDetails}
+        return render(request, updateDetails, context)
+
+    @login_required(login_url='/not_authorized')
+    def Update_details(request):
+        return render(request, account_management)
+
+
     # Update user password and update page
     @login_required(login_url='/not_authorized')
     def Update_password(request):
-        current_password = request.POST.get('Current_password', '')
-        new_password = request.POST.get('New_password', '')
-        repeat_password = request.POST.get('Repeat_password', '')
+        errorMessages.clear()
 
-        password_valid = request.user.check_password(current_password)
-        if password_valid:
-            if new_password == repeat_password:
+        if request.POST:
+            ChangePasswordForm = ChangePassword(request.POST)
+            context = {'ChangePass': ChangePassword, 'ErrorMessages': errorMessages}
+
+            ### Validation ###
+
+            # true if errors
+            error = False
+
+            # raw form data
+            current_password = ChangePasswordForm.data['current_password']
+            new_password = ChangePasswordForm.data['password']
+            repeat_password = ChangePasswordForm.data['repeat_password']
+
+            # check if password do not match
+            if new_password != repeat_password:
+                error = True
+                errorMessages.append(passwordMismatch)
+
+            # check if valid password
+            password_valid = request.user.check_password(current_password)
+            if not password_valid:
+                error = True
+                errorMessages.append(incorrectPassword)
+
+            # password minimum length
+            if len(new_password) < 4:
+                error = True
+                errorMessages.append(passwordLength)
+            
+            # re-render page with all the appended errors
+            if error:
+                return render(request, updatePass, context)
+            else:
+                pass
+
+            ### End Validation ###
+
+            if ChangePasswordForm.is_valid():
+                current_password = ChangePasswordForm.cleaned_data['current_password']
+                new_password = ChangePasswordForm.cleaned_data['password']
+                repeat_password = ChangePasswordForm.cleaned_data['repeat_password']
+
                 request.user.set_password(new_password)
                 request.user.save()
-                return redirect('/logout')
-            else:
-                return render(request, account_management) # TODO: render error
+                logout(request)
+                return redirect('/login')          
+
+            # unexpected
+            errorMessages.append(unexpected)
+            return render(request, updatePass, context)
+
         else:
-            return redirect('/') # TODO: render error page
+            ChangePasswordForm = ChangePassword()
+            context = {'ChangePass': ChangePassword, 'ErrorMessages': errorMessages}
+            return render(request, updatePass, context)
+
+    # Update user password and update page
+    @login_required(login_url='/not_authorized')
+    def Update_details(request):
+
+        context = {'ChangeDetails': ChangeDetails}
+
+        if request.POST:
+            ChangeDetailsForm = ChangeDetails(request.POST)
+            if ChangeDetailsForm.is_valid():
+                first_name = ChangeDetailsForm.cleaned_data['first_name']
+                last_name = ChangeDetailsForm.cleaned_data['last_name']
+                email = ChangeDetailsForm.cleaned_data['email']
+                phone_number = ChangeDetailsForm.cleaned_data['phone_number']
+                user = User.objects.get(username=request.user.username)
+                user_data = User_data.objects.get(user=user)
+
+                if first_name:
+                    user.first_name = first_name
+                if last_name:
+                    user.last_name = last_name
+                if email:
+                    user.email = email
+                user.save()
+
+                if phone_number:
+                    user_data.phone_number = phone_number
+                user_data.save()
+
+                return redirect('/update_details')
+            else:
+                return redirect('/update_details')
+        else:
+            return render(request, updateDetails, context)
 
 
 # class for handling register functionality
@@ -121,6 +222,7 @@ class Register:
         username = RegForm.data['username']
         password = RegForm.data['password']
         apartment_number = DataForm.data['apartment']
+        phone_number = DataForm.data['phone_number']
         repeat_password = request.POST.get('Repeat_password', '')
 
         # check if username already exists and is not empty
@@ -153,6 +255,16 @@ class Register:
             error = True
             errorMessages.append(invalidNumber)
 
+        # if phone number is numbers only
+        if phone_number.isdigit():
+            error = True
+            errorMessages.append(digitOnly)
+
+        # phone number length
+        if len(phone_number).strip('\n') < 6:
+            error = True
+            errorMessages.append(phoneLength)
+
         # re-render page with all the appended errors
         if error:
             return render(request, register, context)
@@ -174,7 +286,6 @@ class Register:
                 return redirect('/test') # TODO: redirect to post-login page
             else:
                 user = User(username=username)
-                User_Data = User_data(user=user)
                 user.email = email
                 user.first_name = first_name
                 user.last_name = last_name
@@ -256,6 +367,7 @@ class ForgotPassword:
         # Wrap the built-in password reset view and pass it the arguments
         # like the template name, email template name, subject template name
         # and the url to redirect after the password reset is initiated.
+
         return password_reset(request, template_name='account/Password_reset_screen.html',
             email_template_name='account/Password_reset_email.html',
             subject_template_name='account/Password_reset_subject.txt',
