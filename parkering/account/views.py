@@ -126,7 +126,6 @@ class AccountManagement:
 class Register:
     # Render register screen
     def Register_screen(request):
-        
         context = { 'RegForm': RegisterForm }
         return render(request, register, context)
 

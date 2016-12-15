@@ -9,17 +9,17 @@ from django.core.validators import RegexValidator
 
 minimum_password_length = 8
 
+
 # dynamic loginform
 class LoginForm(forms.Form):
-    username = forms.CharField(
-        widget=forms.TextInput(attrs={'placeholder': 'Username'}))
+    # fields
+    username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Username'}))
 
-    password = forms.CharField(
-        widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
 
-    # remove when no longer required
-    # access to this but no validation error is displayed in html, with or without tags
-    # can be accessed by print(<form>.errors) in views.py
+    # validation
+
+    # if user and user is active
     def clean_password(self):
         cleaned_username = self.cleaned_data['username']
         cleaned_password = self.cleaned_data['password']
@@ -33,42 +33,35 @@ class LoginForm(forms.Form):
             raise forms.ValidationError(u"Incorrect login, please try again or register an account.")
 
         return cleaned_password
-        
-# cool register form
+
+
+# register form
 class RegisterForm(forms.Form):
     
+    # validators
     alphanumeric_validator = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only the letters A to Z and numbers are allowed.')
     phone_number_validator = RegexValidator(r'^(\+[0-9]{4}|0?[0-9]{3})(\ |\-)?([0-9]{1,2})(\ |\-)?([0-9]{1,2})(\ |\-)?([0-9]{1,3})$', 'The phone number entered is not valid.')
     
-    username = forms.CharField(
-        min_length=3,
-        validators=[alphanumeric_validator],
-        widget=forms.TextInput(attrs={'placeholder': 'Username'}))
+    # fields
+    username = forms.CharField(min_length=3,validators=[alphanumeric_validator],widget=forms.TextInput(attrs={'placeholder': 'Username'}))
 
-    first_name = forms.CharField(
-        widget=forms.TextInput(attrs={'placeholder': 'First name'}))
+    first_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'First name'}))
 
-    last_name = forms.CharField(
-        widget=forms.TextInput(attrs={'placeholder': 'Last name'}))
+    last_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Last name'}))
 
-    email = forms.CharField(
-        widget=forms.EmailInput(attrs={'placeholder': 'E-mail address'}))
+    email = forms.CharField(widget=forms.EmailInput(attrs={'placeholder': 'E-mail address'}))
 
-    password = forms.CharField(
-        min_length=minimum_password_length,
-        widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
+    password = forms.CharField(min_length=minimum_password_length,widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
 
-    password_repeat = forms.CharField(
-        min_length=minimum_password_length,
-        widget=forms.PasswordInput(attrs={'placeholder': 'Repeat password'}))
+    password_repeat = forms.CharField(min_length=minimum_password_length,widget=forms.PasswordInput(attrs={'placeholder': 'Repeat password'}))
 
-    phone_number = forms.CharField(
-        validators=[phone_number_validator],
-        widget=forms.TextInput(attrs={'placeholder': 'Phone number'}))
+    phone_number = forms.CharField(validators=[phone_number_validator],widget=forms.TextInput(attrs={'placeholder': 'Phone number'}))
 
-    apartment = forms.CharField(
-        widget=forms.TextInput(attrs={'placeholder': 'Apartment number'}))
+    apartment = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Apartment number'}))
     
+    # validation
+
+    # if username already exists
     def clean_username(self):
         cleaned_username = self.cleaned_data['username']
         
@@ -77,6 +70,7 @@ class RegisterForm(forms.Form):
             
         return cleaned_username
 
+    # if passwords do not match or password repeat missing
     def clean_password_repeat(self):
         #Check if the password was repeated, and if the repeated password is a match.
         cleaned_password = self.cleaned_data.get('password')
@@ -89,33 +83,36 @@ class RegisterForm(forms.Form):
             
         return cleaned_password_repeat
 
+    # if apartment number does not exist or is already in us
     def clean_apartment(self):
         cleaned_apartment = self.cleaned_data['apartment']
         
         if User_data.objects.filter(apartment=cleaned_apartment).exists():
-            raise forms.ValidationError(u"This apartment is already in use.")
+            raise forms.ValidationError(u"This apartment number is already in use.")
             
         if not Apartment_number.objects.filter(apartment_number=cleaned_apartment).exists():
-            raise forms.ValidationError(u"This apartment does not exist.")
+            raise forms.ValidationError(u"This apartment number does not exist.")
             
         return cleaned_apartment
 
+# change password for logged in users
 class ChangePassword(forms.Form):
-    current_password = forms.CharField(
-        widget=forms.PasswordInput(attrs={'placeholder': 'Current password'}))
-    
-    password = forms.CharField(
-        min_length=minimum_password_length,
-        widget=forms.PasswordInput(attrs={'placeholder': 'New password'}))
-        
-    repeat_password = forms.CharField(
-        min_length=minimum_password_length,
-        widget=forms.PasswordInput(attrs={'placeholder': 'Repeat password'}))
 
+    # fields
+    current_password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Current password'}))
+    
+    password = forms.CharField(min_length=minimum_password_length,widget=forms.PasswordInput(attrs={'placeholder': 'New password'}))
+        
+    repeat_password = forms.CharField(min_length=minimum_password_length,widget=forms.PasswordInput(attrs={'placeholder': 'Repeat password'}))
+
+    # init self
     def __init__(self, user, *args, **kwargs):
         self.user = user
         super(ChangePassword, self).__init__(*args, **kwargs)
-        
+    
+    # validation
+
+    # if incorrect password
     def clean_current_password(self):
         cleaned_username = self.user.username
         cleaned_password = self.cleaned_data['current_password']
@@ -127,6 +124,7 @@ class ChangePassword(forms.Form):
 
         return cleaned_password
 
+    # if passwords does not match or if repeat password is empty
     def clean_password_repeat(self):
         #Check if the password was repeated, and if the repeated password is a match.
         cleaned_password = self.cleaned_data.get('password')
@@ -139,22 +137,21 @@ class ChangePassword(forms.Form):
             
         return cleaned_repeat_password
 
+# change user information for logged in users
 class ChangeDetails(forms.Form):
     
+    # fields
     phone_number_validator = RegexValidator(r'^(\+[0-9]{4}|0?[0-9]{3})(\ |\-)?([0-9]{1,2})(\ |\-)?([0-9]{1,2})(\ |\-)?([0-9]{1,3})$', 'The phone number entered is not valid.')
     
-    email = forms.CharField(
-        widget=forms.EmailInput(attrs={'placeholder': 'E-mail address'}))
+    email = forms.CharField(widget=forms.EmailInput(attrs={'placeholder': 'E-mail address'}))
         
-    first_name = forms.CharField(
-        widget=forms.TextInput(attrs={'placeholder': 'First name'}))
+    first_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'First name'}))
     
-    last_name = forms.CharField(
-        widget=forms.TextInput(attrs={'placeholder': 'Last name'}))
+    last_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Last name'}))
     
-    phone_number = forms.CharField(
-        validators=[phone_number_validator],
-        widget=forms.TextInput(attrs={'placeholder': 'Phone number'}))
+    phone_number = forms.CharField(validators=[phone_number_validator],widget=forms.TextInput(attrs={'placeholder': 'Phone number'}))
+
+    # validation
 
     # extra validation through django native
     def __init__(self, *args, **kwargs):
@@ -164,13 +161,15 @@ class ChangeDetails(forms.Form):
             self.fields[key].required = False
 
 
-# used for forgot password email view
-# remove if no longer required
+# password reset form
 class PasswordResetRequestForm(forms.Form):
-    email = forms.CharField(
-        widget=forms.EmailInput(attrs={'placeholder': 'E-mail adress'}),
-        max_length=254)
 
+    # fields
+    email = forms.CharField(widget=forms.EmailInput(attrs={'placeholder': 'E-mail adress'}))
+
+    # Validation
+
+    # if email does not exist
     def clean_email(self):
         cleaned_email = self.cleaned_data['email']
         
@@ -179,23 +178,22 @@ class PasswordResetRequestForm(forms.Form):
             
         return cleaned_email
 
-# used for forgot password email link view
-# remove if no longer required
+# password change form
 class PasswordChangeForm(forms.Form):
-    password = forms.CharField(
-        widget=forms.PasswordInput(attrs={'placeholder': 'Password'}),
-        max_length=254,
-        min_length=minimum_password_length)
+
+    # fields
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Password'}),min_length=minimum_password_length)
          
-    password_repeat = forms.CharField(
-        widget=forms.PasswordInput(attrs={'placeholder': 'Repeat password'}),
-        max_length=254,
-        min_length=minimum_password_length)
-        
+    password_repeat = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Repeat password'}),min_length=minimum_password_length)
+    
+    # init self
     def __init__(self, user, *args, **kwargs):
         self.user = user
         super(PasswordChangeForm, self).__init__(*args, **kwargs)
-        
+    
+    # validation
+
+    # if passwords do not match or if repeat password is empty
     def clean_password_repeat(self):
         #Check if the password was repeated, and if the repeated password is a match.
         cleaned_password = self.cleaned_data.get('password')
@@ -208,6 +206,7 @@ class PasswordChangeForm(forms.Form):
             
         return cleaned_password_repeat
 
+    # save user password
     def save(self, commit=True):
         password = self.cleaned_data["password"]
         self.user.set_password(password)
