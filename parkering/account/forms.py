@@ -78,15 +78,16 @@ class LoginForm(forms.Form):
             #~ 'phone_number': forms.TextInput(attrs={'placeholder': 'Phone number'}),
             #~ 'apartment': forms.TextInput(attrs={'placeholder': 'Apartment number'}),
         #~ }
-        
+
 # cool register form
 class RegisterForm(forms.Form):
     
-    alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only the letters A to Z and numbers are allowed.')
+    alphanumeric_validator = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only the letters A to Z and numbers are allowed.')
+    phone_number_validator = RegexValidator(r'^(\+[0-9]{4}|0?[0-9]{3})(\ |\-)?([0-9]{1,2})(\ |\-)?([0-9]{1,2})(\ |\-)?([0-9]{1,3})$', 'The phone number entered is not valid.')
     
     username = forms.CharField(
         min_length=3,
-        validators=[alphanumeric],
+        validators=[alphanumeric_validator],
         widget=forms.TextInput(attrs={'placeholder': 'Username'}))
 
     first_name = forms.CharField(
@@ -107,6 +108,7 @@ class RegisterForm(forms.Form):
         widget=forms.PasswordInput(attrs={'placeholder': 'Repeat password'}))
 
     phone_number = forms.CharField(
+        validators=[phone_number_validator],
         widget=forms.TextInput(attrs={'placeholder': 'Phone number'}))
 
     apartment = forms.CharField(
