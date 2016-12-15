@@ -9,7 +9,7 @@ from django.contrib.auth import logout
 from django.core.mail import EmailMessage
 from django.contrib.auth.views import password_reset, password_reset_confirm
 from django.core.urlresolvers import reverse
-from .forms import Booking_Form,Space_available_form
+from .forms import Booking_Form,Space_available_form,Rent_space_form
 from django.template import loader
 
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
@@ -25,12 +25,12 @@ def calendar(request):
             calendar = []
 
             if datelist:
-                for event in datelist:                    
+                for event in datelist:
                     calendar.append({
                         'id':event.id,
                         'number': event.space.number,
-                        'start_date': event.start_date.strftime("%Y-%m-%d %H:%M"),                            
-                        'stop_date': event.stop_date.strftime("%Y-%m-%d %H:%M"),                                                        
+                        'start_date': event.start_date.strftime("%Y-%m-%d %H:%M"),
+                        'stop_date': event.stop_date.strftime("%Y-%m-%d %H:%M"),
                     })
             #~ print "\n\n%s\n\n" % calendar
             html = loader.render_to_string('kombo_parking/calendarmodal.html', {
@@ -46,11 +46,11 @@ def calendar(request):
     else:
         #~ events = Booking.objects.filter(taken = False).all()
         bookings = Booking.objects.filter(taken=False)
-        
-        calendar = []            
+
+        calendar = []
 
         if bookings:
-            for event in bookings:                    
+            for event in bookings:
                 calendar.append({
                     'id':event.id,
                     'number': event.space.number,
@@ -60,34 +60,69 @@ def calendar(request):
             return render(request, 'kombo_parking/calendar.html', {
                     'list': calendar or None,
                 })
-                
+
         return render(request, 'kombo_parking/calendar.html')
     #~ else:
         #~ return redirect("/")
-    
+
 def grab_parkingspace(request):
-    if request.is_ajax():        
+    if request.is_ajax():
         if request.POST['booking_id']:
             item = Booking.objects.filter(id=int(request.POST['booking_id'])).update(taken=True)
             #~ item.save()
-            
+
         #~ print Booking.objects.filter(id=int(request.POST['booking_id'])
             #~ html = loader.redirect('kombo_parking/calendar.html')
             return HttpResponse(loader.render_to_string('kombo_parking/calendar.html'))
     else:
         return redirect("/")
-        
-        
+
+
 def makespaceavailable(request):
     if request.method == 'POST':
         spaces = list(Parking_space.objects.values_list('number',flat=True).filter(owner=request.user.id))
-        
+
         # create a form instance and populate it with data from the request:
         form = Space_available_form(request.POST)
         print (form)
-        
+
         print ("nummer: %s\nstart: %s\nStop: %s\n"%(form.space, form.start_date, form.stop_date))
-        
-    
+
+
     return redirect('/calender')
 
+def frontpage(request):
+    stuff = Parking_space.objects.filter(owner=request.user)
+
+    context = {'rentout': Rent_space_form, 'spaces': stuff or None}
+    return render(request, 'main/base.html', context)
+
+def rentdetails(request):
+    Stuff = Parking_space.objects.filter(owner=User.objects.get(id=request.user.id))
+    print("stuffto come %s" % Stuff)
+    if request.method == 'POST':
+        Rentspaceform = Rent_space_form(request.POST)
+
+        space = Rentspaceform.data['space']
+        print(space)
+        start_date = Rentspaceform.data['start_date']
+        print(start_date)
+        stop_date = Rentspaceform.data['stop_date']
+        print(stop_date)
+
+        if Rentspaceform.is_valid():
+            space = request.POST['ownedSpace']
+            start_date = Rentspaceform.cleaned_data['start_date']
+            stop_date = Rentspaceform.cleaned_data['stop_date']
+
+            booking = Booking()
+            booking.space = space
+            booking.start_date = start_date
+            booking.stop_date = stop_date
+            booking.save()
+
+            return render(request, 'main/base.html', {'rentout': Rent_space_form, 'spaces': Stuff})
+        else:
+            Rentspaceform = Rent_space_form()
+        return render(request, 'main/base.html', {'rentout': Rent_space_form, 'spaces': Stuff })
+    ### call this with action="{%url 'kombo_parking:rentdetails'%}" in template in a html tag?

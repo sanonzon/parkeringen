@@ -10,19 +10,19 @@
 -->
   {% include 'kombo_parking/header.html' %}
   {% include 'meta/Meta.html' %}
-  
+
 </head>
 
 <body>
     {% if user.is_authenticated %}
 
   <div class="Authenticated">
-    {% include 'main/navbar.html' %}
-    {% include 'main/body.html' %}
-    
+    {% include 'kombo_parking/navbar.html' %}
+    {% include 'kombo_parking/body.html' %}
+
     </div>
-    
-  
+
+
   {% else %}
   <div class="Logreg">
     {% include 'account/Index_screen.html' %}
