@@ -37,12 +37,7 @@
           </div>
 
           <form action="{%url 'kombo_parking:rentdetails' %}" method="POST" enctype='multipart/form-data'>{% csrf_token %}
-          <select id="ownedSpace">
-          {% for space in spaces %}
-            <option value="{{space.number}}">Plats: {{space.number}}</option>
-          {% endfor %}
-          </select>
-
+            {{ rentout.space }}
             <!-- parking space input
             <div class="">
               <label class="control-label">Parking Space</label>

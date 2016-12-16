@@ -24,9 +24,32 @@ class Space_available_form(forms.Form):
 
 class Rent_space_form(forms.Form):
     """docstring for Rent_space_form"""
-    #space = forms.CharField(label='Plats')
-    start_date = forms.DateTimeField(label='Start', widget=SelectDateWidget)
-    stop_date = forms.DateTimeField(label='Stop', widget=SelectDateWidget)
+
+    # Class inheriting ModelChoiceField for minor customizations
+    # This won't be used outside of Rent_space_form, thus it is made private
+    class _ParkingSpaceModelChoiceField(forms.ModelChoiceField):
+
+        # Overriding label_from_instance function
+        def label_from_instance(self, obj):
+            return "%s" % obj.number
+    
+    space = _ParkingSpaceModelChoiceField(
+        queryset=Parking_space.objects.none(),
+        to_field_name="number",
+        empty_label=None)
+        
+    start_date = forms.DateTimeField(
+        label='Start',
+        widget=SelectDateWidget)
+        
+    stop_date = forms.DateTimeField(
+        label='Stop',
+        widget=SelectDateWidget)
+    
+    def __init__(self, user, *args, **kwargs):
+        super(Rent_space_form, self).__init__(*args, **kwargs)
+        self.fields['space'].queryset = Parking_space.objects.filter(owner=user)
+        
     ### description = forms.CharField(label='Beskrivning')
     """ def __init__(self, arg):
         super(Rent_space_form, self).__init__()

@@ -92,28 +92,22 @@ def makespaceavailable(request):
     return redirect('/calender')
 
 def frontpage(request):
-    stuff = Parking_space.objects.filter(owner=request.user)
-
-    context = {'rentout': Rent_space_form, 'spaces': stuff or None}
+    
+    if request.POST:
+        return rentdetails(request)
+    
+    rent_space_form = Rent_space_form(request.user)
+    context = {'rentout': rent_space_form}
     return render(request, 'main/base.html', context)
 
 def rentdetails(request):
-    Stuff = Parking_space.objects.filter(owner=User.objects.get(id=request.user.id))
-    print("stuffto come %s" % Stuff)
     if request.method == 'POST':
-        Rentspaceform = Rent_space_form(request.POST)
-
-        space = Rentspaceform.data['space']
-        print(space)
-        start_date = Rentspaceform.data['start_date']
-        print(start_date)
-        stop_date = Rentspaceform.data['stop_date']
-        print(stop_date)
-
-        if Rentspaceform.is_valid():
-            space = request.POST['ownedSpace']
-            start_date = Rentspaceform.cleaned_data['start_date']
-            stop_date = Rentspaceform.cleaned_data['stop_date']
+        rent_space_form = Rent_space_form(request.user, request.POST)
+    
+        if rent_space_form.is_valid():
+            space = rent_space_form.cleaned_data['space']
+            start_date = rent_space_form.cleaned_data['start_date']
+            stop_date = rent_space_form.cleaned_data['stop_date']
 
             booking = Booking()
             booking.space = space
@@ -121,8 +115,9 @@ def rentdetails(request):
             booking.stop_date = stop_date
             booking.save()
 
-            return render(request, 'main/base.html', {'rentout': Rent_space_form, 'spaces': Stuff})
-        else:
-            Rentspaceform = Rent_space_form()
-        return render(request, 'main/base.html', {'rentout': Rent_space_form, 'spaces': Stuff })
+            return redirect('/frontpage')
+            #~ return render(request, 'main/base.html', {'rentout': Rent_space_form(request.user)})
+            
+        return render(request, 'main/base.html', {'rentout': rent_space_form})
+            
     ### call this with action="{%url 'kombo_parking:rentdetails'%}" in template in a html tag?
