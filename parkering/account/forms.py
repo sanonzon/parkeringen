@@ -125,7 +125,7 @@ class ChangePassword(forms.Form):
         return cleaned_password
 
     # if passwords does not match or if repeat password is empty
-    def clean_password_repeat(self):
+    def clean_repeat_password(self):
         #Check if the password was repeated, and if the repeated password is a match.
         cleaned_password = self.cleaned_data.get('password')
         cleaned_repeat_password = self.cleaned_data['repeat_password']

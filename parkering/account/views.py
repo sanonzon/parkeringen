@@ -79,8 +79,11 @@ class AccountManagement:
 
                 request.user.set_password(new_password)
                 request.user.save()
-                logout(request)
-                return redirect('/login')
+
+                user = auth.authenticate(username = request.user.username, password = new_password)
+                auth.login(request, user)
+                
+                return redirect('/account_management')
             else:
                 context['ChangePass'] = change_password_form
 
