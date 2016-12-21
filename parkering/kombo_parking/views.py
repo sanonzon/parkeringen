@@ -93,9 +93,6 @@ def makespaceavailable(request):
 
 def frontpage(request):
     
-    if request.POST:
-        return rentdetails(request)
-    
     rent_space_form = Rent_space_form(request.user)
     context = {'rentout': rent_space_form}
     return render(request, 'main/base.html', context)
@@ -119,5 +116,6 @@ def rentdetails(request):
             #~ return render(request, 'main/base.html', {'rentout': Rent_space_form(request.user)})
             
         return render(request, 'main/base.html', {'rentout': rent_space_form})
+    return redirect('/frontpage')
             
     ### call this with action="{%url 'kombo_parking:rentdetails'%}" in template in a html tag?
