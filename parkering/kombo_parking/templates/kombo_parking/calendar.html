@@ -2,6 +2,7 @@
 
 <script>
     $(document).ready(function () {
+    //~ console.log("{{list}}");
 
     function getCookie(name) {
         var cookieValue = null;
@@ -19,35 +20,36 @@
         return cookieValue;
     }
     var csrftoken = getCookie('csrftoken');
-    $('#calendar').fullCalendar({
-        header: {
-            left: 'month,agendaWeek,agendaDay',
-            center: 'title',
-            right:  'today prev,next,prevYear,nextYear'
-        },
-        dayClick: function(date, jsEvent, view) {
-             $.ajax({
-                type: "POST",
-                url: "/calendar/",
-                data: {
-                    'date': date.format(),
-                    'csrfmiddlewaretoken': csrftoken,
-                },
-                success: function(newData) {
-                    $('#modalArea').html(newData);
-                    $('#calendarmodal').modal('show');
-                }
-           })
-        }        
-    });
+    //~ $('#calendar').fullCalendar({
+        //~ header: {
+            //~ left: 'month,agendaWeek,agendaDay',
+            //~ center: 'title',
+            //~ right:  'today prev,next,prevYear,nextYear'
+        //~ },
+         //~ {% if list %} events: {{ list|safe }}, {% endif %}
+        //~ dayClick: function(date, jsEvent, view) {
+             //~ $.ajax({
+                //~ type: "POST",
+                //~ url: "/calendar/",
+                //~ data: {
+                    //~ 'date': date.format(),
+                    //~ 'csrfmiddlewaretoken': csrftoken,
+                //~ },
+                //~ success: function(newData) {
+                    //~ $('#modalArea').html(newData);
+                    //~ $('#calendarmodal').modal('show');
+                //~ }
+           //~ })
+        //~ }        
+    //~ });
 
     $('#calendar').fullCalendar({
         header: {
             left: 'month,agendaWeek,agendaDay',
             center: 'title',
-            right:  'today prev,next,prevYear,nextYear'
+            right:  'today, prev,next,prevYear,nextYear'
         },
-        //~ events: {{ list|safe }},
+       {% if list %} events: {{ list|safe }}, {% endif %}
         dayClick: function(date, jsEvent, view) {
              $.ajax({
                 type: "POST",
@@ -62,22 +64,25 @@
                 }
            })
         },
-        //~ eventClick: function(calEvent) {
-            //~ $.ajax({
-                //~ type: "POST",
-                //~ url: "/calendar/",
-                //~ data: {
-                    //~ 'given_id': calEvent.id,
-                    //~ 'csrfmiddlewaretoken': csrftoken,
-                //~ },
-                //~ success: function(newData) {
-                    //~ $('#modalArea').html(newData);
-                    //~ $('#detailModal' + calEvent.id).modal('show');
-                //~ }
-           //~ })
-        //~ }
+
+        eventClick: function(calEvent, jsEvent, view) {              
+            $.ajax({
+                type: "POST",
+                url: "/calendar/",
+                data: {
+                    'date': calEvent.start.format().substr(0,10),
+                    'csrfmiddlewaretoken': csrftoken,
+                },
+                success: function(newData) {
+                    $('#modalArea').html(newData);
+                    $('#calendarmodal').modal('show');
+                }
+           })
+        },
         
     });
+    
+
 });
 </script>
 

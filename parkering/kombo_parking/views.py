@@ -15,8 +15,10 @@ from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
 
 def calendar(request):
+    #~ print ("\nREQUEST:POST\n%s\n\n" % request.POST) 
     #~ if request.user.is_authenticated():
-    if request.is_ajax():
+    if request.is_ajax():        
+        #~ print ("AJAX TRIGGERED")
         if request.POST['date']:
             print ("\n\ndateclick event date: %s\n" % request.POST['date'])
             #~ print Booking.objects.filter(start_date__contains(request.POST['date']))
@@ -32,20 +34,20 @@ def calendar(request):
                         'start_date': event.start_date.strftime("%Y-%m-%d %H:%M"),
                         'stop_date': event.stop_date.strftime("%Y-%m-%d %H:%M"),
                     })
-            #~ print "\n\n%s\n\n" % calendar
+            #~ print "\n\n%s\n\n" % calendar            
             html = loader.render_to_string('kombo_parking/calendarmodal.html', {
                     'list': calendar,
                 })
+                            
             return HttpResponse(html)
-        #~ elif request.POST['event_id']:
-            #~ print request.POST['event_id']
-            #~ html = loader.render_to_string('kalenderparkeringen/calendarmodal.html', {
-                    #~ 'list': Booking.objects.filter(taken=False),
-                #~ })
-            #~ return HttpResponse(html)
+        else:
+            html = loader.render_to_string('kombo_parking/calendarmodal.html', {                    
+                })
+            return HttpResponse(html)
+            
     else:
         #~ events = Booking.objects.filter(taken = False).all()
-        bookings = Booking.objects.filter(taken=False)
+        bookings = Booking.objects.all()
 
         calendar = []
 
@@ -92,9 +94,21 @@ def makespaceavailable(request):
     return redirect('/calender')
 
 def frontpage(request):
-    
+    bookings = Booking.objects.all()
+
+    calendar = []
+
+    if bookings:
+        for event in bookings:
+            calendar.append({
+                'id':event.id,
+                'number': event.space.number,
+                'start': event.start_date.isoformat(),
+                'stop': event.stop_date.isoformat(),
+                'color': 'red' if event.taken else 'blue',            
+            })
     rent_space_form = Rent_space_form(request.user)
-    context = {'rentout': rent_space_form}
+    context = {'rentout': rent_space_form, 'list': calendar}
     return render(request, 'main/base.html', context)
 
 def rentdetails(request):

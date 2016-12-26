@@ -8,11 +8,12 @@
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       <div class="modal-body">
           {% if list %}
-          <table>
+          <table class="table">
             <tr>
-                <th>Plats</th>
-                <th>Start</th>
-                <th>Slut</th>            
+                <th class="text-center">Plats</th>
+                <th class="text-center">Start</th>
+                <th class="text-center">Slut</th>            
+                <th></th>            
             </tr>
             {% for item in list %}
             <tr>
@@ -20,7 +21,7 @@
                 <td>{{item.number}}</td>
                 <td>{{item.start_date}}</td>
                 <td>{{item.stop_date}}</td>
-                <td><button class="fancyButtonclicker">ta ID {{item.id}}</button></td>
+                <td><button class="fancyButtonclicker">Boka</button></td>
             </tr>
             {% endfor %}         
           </table>
