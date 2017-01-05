@@ -15,6 +15,7 @@ from django.core.urlresolvers import reverse
 
 # File locations set as variables due to frequent usage
 index = 'account/Index_screen.html'
+faq = 'account/information/FAQ_screen.html'
 login = 'account/Login_screen.html'
 register = 'account/Register_screen.html'
 account_management = 'account/Account_screen.html'
@@ -34,6 +35,12 @@ class Index:
     def Index_screen(request):
         return render(request, index)
 
+
+# class for handling information
+class Information:
+    # render FAQ page on request
+    def FAQ_screen(request):
+        return render(request, faq)
 
 # class for handling error functionality
 class Error:
