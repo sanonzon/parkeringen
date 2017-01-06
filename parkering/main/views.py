@@ -8,3 +8,5 @@ def Let_there_be_light(request):
 # development page for testing
 def Test(request):
     return render(request, 'dev/test.html')
+
+
