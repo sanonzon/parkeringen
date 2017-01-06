@@ -35,13 +35,6 @@ class Index:
     def Index_screen(request):
         return render(request, index)
 
-
-# class for handling information
-class Information:
-    # render FAQ page on request
-    def FAQ_screen(request):
-        return render(request, faq)
-
 # class for handling error functionality
 class Error:
     # render authentication error page

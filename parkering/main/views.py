@@ -5,6 +5,10 @@ from django.contrib.auth.decorators import login_required
 def Let_there_be_light(request):
     return render(request, 'main/base.html')
 
+# render FAQ page on request
+def FAQ_screen(request):
+    return render(request, 'main/information/FAQ_screen.html')
+
 # development page for testing
 def Test(request):
     return render(request, 'dev/test.html')

@@ -9,9 +9,6 @@ urlpatterns = [
     # display index screen
 	url(r'^$', views.Index.Index_screen, name='Index_screen'),
 
-    # display FAQ
-    url(r'^faq$', views.Information.FAQ_screen, name='FAQ_screen'),
-
     # used for login function
 	url(r'^login/auth$', views.Login.Login_check, name='Login_check'),
 
