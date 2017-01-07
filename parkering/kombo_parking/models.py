@@ -29,4 +29,7 @@ class Booking(models.Model):
         #~ super(Booking, self).save(*args, **kwargs)
         
     def __str__(self):
-        return "%s - %s, %s -> %s booked by %s %s"%(self.space.number, "Taken" if self.taken is True else "Available", self.start_date, self.stop_date, self.owner.first_name, self.owner.last_name)
+        if self.owner:
+            return "%s - %s, %s -> %s booked by %s %s"%(self.space.number, "Taken" if self.taken is True else "Available", self.start_date, self.stop_date, self.owner.first_name, self.owner.last_name)
+        else:
+            return "Dummyfix, ingen owner"
