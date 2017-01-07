@@ -174,7 +174,6 @@ class Register:
 class Login:
     # Render login screen
     def Login_screen(request):
-
         context = {'LogForm': LoginForm }
         return render(request, login, context)
 
