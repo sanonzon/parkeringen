@@ -95,6 +95,16 @@ class RegisterForm(forms.Form):
             
         return cleaned_apartment
 
+    # check if email already exist
+    def clean_email(self):
+        cleaned_email = self.cleaned_data['email']
+
+        # cast error if exists
+        if User.objects.filter(email=cleaned_email).exists():
+            raise forms.ValidationError(u"This email already belongs to another account.")
+
+        return cleaned_email
+
 # change password for logged in users
 class ChangePassword(forms.Form):
 
@@ -159,6 +169,16 @@ class ChangeDetails(forms.Form):
 
         for key in self.fields:
             self.fields[key].required = False
+
+    # check if email already exist
+    def clean_email(self):
+        cleaned_email = self.cleaned_data['email']
+
+        # cast error if exists
+        if User.objects.filter(email=cleaned_email).exists():
+            raise forms.ValidationError(u"This email already belongs to another account.")
+
+        return cleaned_email
 
 
 # password reset form
