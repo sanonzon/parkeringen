@@ -23,8 +23,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'flyyu)po656qy#z9iel9ac(v&1b-u&4w7yv$#np!k_(k58vb^1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# set to False in release build
 DEBUG = True
 
+# uncomment to force https connections
+#SECURE_SSL_REDIRECT = True
+
+# allow host komboparking.pythonanywhere.com in release
 ALLOWED_HOSTS = []
 
 
