@@ -9,7 +9,7 @@ from django.contrib.auth import logout
 from django.core.mail import EmailMessage
 from django.contrib.auth.views import password_reset, password_reset_confirm
 from django.core.urlresolvers import reverse
-from .forms import Booking_Form,Space_available_form,Rent_space_form
+from .forms import Booking_Form,Space_available_form,Rent_space_form,Request_space_form
 from django.template import loader
 
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
@@ -37,6 +37,7 @@ def calendar(request):
             #~ print "\n\n%s\n\n" % calendar            
             html = loader.render_to_string('kombo_parking/calendarmodal.html', {
                     'list': calendar,
+                    'request_form' : Request_space_form(),
                 })
                             
             return HttpResponse(html)
@@ -60,7 +61,7 @@ def calendar(request):
                     'stop': event.stop_date.isoformat(),
                 })
             return render(request, 'kombo_parking/calendar.html', {
-                    'list': calendar or None,
+                    'list': calendar,
                 })
 
         return render(request, 'kombo_parking/calendar.html')
@@ -95,7 +96,6 @@ def makespaceavailable(request):
 
 def frontpage(request):
     bookings = Booking.objects.all()
-
     calendar = []
 
     if bookings:
@@ -133,3 +133,21 @@ def rentdetails(request):
     return redirect('/frontpage')
             
     ### call this with action="{%url 'kombo_parking:rentdetails'%}" in template in a html tag?
+
+def request_space(request):
+    if request.method == 'POST':
+        request_space_form = Request_space_form(request.POST)
+        
+        if rent_space_form.is_valid():
+            start_date = request_space_form.cleaned_data['start_date']
+            stop_date = request_space_form.cleaned_data['stop_date']
+            
+            request_space = Requested_Space()
+            request_space.renter = request.user
+            request.start_date = start_date
+            request.stop_date = stop_date
+            request_space.save()
+            
+    return redirect('/frontpage')
+        
+    

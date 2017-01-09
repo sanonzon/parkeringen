@@ -10,5 +10,5 @@ urlpatterns = [
     url(r'^calendar/$', views.calendar),
     url(r'^grab_parkingspace/', views.grab_parkingspace),
     url(r'^makespaceavailable/$', views.makespaceavailable, name='makespaceavailable'),
-
+    url(r'^request_space/$', views.request_space, name='request_space'),
 ]

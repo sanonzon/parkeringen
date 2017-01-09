@@ -20,28 +20,6 @@
         return cookieValue;
     }
     var csrftoken = getCookie('csrftoken');
-    //~ $('#calendar').fullCalendar({
-        //~ header: {
-            //~ left: 'month,agendaWeek,agendaDay',
-            //~ center: 'title',
-            //~ right:  'today prev,next,prevYear,nextYear'
-        //~ },
-         //~ {% if list %} events: {{ list|safe }}, {% endif %}
-        //~ dayClick: function(date, jsEvent, view) {
-             //~ $.ajax({
-                //~ type: "POST",
-                //~ url: "/calendar/",
-                //~ data: {
-                    //~ 'date': date.format(),
-                    //~ 'csrfmiddlewaretoken': csrftoken,
-                //~ },
-                //~ success: function(newData) {
-                    //~ $('#modalArea').html(newData);
-                    //~ $('#calendarmodal').modal('show');
-                //~ }
-           //~ })
-        //~ }        
-    //~ });
 
     $('#calendar').fullCalendar({
         header: {

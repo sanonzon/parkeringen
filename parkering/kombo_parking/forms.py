@@ -2,6 +2,7 @@ from django import forms
 from kombo_parking.models import Booking, Parking_space
 from django.contrib.auth.models import User
 from django.forms.widgets import SelectDateWidget
+from datetime import datetime
 #~ from django.template import RequestContext
 
 
@@ -55,3 +56,12 @@ class Rent_space_form(forms.Form):
         super(Rent_space_form, self).__init__()
         self.arg = arg """
 
+class Request_space_form(forms.Form):
+    start_date = forms.DateTimeField(
+        label='Start',
+        widget=SelectDateWidget)
+        
+    stop_date = forms.DateTimeField(
+        label='Stop',
+        widget=SelectDateWidget)   
+        
