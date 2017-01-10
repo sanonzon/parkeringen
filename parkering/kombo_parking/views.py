@@ -4,14 +4,14 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import auth
 from account.models import User_data
-from .models import Booking, Parking_space
+from .models import Booking, Parking_space, Requested_Space
 from django.contrib.auth import logout
 from django.core.mail import EmailMessage
 from django.contrib.auth.views import password_reset, password_reset_confirm
 from django.core.urlresolvers import reverse
 from .forms import Booking_Form,Space_available_form,Rent_space_form,Request_space_form
 from django.template import loader
-
+from datetime import datetime
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
 
 def calendar(request):
@@ -23,9 +23,19 @@ def calendar(request):
             #~ print ("\n\ndateclick event date: %s\n" % request.POST['date'])
             #~ print Booking.objects.filter(start_date__contains(request.POST['date']))
             datelist = Booking.objects.filter(start_date__startswith=request.POST['date'],taken=False)
+            requests = Requested_Space.objects.filter(start_date__startswith=request.POST['date'])
             #~ print datelist
             calendar = []
-
+            request_list = []
+            
+            if requests:
+                for event in requests:
+                    request_list.append({
+                        'id':event.id,                        
+                        'start_date': event.start_date.strftime("%Y-%m-%d %H:%M"),
+                        'stop_date': event.stop_date.strftime("%Y-%m-%d %H:%M"),
+                    })               
+            
             if datelist:
                 for event in datelist:
                     calendar.append({
@@ -37,6 +47,7 @@ def calendar(request):
             #~ print "\n\n%s\n\n" % calendar            
             html = loader.render_to_string('kombo_parking/calendarmodal.html', {
                     'list': calendar,
+                    'requests' : request_list,
                     'request_form' : Request_space_form(),
                 })
                             
@@ -98,6 +109,15 @@ def frontpage(request):
     bookings = Booking.objects.all()
     calendar = []
 
+    requests = Requested_Space.objects.all()
+    if requests:
+        for event in requests:
+            calendar.append({
+                'id':event.id,
+                'start': event.start_date.isoformat(),
+                'stop': event.stop_date.isoformat(),
+                'color': 'orange',
+            })
     if bookings:
         for event in bookings:
             calendar.append({
@@ -105,7 +125,7 @@ def frontpage(request):
                 'number': event.space.number,
                 'start': event.start_date.isoformat(),
                 'stop': event.stop_date.isoformat(),
-                'color': 'red' if event.taken else 'blue',            
+                'color': 'red' if event.taken else 'green',            
             })
     rent_space_form = Rent_space_form(request.user)
     context = {'rentout': rent_space_form, 'list': calendar}
@@ -135,19 +155,39 @@ def rentdetails(request):
     ### call this with action="{%url 'kombo_parking:rentdetails'%}" in template in a html tag?
 
 def request_space(request):
-    if request.method == 'POST':
-        request_space_form = Request_space_form(request.POST)
-        
-        if rent_space_form.is_valid():
-            start_date = request_space_form.cleaned_data['start_date']
-            stop_date = request_space_form.cleaned_data['stop_date']
+    if request.user.is_authenticated():
+        if request.is_ajax():        
+            start_fix = "%s %s %s" %( request.POST['start[month]'], request.POST['start[day]'], request.POST['start[year]'] )
+            stop_fix = "%s %s %s" %( request.POST['end[month]'], request.POST['end[day]'], request.POST['end[year]'])
+            
+            datetime_start = datetime.strptime(start_fix, '%B %d %Y')
+            datetime_stop = datetime.strptime(stop_fix, '%B %d %Y')
             
             request_space = Requested_Space()
-            request_space.renter = request.user
-            request.start_date = start_date
-            request.stop_date = stop_date
+            request_space.renter = request.user            
+            request_space.start_date = datetime.date(datetime_start)
+            request_space.stop_date = datetime.date(datetime_stop)
+          
             request_space.save()
-            
+                
     return redirect('/frontpage')
         
+        
+def rentout_your_space_to_people(request):
+    if request.user.is_authenticated():
+        if request.is_ajax():   
+            requested = Requested_Space.objects.filter(id=request.POST['booking_id']).get()
+            spaces = Parking_space.objects.filter(owner=request.user)
+            if spaces:
+                book = Booking()
+                book.owner = requested.renter
+                book.taken = True
+                book.space = Parking_space.objects.filter(number=spaces[0].number).get()
+                book.start_date = requested.start_date
+                book.stop_date = requested.stop_date
+            
+                book.save()
+                requested.delete()
+
+    return redirect('/frontpage')
     

@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^grab_parkingspace/', views.grab_parkingspace),
     url(r'^makespaceavailable/$', views.makespaceavailable, name='makespaceavailable'),
     url(r'^request_space/$', views.request_space, name='request_space'),
+    url(r'^rentout_your_space_to_people/$', views.rentout_your_space_to_people, name='rentout_your_space_to_people'),
 ]
