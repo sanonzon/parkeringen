@@ -1,0 +1,38 @@
+{% load staticfiles %}
+
+<html>
+
+  <head>
+    {% include 'meta/Meta.html' %}
+    <title>Update details</title>
+  </head>
+
+  <body>
+    <div class="Register">
+      <h3>Update your information</h3>
+      <form action="{% url 'account:Update_details' %}" method="post" enctype='multipart/form-data'> {% csrf_token %}
+        <!--First name:<br>-->
+        {{ ChangeDetails.first_name }}<br>
+        {{ ChangeDetails.first_name.errors }}
+        <!--Last name:<br>-->
+        {{ ChangeDetails.last_name }}<br>
+        {{ ChangeDetails.last_name.errors }}
+        <!--Email address:<br>-->
+        {{ ChangeDetails.email }}<br>
+        {{ ChangeDetails.email.errors }}
+        <!--Phone number:<br>-->
+        {{ ChangeDetails.phone_number }}<br>
+        {{ ChangeDetails.phone_number.errors }}
+        <a href="{% url 'account:Account_screen' %}" class="btn btn-success green" role="button">Return</a>
+        <input id="submit_button" class="btn btn-success green" type="submit" value="Change details">
+      </form>
+    </div>
+
+    <!--/static files-->
+      <!--Bootstrap-->
+        {% include 'assets/bootstrap/Bootstrap.html' %}
+    <!--/static files-->
+
+  </body>
+
+</html>

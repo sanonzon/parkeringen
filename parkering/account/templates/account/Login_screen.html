@@ -11,14 +11,21 @@
 
   <body>
     <div class="Login">
-      <form action="{% url 'account:Login_check' %}" method="post" enctype='multipart/form-data'> {% csrf_token %}
+      <h3>Log in to your account</h3>
+      <form action="{% url 'account:Login_check' %}" method="post" enctype='multipart/form-data'> 
+      {% csrf_token %}
         <!--Username:<br>-->
-        <input type="text" placeholder="Username" name="Username"><br>
+        {{ LogForm.username }}<br>
         <!--Password:<br>-->
-        <input type="Password" placeholder="Password" name="Password"><br>
+        {{ LogForm.password }}<br>
         <a href="{% url 'account:Index_screen' %}" class="btn btn-success green" role="button">Return</a>
         <input id="submit_button" class="btn btn-success green" type="submit" value="Log in">
+        <!-- display error messages -->
+        {{ LogForm.password.errors }}
       </form>
+      <a href="{% url 'account:Register_screen' %}">Don't have an account?</a><br>
+      <a href="{% url 'account:reset' %}">Forgot your password?</a><br>
+      <a href="{% url 'main:FAQ_screen' %}">FAQ</a>
     </div>
 
     <!--/static files-->
@@ -26,5 +33,4 @@
         {% include 'assets/bootstrap/Bootstrap.html' %}
     <!--/static files-->
   </body>
-
 </html>

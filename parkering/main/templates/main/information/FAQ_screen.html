@@ -1,0 +1,81 @@
+<!-- FAQ view -->
+
+{% load staticfiles %}
+
+<html>
+
+  <head>
+    {% include 'meta/Meta.html' %}
+    <title>FAQ</title>
+  </head>
+
+  <body>
+    <h1>FAQ</h1>
+    <!--faq:1-->
+    <p><b>What is Kombo?</b></p>
+    <p>
+      Kombo is a system specificially designed to ease the communication between users when borrowing and lending one or more parking spaces to oneanother.
+    </p>
+    <!--faq:2-->
+    <p><b>What can i do here?</b></p>
+    <p>
+      Kombo is an easy navigable website where you can:
+    </p>
+    <ul>
+      <li>
+        Lend your parking space(s) to others by filling out a simple form.
+      </li>
+      <li>
+        Borrow someone else's parking space by finding your preferred date within a calendar and click the "Borrow" button.
+      </li>
+      <li>
+        Request parking space by clicking the "Request" button.
+      </li>
+    </ul>
+    <p>Other actions that may be done:</p>
+    <ul>
+      <li>
+        Create an account.
+      </li>
+      <li>
+        Reset password by logging in and navigate to "Account", then click on "Update password".
+      </li>
+      <li>
+        Update your information by navigating to "Account", then click "Update information".
+      </li>
+      <li>
+        Change password by navigating to "Forgot password" and type in your e-mail address to send a one-use link to a secure password reset page.
+      </li>
+    </ul>
+    <!--faq:3-->
+    <p><b>Why can't i register an account?</b></p>
+    <p>
+      Only users who have requested to use this website and provided their apartment number to the website administrator may register on this website. 
+      furthermore each apartment number may only be used once, should you see an error displaying that your provided apartment number is already in use please check your input and try again. Should the problem persist it is advised to contact your site administrator as soon as possible to resolve this issue.
+    </p>
+    <!--faq:4-->
+    <p><b>Why can't i log in?</b></p>
+    <p>
+      Only registered users may log in by providing the username and password they chose upon registration.
+    </p>
+    <!--faq:5-->
+    <p><b>I forgot my password, how can i retrieve it?</b></p>
+    <p>
+      If you have forgot your password you may click on the "Forgot password" button or "Forgot your password?" link. 
+      You will then be redirected to a page where you may type the e-mail address you used to register your account.
+      If the e-mail exists you will recieve an e-mail with a one-use link leading to a secure page where you may reset your password.
+    </p>
+    <!--faq:6-->
+    <p><b>I have forgotten my login details and e-mail address, what should i do?</b></p>
+    <p>
+      Should you forget your login details, you should at first try to recover your password/username through the "Forgot password" functionality. If this is not possible you should contact your site administrator to resolve this issue.
+    </p>
+    <!--faq:return-->
+    <a href="{% url 'account:Index_screen' %}" class="btn btn-success green" role="button">Return</a>
+    <!--/static files-->
+      <!--Bootstrap-->
+        {% include 'assets/bootstrap/Bootstrap.html' %}
+    <!--/static files-->
+  </body>
+
+</html>

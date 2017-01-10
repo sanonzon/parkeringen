@@ -28,9 +28,9 @@
             {% else %}
           
             <form action="/request_space/" method="POST">
-                {% csrf_token %}
+                {{ csrf_input }}
                 {{ request_form.as_p }}
-                <input type="Submit" value="Submit">
+                <input type="Submit" value="Ansök">
             </form>
             
            {% endif %}

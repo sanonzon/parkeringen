@@ -3,8 +3,8 @@ from __future__ import unicode_literals
 #~ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 #~ import django
 #~ os.environ.setdefault("DJANGO_SETTING_MODUL", "parking.settings")
-#~ from django.conf import settings
-#~ settings.configure()
+from django.conf import settings
+
 
 #~ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from datetime import datetime, timedelta
@@ -12,9 +12,14 @@ import dateutil.relativedelta
 from kombo_parking.models import Booking
 
 def run():
-    d = datetime.now() - dateutil.relativedelta.relativedelta(months=1)
-    print datetime.now()
-    print d
+    old_shit = datetime.now() - dateutil.relativedelta.relativedelta(months=1)
+    bokningar = Booking.objects.filter(stop_date__gt=old_shit)
+    
+    for b in bokningar:
+        print(b.number)
+    
+    # print datetime.now()
+    # print d
     
     #~ doot = Booking.objects.filter(stop_date > datetime.now())
     

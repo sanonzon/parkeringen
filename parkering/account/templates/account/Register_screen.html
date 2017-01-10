@@ -9,25 +9,42 @@
 
   <body>
     <div class="Register">
+      <h3>Register an account</h3>
       <form action="{% url 'account:Register_account' %}" method="post" enctype='multipart/form-data'> 
       {% csrf_token %}
         <!--Username:<br>-->
-        <input type="text" placeholder="Username" name="Username"><br>
+        {{ RegForm.username }}<br>
+        {{ RegForm.username.errors }}
         <!--E-mail address:<br>-->
-        <input type="text" placeholder="E-mail address" name="Email_address"><br>
+        {{ RegForm.email }}<br>
+        {{ RegForm.email.errors }}
         <!--First name:<br>-->
-        <input type="text" placeholder="First name" name="First_name"><br>
+        {{ RegForm.first_name }}<br>
+        {{ RegForm.first_name.errors }}
         <!--Last name:<br>-->
-        <input type="text" placeholder="Last name" name="Last_name"><br>
+        {{ RegForm.last_name }}<br>
+        {{ RegForm.last_name.errors }}
         <!--Phone number:<br>-->
-        <input type="text" placeholder="Phone number" name="Phone_number"><br>
+        {{ RegForm.phone_number }}<br>
+        {{ RegForm.phone_number.errors }}
+        <!--Apartment number:<br>-->
+        {{ RegForm.apartment }}<br>
+        {{ RegForm.apartment.errors }}
         <!--Password:<br>-->
-        <input type="password" placeholder="Password" name="Password"><br>
+        {{ RegForm.password }}<br>
+        {{ RegForm.password.errors }}
         <!--Repeat password:<br>-->
+        {{ RegForm.password_repeat }}<br>
+        {{ RegForm.password_repeat.errors }}
+<!--
         <input type="password" placeholder="Repeat password" name="Repeat_password"><br>
+-->
         <a href="{% url 'account:Index_screen' %}" class="btn btn-success green" role="button">Return</a>
         <input id="submit_button" class="btn btn-success green" type="submit" value="Register">
+        <!--display error messages-->
       </form>
+      <a href="{% url 'account:Login_screen' %}">Already have an account?</a><br>
+      <a href="{% url 'main:FAQ_screen' %}">FAQ</a>
     </div>
 
     <!--/static files-->

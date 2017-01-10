@@ -23,10 +23,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'flyyu)po656qy#z9iel9ac(v&1b-u&4w7yv$#np!k_(k58vb^1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# set to False in release build
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.0.101','192.168.0.100','localhost']
 
+# uncomment to force https connections
+#SECURE_SSL_REDIRECT = True
+
+# allow host komboparking.pythonanywhere.com in release
+ALLOWED_HOSTS = ['192.168.0.101','192.168.0.100','localhost']
 
 # Application definition
 
@@ -44,7 +49,7 @@ INSTALLED_APPS = [
     'django_extensions',
 ]
 
-MIDDLEWARE = [
+MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
