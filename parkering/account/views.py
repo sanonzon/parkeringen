@@ -23,6 +23,7 @@ updatePass = 'account/Update_password.html'
 updateDetails = 'account/Update_details.html'
 forgot_password = 'account/Password_reset_screen.html'
 password_confirm = 'account/Password_reset_confirm.html'
+post_login = "main/base.html"
 
 # error
 authentication_error = 'account/error/Not_authorized.html'
@@ -146,7 +147,7 @@ class Register:
             apartment = register_form.cleaned_data['apartment']
 
             if request.user.is_authenticated():
-                return redirect('/test') # TODO: redirect to post-login page
+                return redirect('/frontpage')
             else:
                 user = User(username=username)
                 user.email = email
@@ -165,7 +166,7 @@ class Register:
                 
                 if user:
                     auth.login(request, user)
-                    return redirect('/test') # TODO: redirect to post-login page
+                    return redirect('/frontpage')
 
         return render(request, register, { 'RegForm': register_form })
 
@@ -189,7 +190,7 @@ class Login:
                 user = auth.authenticate(username = username, password = password)
                 if user:
                     auth.login(request, user)
-                    return redirect('/test') # TODO: redirect to post-login page
+                    return redirect('/frontpage')
                     
         else:
             LogForm = LoginForm()
