@@ -8,8 +8,8 @@ urlpatterns = [
     #~ url(r'^frontpage/error', views.rentdetails, name='rentdetails'),
     url(r'^rentdetails', views.rentdetails, name='rentdetails'),
     url(r'^calendar/$', views.calendar),
-    url(r'^grab_parkingspace/', views.grab_parkingspace),
-    url(r'^makespaceavailable/$', views.makespaceavailable, name='makespaceavailable'),
+    url(r'^grab_parkingspace/', views.grab_parkingspace),    
     url(r'^request_space/$', views.request_space, name='request_space'),
     url(r'^rentout_your_space_to_people/$', views.rentout_your_space_to_people, name='rentout_your_space_to_people'),
+    url(r'^register_for_parking_space/$', views.register_for_parking_space, name='register_for_parking_space'),
 ]

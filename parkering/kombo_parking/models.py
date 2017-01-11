@@ -14,7 +14,7 @@ class Parking_space(models.Model):
     
 class Booking(models.Model):
     space = models.ForeignKey(Parking_space)
-    owner = models.ForeignKey(User, null=True)
+    owner = models.ForeignKey(User, null=True, blank=True)
     taken = models.BooleanField(default=False)
     start_date = models.DateTimeField()
     stop_date = models.DateTimeField()
@@ -45,3 +45,4 @@ class Requested_Space(models.Model):
             
     def __str__(self):
         return "%s Requests space FROM %s TO %s" % (self.renter, self.start_date, self.stop_date)
+        

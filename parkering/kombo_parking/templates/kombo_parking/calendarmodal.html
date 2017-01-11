@@ -6,13 +6,15 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
       <div class="modal-body">
           {% if list %}
+          <h2>Available spaces</h2>
           <table class="table">
             <tr>
-                <th class="text-center">Plats</th>
+                <th class="text-center">Space</th>
                 <th class="text-center">Start</th>
-                <th class="text-center">Slut</th>            
+                <th class="text-center">Stop</th>            
                 <th></th>            
             </tr>
             {% for item in list %}
@@ -21,17 +23,21 @@
                 <td>{{item.number}}</td>
                 <td>{{item.start_date}}</td>
                 <td>{{item.stop_date}}</td>
-                <td><button class="fancyButtonclicker">Boka</button></td>
+                <td><button class="fancyButtonclicker">Book/unbook</button></td>
             </tr>
             {% endfor %}  
                          
           </table>
-          {% elif requests%}
+          {% endif %} 
+          
+          {% if requests%}
+          <h2>Requested spaces</h2>
           
           <table class="table">
             <tr>
                 <th class="text-center">Start</th>
-                <th class="text-center">Slut</th>            
+                <th class="text-center">Stop</th>            
+                <th>Space to give</th>            
                 <th></th>            
             </tr>
           {% for item in requests %}
@@ -39,29 +45,21 @@
                 <td class="ID_for_Give_Space hidden">{{item.id}}</td>
                 <td>{{item.start_date}}</td>
                 <td>{{item.stop_date}}</td>
-                <td><button class="Give_That_Space">Ge plats</button></td>
+                <td><input id="{{item.id}}" type="text" name="space_to_lend"></td>
+                <td><button class="Give_That_Space">Give space</button></td>
             </tr>
             {% endfor %}
-            {% else %}
-          
-            <table>
-                <tr><td>START</td><td id="REQUEST_START">{{request_form.start_date}}</td></tr>
-                <tr><td>END</td><td id="REQUEST_END">{{request_form.stop_date}}</td></tr>
-                <tr><td><button id="REQUEST_SPACE_CLICKER"> Ansök </button></td></tr>
-            </table>
-            
-            
+            {% endif %}
+            {% if not requests and not list %}
+          <p>
+            No spaces available, use the bullhorn top-right corner, most to the left, to request a parking space.
+            </p>
            {% endif %}
-          
+          </table>
         
         
       </div> <!-- MODAL BODY END -->
       <div class="modal-footer">
-        <div class="row">
-          <div id="fb-root"></div>
-
-            </div>
-          </div>
           <div class="col-6">
             <button type="button" class="btn btn-default" id="register-button" data-dismiss="modal">Stäng</button>
           </div>
@@ -69,8 +67,6 @@
       </div>
     </div>
   </div>
-</div>
-
 <script>
     $( document ).ready(function() {
         function getCookie(name) {
@@ -94,12 +90,12 @@
    
     
     $(".fancyButtonclicker").click(function() {
-        var $item = $(this).closest("tr").find(".ID_for_Give_Space").text();  // Find row of clicked button, get td containing magic id with silly class name.
+        var $item = $(this).closest("tr").find(".dootfacetwentyseven").text();  // Find row of clicked button, get td containing magic id with silly class name.
         console.log($item);
         
         $.ajax({
             type: "POST",
-            url: "/rentout_your_space_to_people/",
+            url: "/grab_parkingspace/",
             data: {
                 'booking_id': $item,
                 'csrfmiddlewaretoken': csrftoken,
@@ -109,56 +105,21 @@
                location.reload();
             }
        })
-    });
-    $("#REQUEST_SPACE_CLICKER").click(function() {
-        var pattern = /^([\w]+)([\d]{1,2})([\d]{4})/i
-        
-        var $start = $("#REQUEST_START option:selected").text();
-        var $end = $("#REQUEST_END option:selected").text();
-        
-        var $date_hack_start = {};
-        $date_hack_start.month = pattern.exec($start)[1];
-        $date_hack_start.day = parseInt(pattern.exec($start)[2]);
-        $date_hack_start.year = parseInt(pattern.exec($start)[3]);
-               
-        var $date_hack_end = {};        
-        $date_hack_end['month'] = pattern.exec($end)[1];
-        $date_hack_end['day'] = parseInt(pattern.exec($end)[2]);
-        $date_hack_end['year'] = parseInt(pattern.exec($end)[3]);
-        
-        
-        console.log($date_hack_start);
-        console.log($date_hack_end);
-        
-        $.ajax({
-            type: "POST",
-            url: "/request_space/",
-            data: {
-                'start': $date_hack_start,
-                'end' : $date_hack_end,
-                'csrfmiddlewaretoken': csrftoken,
-            },
-            success: function(data) {
-               //alert("Done.")           
-               location.reload();
-            }
-       })
-        
-        //console.log($end);
-    
-    
     });
     
     
      $(".Give_That_Space").click(function() {
-        var $item = $(this).closest("tr").find(".ID_for_Give_Space").text();  // Find row of clicked button, get td containing magic id with silly class name.
-        console.log($item);
+        var $item_id = $(this).closest("tr").find(".ID_for_Give_Space").text();  // Find row of clicked button, get td containing magic id with silly class name.
+        var $space = $("#"+$item_id).val();
+        console.log($item_id);
+        console.log($space);
         
-        $.ajax({
+       $.ajax({
             type: "POST",
             url: "/rentout_your_space_to_people/",
             data: {
-                'booking_id': $item,
+                'booking_id': $item_id,
+                'space':$space,
                 'csrfmiddlewaretoken': csrftoken,
             },
             success: function(data) {
@@ -166,6 +127,7 @@
                location.reload();
             }
        })
+      
     });
    
     

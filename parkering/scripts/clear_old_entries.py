@@ -13,7 +13,7 @@ from kombo_parking.models import Booking
 
 def run():
     old_shit = datetime.now() - dateutil.relativedelta.relativedelta(months=1)
-    bokningar = Booking.objects.filter(stop_date__gt=old_shit)
+    bokningar = Booking.objects.exclude(stop_date__gt=old_shit)
     
     for b in bokningar:
         print(b.number)

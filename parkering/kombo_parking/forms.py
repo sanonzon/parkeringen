@@ -57,6 +57,8 @@ class Rent_space_form(forms.Form):
         self.arg = arg """
 
 class Request_space_form(forms.Form):
+    """docstring for Request_space_form"""
+      
     start_date = forms.DateTimeField(
         label='Start',
         widget=SelectDateWidget)
@@ -65,3 +67,10 @@ class Request_space_form(forms.Form):
         label='Stop',
         widget=SelectDateWidget)   
         
+        
+class Request_to_own_Parking_space(forms.Form):
+    number = forms.IntegerField(label='Parking space')
+    
+    
+    
+    

@@ -12,6 +12,7 @@
       <ul class="nav navbar-nav">
       </ul>
       <ul class="nav navbar-nav navbar-right">
+        <li><a href="#register_for_parking_space" class="glyphicon glyphicon-tag" role="button" data-toggle="modal"></a></li>
         <li><a href="#myModal" class="glyphicon glyphicon-bullhorn" role="button" data-toggle="modal"></a></li>
         <li><a class="glyphicon glyphicon-user" href="{% url 'account:Account_screen' %}"></a></li>
         <li><a href="{% url 'account:Logout' %}">Log Out</a></li>
@@ -27,53 +28,115 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Hyra Ut/Boka Plats</h4>
+          <!-- <h4 class="modal-title">Hyra Ut/Boka Plats</h4> -->
         </div>
         <div class="modal-body">
 
-          <div class="form-group has-feedback">
+        
+            <ul class="nav nav-pills">
+                <li class="active">
+                    <a href ="#hyra_ut" data-toggle="tab">Rentout space</a>
+                </li>
+                <li href="#be_om_plats">
+                    <a href ="#be_om_plats" data-toggle="tab">Request space</a>
+                </li>
+            </ul>
+            
+            <div class="tab-content clearfix">
+                <div class="tab-pane active" id="hyra_ut">
+                    <form action="{%url 'kombo_parking:rentdetails' %}" method="POST" enctype='multipart/form-data'>{% csrf_token %}
+                        {{ rentout.space }}
+                        <!-- parking space input
+                        <div class="">
+                          <label class="control-label">Parking Space</label>
+                          {{rentout.space}}
+                          <i class="glyphicons glyphicons-car form-control-feedback"></i>
+                        </div>
+                      -->
+
+                        <!--
+                        <div class="">
+                          <label class="control-label">Description</label>
+                          {{rentout.description}}
+                          <i class="glyphicons glyphicons-car form-control-feedback"></i>
+                        </div>
+                      -->
+                      <div class="">
+                        <label class="control-label">Start Time and Date</label>
+                        {{rentout.start_date}}
+                        <i class="glyphicons glyphicons-car form-control-feedback"></i>
+                      </div>
+
+                      <div class="">
+                        <label class="control-label">End Time and Date</label>
+                        {{rentout.stop_date}}
+                        <i class="glyphicons glyphicons-car form-control-feedback"></i>
+                      </div>
+
+                      <div class="footer">
+                        <input id="submit_button" class="btn btn-sucess green" role="button"  value="Upload Rentable Space" type="submit" name="" />
+                      </div>
+                    </form>   
+                </div>
+                <div class="tab-pane" id="be_om_plats">
+                    <form action="{%url 'kombo_parking:request_space' %}" method="POST" enctype='multipart/form-data'>
+                        {% csrf_token %}
+                        
+                        {{request_form.as_p }}
+                        
+                        
+                        <div class="footer">
+                            <input id="submit_button" class="btn btn-sucess green" role="button"  value="Request" type="submit" name="" />
+                        </div>
+                    </form>
+                </div>
+        
+        
+          <!-- <div class="form-group has-feedback">
             <input type="text" class="form-control" placeholder="{{request.user.get_full_name}}" readonly />
             <i class="glyphicons glyphicons-car form-control-feedback"></i>
-          </div>
+            </div> -->
 
-        <form action="{%url 'kombo_parking:rentdetails' %}" method="POST" enctype='multipart/form-data'>{% csrf_token %}
-            {{ rentout.space }}
-            <!-- parking space input
-            <div class="">
-              <label class="control-label">Parking Space</label>
-              {{rentout.space}}
-              <i class="glyphicons glyphicons-car form-control-feedback"></i>
-            </div>
-          -->
-
-            <!--
-            <div class="">
-              <label class="control-label">Description</label>
-              {{rentout.description}}
-              <i class="glyphicons glyphicons-car form-control-feedback"></i>
-            </div>
-          -->
-          <div class="">
-            <label class="control-label">Start Time and Date</label>
-            {{rentout.start_date}}
-            <i class="glyphicons glyphicons-car form-control-feedback"></i>
-          </div>
-
-          <div class="">
-            <label class="control-label">End Time and Date</label>
-            {{rentout.stop_date}}
-            <i class="glyphicons glyphicons-car form-control-feedback"></i>
-          </div>
-
-          <div class="modal-footer">
-            <input id="submit_button" class="btn btn-sucess green" role="button"  value="Upload Rentable Space" type="submit" name="" />
-          </div>
-        </form>
-
+        </div>
+        
       </div>
     </div>
   </div>
 </div>
+
+  <div id="register_for_parking_space" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <!-- <h4 class="modal-title">Hyra Ut/Boka Plats</h4> -->
+        </div>
+        <div class="modal-body">
+            <form action="{%url 'kombo_parking:register_for_parking_space' %}" method="POST" enctype='multipart/form-data'>
+            
+            {% csrf_token %}
+                {{ request_parking_space_form.as_p }}
+           
+              
+
+              <div class="footer">
+                <input id="submit_button" class="btn btn-sucess green" role="button"  value="Request space" type="submit" name="" />
+              </div>
+            </form>   
+        </div>
+                
+        
+          <!-- <div class="form-group has-feedback">
+            <input type="text" class="form-control" placeholder="{{request.user.get_full_name}}" readonly />
+            <i class="glyphicons glyphicons-car form-control-feedback"></i>
+            </div> -->
+
+        </div>
+        
+      </div>
+    </div>
+
+
 <!--/static files-->
 <!--Bootstrap-->
 {% include 'assets/bootstrap/Bootstrap.html' %}
