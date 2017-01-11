@@ -5,3 +5,4 @@ parkering/account/migrations/
 parkering/main/migrations/
 parkering/kombo_parking/migrations/
 parkering/db.sqlite3
+parkering/parking/settings.py

@@ -31,7 +31,7 @@ DEBUG = True
 #SECURE_SSL_REDIRECT = True
 
 # allow host komboparking.pythonanywhere.com in release
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['komboparking.pythonanywhere.com']
 
 # Application definition
 
