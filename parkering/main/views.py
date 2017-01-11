@@ -7,7 +7,7 @@ def Let_there_be_light(request):
     if request.user.is_authenticated():
         return redirect("/frontpage")
     else:
-        return redirect("/")
+        return render(request, "main/base.html")
 
 # render FAQ page on request
 def FAQ_screen(request):
