@@ -163,7 +163,7 @@ class Request_to_own_Parking_space(forms.Form):
     number = forms.IntegerField(label='Parking space')
     
     def clean_number(self):
-        n = cleaned_data['data']
+        n = self.cleaned_data['number']
         if Parking_space.objects.filter(number=n).exists():
             raise forms.ValidationError(u"Parking space already taken.")
         return n

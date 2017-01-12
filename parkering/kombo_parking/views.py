@@ -53,6 +53,7 @@ def calendar(request):
             html = loader.render_to_string('kombo_parking/calendarmodal.html', {
                     'list': calendar,
                     'requests' : request_list,
+                    'parking_spaces': Parking_space.objects.filter(owner=request.user).values_list('number', flat=True).order_by('number'),
                    
                 })
                             
@@ -110,10 +111,11 @@ def frontpage(request):
                 'color': 'red' if event.taken else 'green',            
             })
     rent_space_form = None
+    
     request_form = Request_space_form()
     if request.user.is_authenticated():
         rent_space_form = Rent_space_form(request.user)        
-    context = {'rentout': rent_space_form, 'list': calendar, 'request_form': request_form, 'request_parking_space_form': Request_to_own_Parking_space}
+    context = {'rentout': rent_space_form, 'list': calendar, 'request_form': request_form, 'request_parking_space_form': Request_to_own_Parking_space  }
     return render(request, 'main/base.html', context)
 
 def rentdetails(request):
@@ -206,12 +208,11 @@ def register_for_parking_space(request):
             request_form = Request_to_own_Parking_space(request.POST)
             if request_form.is_valid():
                 space_number = request_form.cleaned_data['number']
-                already_used = Parking_space.objects.values_list('number', flat=True)
-                if space_number not in already_used:
-                    space = Parking_space()
-                    space.owner = request.user
-                    space.number = space_number
-                
-                    space.save()
+               
+                space = Parking_space()
+                space.owner = request.user
+                space.number = space_number
             
+                space.save()
+        
     return redirect("/frontpage")

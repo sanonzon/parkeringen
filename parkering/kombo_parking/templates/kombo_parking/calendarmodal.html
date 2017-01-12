@@ -45,8 +45,22 @@
                 <td class="ID_for_Give_Space hidden">{{item.id}}</td>
                 <td>{{item.start_date}}</td>
                 <td>{{item.stop_date}}</td>
-                <td><input id="{{item.id}}" type="text" name="space_to_lend"></td>
+                <!-- <td><input id="{{item.id}}" type="text" name="space_to_lend"></td> -->
+                
+                {% if parking_spaces %}
+                <td>
+                    <select>
+                    {% for space in parking_spaces %}
+                        <option value="{{space}}">{{space}}</option>
+                    {% endfor %}
+                    </select>
+                </td>
                 <td><button class="Give_That_Space">Give space</button></td>
+                {% else %}
+                <td>No spaces to lend</td>
+                <td></td>
+                {% endif %}
+                
             </tr>
             {% endfor %}
             {% endif %}
@@ -110,10 +124,8 @@
     
      $(".Give_That_Space").click(function() {
         var $item_id = $(this).closest("tr").find(".ID_for_Give_Space").text();  // Find row of clicked button, get td containing magic id with silly class name.
-        var $space = $("#"+$item_id).val();
-        console.log($item_id);
-        console.log($space);
-        
+        var $space = $(this).closest("tr").find("select option:selected").text();  // Find row of clicked button, get td containing magic id with silly class name.                
+       
        $.ajax({
             type: "POST",
             url: "/rentout_your_space_to_people/",
