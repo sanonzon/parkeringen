@@ -190,7 +190,9 @@ class Login:
                 user = auth.authenticate(username = username, password = password)
                 if user:
                     auth.login(request, user)
+
                     return redirect('/frontpage')
+
                     
         else:
             LogForm = LoginForm()

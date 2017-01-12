@@ -67,6 +67,14 @@ class Request_space_form(forms.Form):
         label='Stop',
         widget=SelectDateWidget)   
         
+    def clean_stop_date(self):
+        start = self.cleaned_data['start_date']
+        stop = self.cleaned_data['stop_date']
+        
+        if stop < start:
+            raise forms.ValidationError(u"Stop date cannot be before start date")
+        return stop
+        
         
 class Request_to_own_Parking_space(forms.Form):
     number = forms.IntegerField(label='Parking space')

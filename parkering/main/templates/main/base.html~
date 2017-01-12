@@ -4,7 +4,9 @@
 
 <!DOCTYPE html>
 
+<<<<<<< Updated upstream
 <html>
+=======
 <head>
 <!--
   <link rel="stylesheet"  href="{% static 'css/main/dev/sticky-footer.css' %}" />
@@ -12,7 +14,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   {% include 'kombo_parking/header.html' %}
   {% include 'meta/Meta.html' %}
-
+>>>>>>> Stashed changes
 
   <head>
     {% include 'meta/Meta.html' %}
@@ -20,9 +22,10 @@
     <title>Kombo</title>
   </head>
 
-
+<<<<<<< Updated upstream
+=======
 <body background="http://www.publicdomainpictures.net/pictures/130000/velka/blue-point-background.jpg">
-
+>>>>>>> Stashed changes
     {% if user.is_authenticated %}
 
       <div class="Authenticated">
@@ -33,23 +36,34 @@
 
     {% else %}
 
+<<<<<<< Updated upstream
+=======
+  {% else %}
+>>>>>>> Stashed changes
     <div class="Logreg">
       {% include 'account/Index_screen.html' %}
     </div>
 
     {% endif %}
 
-
+<<<<<<< Updated upstream
+    <!--/static files-->
+    <!--Bootstrap-->
+      {% include 'assets/bootstrap/Bootstrap.html' %}
+    <!--css-->
+      
+      <link rel="stylesheet" type="text/css" href="{% static 'main/css/main/dev/test.css' %}"/>
+    <!--/static files-->
+=======
   <!--/static files-->
   <!--Bootstrap-->
   <link rel="stylesheet" type="text/css" href="{% static 'main/css/main/dev/Index_Screen.css' %}" /> 
   <!-- <link rel="stylesheet" type="text/css" href="{% static 'main/css/main/dev/test.css' %}"/> --/>
   <!--/static files-->
-
+>>>>>>> Stashed changes
 
 
   </body>
 
 
 </html>
-
