@@ -122,13 +122,22 @@ def rentdetails(request):
     
         if rent_space_form.is_valid():
             space = rent_space_form.cleaned_data['space']
+            
             start_date = rent_space_form.cleaned_data['start_date']
+            start_h = int(rent_space_form.cleaned_data['start_hour'])
+            start_m = int(rent_space_form.cleaned_data['start_minute'])
+                            
             stop_date = rent_space_form.cleaned_data['stop_date']
+            stop_h = int(rent_space_form.cleaned_data['stop_hour'])
+            stop_m = int(rent_space_form.cleaned_data['stop_minute'])
+            
+            fixed_start = start_date.replace(hour=start_h, minute=start_m)
+            fixed_stop = stop_date.replace(hour=stop_h, minute=stop_m)     
 
             booking = Booking()
             booking.space = space
-            booking.start_date = start_date
-            booking.stop_date = stop_date
+            booking.start_date = fixed_start
+            booking.stop_date = fixed_stop
             booking.save()
 
             return redirect('/frontpage')
@@ -145,21 +154,25 @@ def request_space(request):
             request_form = Request_space_form(request.POST)
             
     
-            if request_form.is_valid():
-                print("FORM IS VALID")
+            if request_form.is_valid():                
                 start_date = request_form.cleaned_data['start_date']
+                start_h = int(request_form.cleaned_data['start_hour'])
+                start_m = int(request_form.cleaned_data['start_minute'])
+                                
                 stop_date = request_form.cleaned_data['stop_date']
+                stop_h = int(request_form.cleaned_data['stop_hour'])
+                stop_m = int(request_form.cleaned_data['stop_minute'])
                 
-                print(start_date)
-                print(stop_date)
+                fixed_start = start_date.replace(hour=start_h, minute=start_m)
+                fixed_stop = stop_date.replace(hour=stop_h, minute=stop_m)                               
                 
                 request_space = Requested_Space()
                 request_space.renter = request.user            
-                request_space.start_date = start_date
-                request_space.stop_date = stop_date
+                request_space.start_date = fixed_start
+                request_space.stop_date = fixed_stop
               
                 request_space.save()
-       
+                
     return redirect('/frontpage')
         
         

@@ -63,13 +63,13 @@
                       -->
                       <div class="">
                         <label class="control-label">Start Time and Date</label>
-                        {{rentout.start_date}}
+                        {{rentout.start_date}}{{rentout.start_hour}}{{rentout.start_minute}}
                         <i class="glyphicons glyphicons-car form-control-feedback"></i>
                       </div>
 
                       <div class="">
                         <label class="control-label">End Time and Date</label>
-                        {{rentout.stop_date}}
+                        {{rentout.stop_date}}{{rentout.stop_hour}}{{rentout.stop_minute}}
                         <i class="glyphicons glyphicons-car form-control-feedback"></i>
                       </div>
 
@@ -82,7 +82,8 @@
                     <form action="{%url 'kombo_parking:request_space' %}" method="POST" enctype='multipart/form-data'>
                         {% csrf_token %}
                         
-                        {{request_form.as_p }}
+                        <div>Start{{request_form.start_date }}{{request_form.start_hour}}{{request_form.start_minute}}</div>
+                        <div>Stop{{request_form.stop_date }}{{request_form.stop_hour}}{{request_form.stop_minute}}</div>
                         
                         <div class="footer">
                             <input id="submit_button" class="btn btn-sucess green" role="button"  value="Request space" type="submit" name="" />
