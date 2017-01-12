@@ -5,50 +5,39 @@
 <!DOCTYPE html>
 
 <html>
-<head>
+    <head>
 <!--
   <link rel="stylesheet"  href="{% static 'css/main/dev/sticky-footer.css' %}" />
 -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  {% include 'kombo_parking/header.html' %}
-  {% include 'meta/Meta.html' %}
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-
-  <head>
     {% include 'meta/Meta.html' %}
     {% include 'kombo_parking/header.html' %}
-    <title>Kombo</title>
-  </head>
+        <title>Kombo</title>
+    </head>
 
-
-<body background="http://www.publicdomainpictures.net/pictures/130000/velka/blue-point-background.jpg">
+    <body>
 
     {% if user.is_authenticated %}
 
-      <div class="Authenticated">
-        {% include 'kombo_parking/navbar.html' %}
-        {% include 'kombo_parking/body.html' %}
-      </div>
+        <div class="Authenticated">
+            {% include 'kombo_parking/navbar.html' %}
+            {% include 'kombo_parking/body.html' %}
+        </div>
 
 
     {% else %}
 
-    <div class="Logreg">
-      {% include 'account/Index_screen.html' %}
-    </div>
+        <div class="Logreg">
+            {% include 'account/Index_screen.html' %}
+        </div>
+
+        <link rel="stylesheet" type="text/css" href="{% static 'main/css/main/dev/Index_Screen.css' %}" />
+
 
     {% endif %}
 
-
-  <!--/static files-->
-  <!--Bootstrap-->
-  <link rel="stylesheet" type="text/css" href="{% static 'main/css/main/dev/Index_Screen.css' %}" /> 
-  <!-- <link rel="stylesheet" type="text/css" href="{% static 'main/css/main/dev/test.css' %}"/> --/>
-  <!--/static files-->
-
-
-
-  </body>
+</body>
 
 
 </html>
