@@ -9,7 +9,7 @@ from django.contrib.auth import logout
 from django.core.mail import EmailMessage
 from django.contrib.auth.views import password_reset, password_reset_confirm
 from django.core.urlresolvers import reverse
-from .forms import Booking_Form,Space_available_form,Rent_space_form, Request_space_form, Request_to_own_Parking_space
+from .forms import Booking_Form,Space_available_form,Rent_space_form, Request_space_form, Request_to_own_Parking_space, Unregister_Parking_Space
 from django.template import loader
 from datetime import datetime
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
@@ -115,7 +115,8 @@ def frontpage(request):
     request_form = Request_space_form()
     if request.user.is_authenticated():
         rent_space_form = Rent_space_form(request.user)        
-    context = {'rentout': rent_space_form, 'list': calendar, 'request_form': request_form, 'request_parking_space_form': Request_to_own_Parking_space  }
+    context = {'rentout': rent_space_form, 'list': calendar, 'request_form': request_form, 'request_parking_space_form': Request_to_own_Parking_space,
+        'unregister_space_form': Unregister_Parking_Space(request.user)}
     return render(request, 'main/base.html', context)
 
 def rentdetails(request):
@@ -214,5 +215,19 @@ def register_for_parking_space(request):
                 space.number = space_number
             
                 space.save()
+        
+    return redirect("/frontpage")
+
+def unregister_for_parking_space(request):
+    if request.user.is_authenticated():
+        if request.POST:            
+            request_form = Unregister_Parking_Space(request.user, request.POST)
+            if request_form.is_valid():
+                space_number = request_form.cleaned_data['space']
+                space_number.delete()
+                
+                # print("\n\ndoooooot: %s \n\n" %space_number)
+               
+                # Parking_space.objects.filter(number=space_number.number).get().delete()
         
     return redirect("/frontpage")
