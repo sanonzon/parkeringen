@@ -87,7 +87,7 @@ def grab_parkingspace(request):
         return redirect("/frontpage")
 
 
-@login_required(login_url='/login')
+@login_required(login_url='/not_authorized')
 def frontpage(request):
     bookings = Booking.objects.all()
     calendar = []
