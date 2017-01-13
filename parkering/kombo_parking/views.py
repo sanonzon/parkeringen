@@ -145,7 +145,7 @@ def rentdetails(request):
             return redirect('/frontpage')
             #~ return render(request, 'main/base.html', {'rentout': Rent_space_form(request.user)})
             
-        return render(request, 'main/base.html', {'rentout': rent_space_form})
+        #return render(request, 'main/base.html', {'rentout': rent_space_form})
     return redirect('/frontpage')
             
     ### call this with action="{%url 'kombo_parking:rentdetails'%}" in template in a html tag?

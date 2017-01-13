@@ -23,7 +23,11 @@
                 <td>{{item.number}}</td>
                 <td>{{item.start_date}}</td>
                 <td>{{item.stop_date}}</td>
-                <td><button class="fancyButtonclicker">Book/unbook</button></td>
+                {% if item.number in parking_spaces %}
+                <td><button class="fancyButtonclicker">Remove</button></td>
+                {% else %}
+                <td><button class="fancyButtonclicker">Book</button></td>
+               {% endif %}
             </tr>
             {% endfor %}  
                          
