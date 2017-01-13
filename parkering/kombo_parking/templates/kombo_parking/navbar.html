@@ -3,19 +3,19 @@
 <nav class="navbar navbar-default" id="navbar">
   <div class="container-fluid">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="KomboNav">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand" href="/frontpage" id="siteBrand">Kombo Parking</a>
     </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
+    <div class="collapse navbar-collapse" id="KomboNav">
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#register_for_parking_space" class="glyphicon glyphicon-tag" role="button" data-toggle="modal" id="upload-modal"></a></li>
-        <li><a href="#myModal" class="glyphicon glyphicon-bullhorn" role="button" data-toggle="modal" id="slot-modal"></a></li>
-        <li><a class="glyphicon glyphicon-user" href="{% url 'account:Account_screen' %}" id="AccountLink"></a></li>
-        <li><a href="{% url 'account:Logout' %}" id="LogoutLink">Log Out</a></li>
+        <li ><a href="#register_for_parking_space" class="glyphicon glyphicon-tag" role="button" data-toggle="modal" id="upload-modal"> <span id="navbarText"> Begär Plats</span></a></li>
+        <li ><a href="#myModal" class="glyphicon glyphicon-bullhorn" role="button" data-toggle="modal" id="slot-modal"> <span id="navbarText"> Hyra Parkering</span></a></li>
+        <li ><a class="glyphicon glyphicon-user" href="{% url 'account:Account_screen' %}" id="AccountLink"><span id="navbarText"> Hantera Användare</span></a></li>
+        <li ><a href="{% url 'account:Logout' %}" id="LogoutLink">Log Out</a></li>
       </ul>
     </div>
   </div>

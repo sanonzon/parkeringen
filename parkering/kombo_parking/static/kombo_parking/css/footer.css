@@ -1,15 +1,30 @@
-footer 
+.wrapper
 {
 	width: 100%;
-	background-color: #0EFA67;
+	margin: 0 auto;
+}
+footer 
+{
+	display: flex;
+	flex: 1;
+	background-color: #32A1D9;
 	padding: 2vh 0px;
 	margin-top: 1%;
-	border: 20px;
-
 }
-div.pull-left
+footer nav
 {
-	padding-top: 1vh;
-	padding-left: 25px;
-	color: #FF0000;
+	float: left;
+}
+
+footer nav ul
+{
+	margin-top: 2%;
+	margin-bottom: 2%;
+}
+
+footer nav ul li
+{
+	display: inline-block;
+	margin-top: 5%;
+	list-style: none;
 }

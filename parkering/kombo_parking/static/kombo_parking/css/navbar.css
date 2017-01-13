@@ -8,11 +8,16 @@
 	font-family: 'Roboto Slab', serif;
 }
 
-#AccountLink, #custom-modal{
-	color: #FF0000;
+#upload-modal, #slot-modal, #AccountLink{
+	color: #000000;
 }
 
 nav.navbar, nav.navbar-default
 {
 	border: 25px;
+}
+
+#navbarText
+{
+    font-family: 'Roboto Slab', serif;
 }
