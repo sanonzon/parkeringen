@@ -1,0 +1,15 @@
+footer 
+{
+	width: 100%;
+	background-color: #0EFA67;
+	padding: 2vh 0px;
+	margin-top: 1%;
+	border: 20px;
+
+}
+div.pull-left
+{
+	padding-top: 1vh;
+	padding-left: 25px;
+	color: #FF0000;
+}

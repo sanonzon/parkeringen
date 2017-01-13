@@ -1,25 +1,25 @@
 {% load staticfiles %}
 
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-default" id="navbar">
   <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
-      <a class="navbar-brand" href="/frontpage">Kombo Parking</a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/frontpage" id="siteBrand">Kombo Parking</a>
     </div>
-
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-      </ul>
+    <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#register_for_parking_space" class="glyphicon glyphicon-tag" role="button" data-toggle="modal">&#160;Register-space</a></li>
-        <li><a href="#myModal" class="glyphicon glyphicon-bullhorn" role="button" data-toggle="modal">&#160;Rentout/Request-space</a></li>
-        <li><a class="glyphicon glyphicon-user" href="{% url 'account:Account_screen' %}">&#160;Account-management</a></li>
-        <li><a href="{% url 'account:Logout' %}">Log Out</a></li>
+        <li><a href="#register_for_parking_space" class="glyphicon glyphicon-tag" role="button" data-toggle="modal" id="upload-modal"></a></li>
+        <li><a href="#myModal" class="glyphicon glyphicon-bullhorn" role="button" data-toggle="modal" id="slot-modal"></a></li>
+        <li><a class="glyphicon glyphicon-user" href="{% url 'account:Account_screen' %}" id="AccountLink"></a></li>
+        <li><a href="{% url 'account:Logout' %}" id="LogoutLink">Log Out</a></li>
       </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-
+    </div>
+  </div>
+</nav>
 
   <!-- Modal Test-->
 
@@ -32,7 +32,7 @@
         </div>
         <div class="modal-body">
 
-        
+
             <ul class="nav nav-pills">
                 <li class="active">
                     <a href ="#hyra_ut" data-toggle="tab">Rentout space</a>
@@ -41,7 +41,7 @@
                     <a href ="#be_om_plats" data-toggle="tab">Request space</a>
                 </li>
             </ul>
-            
+
             <div class="tab-content clearfix">
                 <div class="tab-pane active" id="hyra_ut">
                     <form action="{%url 'kombo_parking:rentdetails' %}" method="POST" enctype='multipart/form-data'>{% csrf_token %}
@@ -63,42 +63,42 @@
                       -->
                       <div class="">
                         <label class="control-label">Start Time and Date</label>
-                        {{rentout.start_date}}{{rentout.start_hour}}{{rentout.start_minute}}
+                        {{rentout.start_date}}
                         <i class="glyphicons glyphicons-car form-control-feedback"></i>
                       </div>
 
                       <div class="">
                         <label class="control-label">End Time and Date</label>
-                        {{rentout.stop_date}}{{rentout.stop_hour}}{{rentout.stop_minute}}
+                        {{rentout.stop_date}}
                         <i class="glyphicons glyphicons-car form-control-feedback"></i>
                       </div>
 
                       <div class="footer">
                         <input id="submit_button" class="btn btn-sucess green" role="button"  value="Upload Rentable Space" type="submit" name="" />
                       </div>
-                    </form>   
+                    </form>
                 </div>
                 <div class="tab-pane" id="be_om_plats">
                     <form action="{%url 'kombo_parking:request_space' %}" method="POST" enctype='multipart/form-data'>
                         {% csrf_token %}
-                        
-                        <div>Start{{request_form.start_date }}{{request_form.start_hour}}{{request_form.start_minute}}</div>
-                        <div>Stop{{request_form.stop_date }}{{request_form.stop_hour}}{{request_form.stop_minute}}</div>
-                        
+
+                        {{request_form.as_p }}
+
+
                         <div class="footer">
-                            <input id="submit_button" class="btn btn-sucess green" role="button"  value="Request space" type="submit" name="" />
+                            <input id="submit_button" class="btn btn-sucess green" role="button"  value="Request" type="submit" name="" />
                         </div>
                     </form>
                 </div>
-        
-        
+
+
           <!-- <div class="form-group has-feedback">
             <input type="text" class="form-control" placeholder="{{request.user.get_full_name}}" readonly />
             <i class="glyphicons glyphicons-car form-control-feedback"></i>
             </div> -->
 
         </div>
-        
+
       </div>
     </div>
   </div>
@@ -113,25 +113,26 @@
         </div>
         <div class="modal-body">
             <form action="{%url 'kombo_parking:register_for_parking_space' %}" method="POST" enctype='multipart/form-data'>
-            {% csrf_token %}
 
-                <h4>Register your parking space.</h4>
+            {% csrf_token %}
                 {{ request_parking_space_form.as_p }}
 
+
+
               <div class="footer">
-                <input id="submit_button" class="btn btn-sucess green" role="button"  value="Register space" type="submit" name="" />
+                <input id="submit_button" class="btn btn-sucess green" role="button"  value="Request space" type="submit" name="" />
               </div>
-            </form>   
+            </form>
         </div>
-                
-        
+
+
           <!-- <div class="form-group has-feedback">
             <input type="text" class="form-control" placeholder="{{request.user.get_full_name}}" readonly />
             <i class="glyphicons glyphicons-car form-control-feedback"></i>
             </div> -->
 
         </div>
-        
+
       </div>
     </div>
 
@@ -139,5 +140,8 @@
 <!--/static files-->
 <!--Bootstrap-->
 {% include 'assets/bootstrap/Bootstrap.html' %}
+<link rel="stylesheet" type="text/css" href="{% static "kombo_parking/css/navbar.css" %}">
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Slab" rel="stylesheet">
 <!--/static files-->
 </nav>
