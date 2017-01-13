@@ -5,22 +5,19 @@
 <!DOCTYPE html>
 
 <html>
-  <head>
 
+  <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% include 'kombo_parking/header.html' %}
     {% include 'meta/Meta.html' %}
     <title>Kombo</title>
-
   </head>
 
-  <body background="http://www.publicdomainpictures.net/pictures/130000/velka/blue-point-background.jpg">
-      {% if user.is_authenticated %}
+    {% if user.is_authenticated %}
 
-    <div class="Authenticated">
-      {% include 'kombo_parking/navbar.html' %}
-      {% include 'kombo_parking/body.html' %}
-
+      <div class="Authenticated">
+        {% include 'kombo_parking/navbar.html' %}
+        {% include 'kombo_parking/body.html' %}
       </div>
 
 
@@ -29,11 +26,11 @@
         {% include 'account/Index_screen.html' %}
       </div>
 
-          <link rel="stylesheet" type="text/css" href="{% static 'main/css/account/Index_Screen.css' %}" />
+      <!--css-->
+      <link rel="stylesheet" type="text/css" href="{% static 'main/css/account/Index_Screen.css' %}" />
           
     {% endif %}
 
   </body>
-
 
 </html>
