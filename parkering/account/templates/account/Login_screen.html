@@ -4,36 +4,43 @@
 
 <html> 
 
-  <head>
-    {% include 'meta/Meta.html' %}
-    <title>Log in</title>
-  </head>
+<head>
+  {% include 'meta/Meta.html' %}
+  <title>Log in</title>
+</head>
 
-  <body>
-    <div class="Login">
-      <h3>Log in to your account</h3>
-      <form action="{% url 'account:Login_check' %}" method="post" enctype='multipart/form-data'> 
-      {% csrf_token %}
-        <!--Username:<br>-->
-        {{ LogForm.username }}<br>
-        <!--Password:<br>-->
-        {{ LogForm.password }}<br>
-        <a href="{% url 'account:Index_screen' %}" class="btn btn-success green" role="button">Return</a>
-        <input id="submit_button" class="btn btn-success green" type="submit" value="Log in">
-        <!-- display error messages -->
-        {{ LogForm.password.errors }}
-      </form>
-      <a href="{% url 'account:Register_screen' %}">Don't have an account?</a><br>
-      <a href="{% url 'account:reset' %}">Forgot your password?</a><br>
-      <a href="{% url 'main:FAQ_screen' %}">FAQ</a>
-    </div>
+<body>
+  <div class="container">
+   <div class="row">
+    <div id="mainContainer" class="col-lg-8 col-xs-12 col-centered">
+      <div class="Login">
+        <h3>Log in to your account</h3>
+        <form action="{% url 'account:Login_check' %}" method="post" enctype='multipart/form-data'> 
+          {% csrf_token %}
+          <!--Username:<br>-->
+          {{ LogForm.username }}<br>
+          <!--Password:<br>-->
+          {{ LogForm.password }}<br>
+          <a href="{% url 'account:Index_screen' %}" class="btn btn-success green" role="button">Return</a>
+          <input id="submit_button" class="btn btn-success green" type="submit" value="Log in">
+          <!-- display error messages -->
+          {{ LogForm.password.errors }}
+        </form>
+        <a class="links" href="{% url 'account:Register_screen' %}">Don't have an account?</a><br>
+        <a class="links" href="{% url 'account:reset' %}">Forgot your password?</a><br>
+        <a class="links" href="{% url 'main:FAQ_screen' %}">FAQ</a>
+      </div>
+    </div>  
+  </div>
+</div>
 
-    <div id="reset_password_success">
-        {{ ResetPasswordSuccess|safe }}
-    </div>
-    <!--/static files-->
-      <!--Bootstrap-->
-        {% include 'assets/bootstrap/Bootstrap.html' %}
-    <!--/static files-->
-  </body>
+<div id="reset_password_success">
+    {{ ResetPasswordSuccess|safe }}
+</div>
+<!--/static files-->
+<!--Bootstrap-->
+{% include 'assets/bootstrap/Bootstrap.html' %}
+<link rel="stylesheet" type="text/css" href="{% static 'main/css/main/dev/Login_Screen.css' %}" />
+<!--/static files-->
+</body>
 </html>

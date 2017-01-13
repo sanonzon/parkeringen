@@ -4,7 +4,6 @@
 
 <!DOCTYPE html>
 
-<html>
 <head>
 <!--
   <link rel="stylesheet"  href="{% static 'css/main/dev/sticky-footer.css' %}" />
@@ -13,44 +12,33 @@
   {% include 'kombo_parking/header.html' %}
   {% include 'meta/Meta.html' %}
 
-
-  <head>
-    {% include 'meta/Meta.html' %}
-    {% include 'kombo_parking/header.html' %}
-    <title>Kombo</title>
-  </head>
-
+</head>
 
 <body background="http://www.publicdomainpictures.net/pictures/130000/velka/blue-point-background.jpg">
-
     {% if user.is_authenticated %}
 
-      <div class="Authenticated">
-        {% include 'kombo_parking/navbar.html' %}
-        {% include 'kombo_parking/body.html' %}
-        {% include 'kombo_parking/mainTemplateFooter.html' %}
-      </div>
+  <div class="Authenticated">
+    {% include 'kombo_parking/navbar.html' %}
+    {% include 'kombo_parking/body.html' %}
+
+    </div>
 
 
-    {% else %}
-
+  {% else %}
     <div class="Logreg">
       {% include 'account/Index_screen.html' %}
     </div>
 
-    {% endif %}
-
+  {% endif %}
 
   <!--/static files-->
   <!--Bootstrap-->
-  <link rel="stylesheet" type="text/css" href="{% static 'main/css/main/dev/Index_Screen.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'main/css/main/dev/Index_Screen.css' %}" /> 
   <!-- <link rel="stylesheet" type="text/css" href="{% static 'main/css/main/dev/test.css' %}"/> --/>
   <!--/static files-->
 
 
-
-  </body>
+</body>
 
 
 </html>
-
