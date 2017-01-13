@@ -6,7 +6,9 @@
 	width: 100% !important;
 	background-color: #005c99 !important;
  
-} #mainContainer {
+} 
+
+#mainContainer {
 	margin-top: 1% !important;
 	color: white !important;
 	font-size: 35px !important;
@@ -27,4 +29,3 @@
 body{
      background-image: url("http://www.publicdomainpictures.net/pictures/130000/velka/blue-point-background.jpg"); 
 }
-

@@ -11,15 +11,16 @@
 
   <body>
     <div class="authentication-error">
-      <h1>Not authorized</h1>
-      <h4>Please log in to proceed</h4>
-      <a href="{% url 'account:Index_screen' %}" class="btn btn-success green" role="button">Return</a>
-      <a href="{% url 'account:Login_screen' %}" class="btn btn-success green" role="button">Log in</a>
+      <h1 id="error-message">Not authorized</h1>
+      <a href="{% url 'account:Index_screen' %}" class="btn btn-success" id="button" role="button">Return</a>
+      <a href="{% url 'account:Login_screen' %}" class="btn btn-success" id="button" role="button">Log in</a>
     </div>
 
     <!--/static files-->
       <!--Bootstrap-->
         {% include 'assets/bootstrap/Bootstrap.html' %}
+        <!--Css-->
+        <link rel="stylesheet" type="text/css" href="{% static 'main/css/account/Not_authorized.css' %}" />
     <!--/static files-->
   </body>
 
