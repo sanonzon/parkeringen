@@ -23,9 +23,10 @@
         <!--Phone number:<br>-->
         {{ ChangeDetails.phone_number }}<br>
         {{ ChangeDetails.phone_number.errors }}
-        <a href="{% url 'account:Account_screen' %}" class="btn btn-success green" role="button">Return</a>
         <input id="submit_button" class="btn btn-success green" type="submit" value="Change details">
       </form>
+      <a href="{% url 'account:Account_screen' %}" class="btn btn-success green" role="button">Return</a>
+      <a href="{% url 'main:Render_all' %}" class="btn btn-success green" role="button">return to calendar</a>
     </div>
 
     <!--/static files-->
