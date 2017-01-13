@@ -1,31 +1,30 @@
 .Logreg {
 	text-align: center !important;
-	padding: 30px;
 	margin-top: 15% !important;
 	height: 50% !important;
 	width: 100% !important;
-	background-color: #005c99 !important;
+	
  
 } 
 
 #mainContainer {
 	margin-top: 1% !important;
 	color: white !important;
-	font-size: 35px !important;
 }
 
 #logo{
-	font-size: 1.5em;
+	font-size: 4em;
 	margin-bottom: 0.75em;
 }
   
 
 .btn-success, #btnLogin, #btnRegister, #btnForgotPassword, #btnFaq {
 	margin:0.25em 0.25em 0.25em 0.25em !important;
-	padding: 0.50em 5em 0.50em 5em !important;
+	padding: 0.75em 5em 0.75em 5em !important;
 
 }
 
 body{
-     background-image: url("http://www.publicdomainpictures.net/pictures/130000/velka/blue-point-background.jpg"); 
+     background-image: url("http://www.publicdomainpictures.net/pictures/180000/velka/car-park.jpg"); 
+     background-size: cover;
 }
