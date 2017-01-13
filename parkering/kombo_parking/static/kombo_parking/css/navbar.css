@@ -17,7 +17,7 @@ nav.navbar, nav.navbar-default
 	border: 25px;
 }
 
-#navbarText
+span.navbarText
 {
     font-family: 'Roboto Slab', serif;
 }
