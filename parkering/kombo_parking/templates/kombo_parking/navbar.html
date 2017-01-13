@@ -1,9 +1,10 @@
 {% load staticfiles %}
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <nav class="navbar navbar-default" id="navbar">
   <div class="container-fluid">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="KomboNav">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#KomboNav">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -12,9 +13,9 @@
     </div>
     <div class="collapse navbar-collapse" id="KomboNav">
       <ul class="nav navbar-nav navbar-right">
-        <li ><a href="#register_for_parking_space" class="glyphicon glyphicon-tag" role="button" data-toggle="modal" id="upload-modal"> <span id="navbarText"> Begär Plats</span></a></li>
-        <li ><a href="#myModal" class="glyphicon glyphicon-bullhorn" role="button" data-toggle="modal" id="slot-modal"> <span id="navbarText"> Hyra Parkering</span></a></li>
-        <li ><a class="glyphicon glyphicon-user" href="{% url 'account:Account_screen' %}" id="AccountLink"><span id="navbarText"> Hantera Användare</span></a></li>
+        <li ><a href="#register_for_parking_space" class="glyphicon glyphicon-tag" role="button" data-toggle="modal" id="upload-modal"> <span class="navbarText"> Rquest Space</span></a></li>
+        <li ><a href="#myModal" class="glyphicon glyphicon-bullhorn" role="button" data-toggle="modal" id="slot-modal"> <span class="navbarText"> Rent Space</span></a></li>
+        <li ><a class="glyphicon glyphicon-user" href="{% url 'account:Account_screen' %}" id="AccountLink"> <span class="navbarText"> User Manegment</span></a></li>
         <li ><a href="{% url 'account:Logout' %}" id="LogoutLink">Log Out</a></li>
       </ul>
     </div>
@@ -44,8 +45,11 @@
 
             <div class="tab-content clearfix">
                 <div class="tab-pane active" id="hyra_ut">
+                  <div id="wrapper">
                     <form action="{%url 'kombo_parking:rentdetails' %}" method="POST" enctype='multipart/form-data'>{% csrf_token %}
-                        {{ rentout.space }}
+                      <!-- tom lable skapar tillfälligt lite utrymme.-->  
+                      <label class="control-label"></label>
+                        <p class="RentSpace">{{ rentout.space }}</p>
                         <!-- parking space input
                         <div class="">
                           <label class="control-label">Parking Space</label>
@@ -61,15 +65,15 @@
                           <i class="glyphicons glyphicons-car form-control-feedback"></i>
                         </div>
                       -->
-                      <div class="">
+                      <div class="StartTime">
                         <label class="control-label">Start Time and Date</label>
-                        {{rentout.start_date}}
+                        <p class="RentStartDate">{{rentout.start_date}} {{rentout.start_hour}} {{rentout.start_minute}}</p>
                         <i class="glyphicons glyphicons-car form-control-feedback"></i>
                       </div>
 
-                      <div class="">
+                      <div class="EndTime">
                         <label class="control-label">End Time and Date</label>
-                        {{rentout.stop_date}}
+                        <p class="RentStopDate">{{rentout.stop_date}} {{rentout.stop_hour}} {{rentout.stop_minute}} </p>
                         <i class="glyphicons glyphicons-car form-control-feedback"></i>
                       </div>
 
@@ -77,6 +81,7 @@
                         <input id="submit_button" class="btn btn-sucess green" role="button"  value="Upload Rentable Space" type="submit" name="" />
                       </div>
                     </form>
+                    </div>
                 </div>
                 <div class="tab-pane" id="be_om_plats">
                     <form action="{%url 'kombo_parking:request_space' %}" method="POST" enctype='multipart/form-data'>
