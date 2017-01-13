@@ -228,17 +228,35 @@ class ForgotPassword:
         # Wrap the built-in password reset view and pass it the arguments
         # like the template name, email template name, subject template name
         # and the url to redirect after the password reset is initiated.
-        return password_reset(request, template_name=forgot_password,
+        password_reset_result = password_reset(request, template_name=forgot_password,
             email_template_name='account/Password_reset_email.html',
             subject_template_name='account/Password_reset_subject.txt',
             post_reset_redirect='/login',
             extra_context={'ResetForm': PasswordResetRequestForm})
+        
+        # Build the context required for the redirection to the login screen
+        # which will be called if an email is successfully sent.
+        context = {'LogForm': LoginForm, 'ResetPasswordSuccess': 'Mail sent.'}
+        
+        # Check whether the redirect for the login screen was called and then
+        # instead of a regular redirection, use render to provide with the specific
+        # context desired to be used when rendering the login screen after a password reset.
+        return str(password_reset_result) == str(redirect('/login')) and render(request, login, context) or password_reset_result
 
     # display reset confirm view using django built in functionality
     # This view handles password reset confirmation links. See urls.py file for the mapping.
     def Reset_confirm(request, uidb64=None, token=None):
         # Wrap the built-in reset confirmation view and pass to it all the captured parameters like uidb64, token
         # and template name, url to redirect after password reset is confirmed.
-        return password_reset_confirm(request, template_name=password_confirm,
+        password_reset_result = password_reset_confirm(request, template_name=password_confirm,
             uidb64=uidb64, token=token, post_reset_redirect='/login',
             set_password_form=PasswordChangeForm)
+
+        # Build the context required for the redirection to the login screen
+        # which will be called if the password is successfully changed.
+        context = {'LogForm': LoginForm, 'ResetPasswordSuccess': 'Password changed.'}
+
+        # Check whether the redirect for the login screen was called and then
+        # instead of a regular redirection, use render to provide with the specific
+        # context desired to be used when rendering the login screen after a password reset.
+        return str(password_reset_result) == str(redirect('/login')) and render(request, login, context) or password_reset_result
