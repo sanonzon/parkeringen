@@ -3,6 +3,10 @@
 	font-size: 25px !important;
 }
 
+.loginForm {
+	color: black;
+}
+
 .Login {
 	margin-top: 15% !important;
 	font-size: 20px !important; 
