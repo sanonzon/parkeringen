@@ -12,19 +12,14 @@ body {
 #error-message {
     text-shadow: 0px 1px 0px rgba(255,255,255,.5);
     font-size: 4em;
-
-    color: rgba(76,76,76,1);
-	color: -moz-linear-gradient(-45deg, rgba(76,76,76,1) 0%, rgba(89,89,89,0.93) 12%, rgba(102,102,102,0.86) 25%, rgba(71,71,71,0.77) 39%, rgba(44,44,44,0.72) 49%, rgba(17,17,17,0.65) 60%, rgba(0,0,0,0.57) 75%, rgba(28,28,28,0.47) 91%, rgba(19,19,19,0.42) 100%);
-	color: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(76,76,76,1)), color-stop(12%, rgba(89,89,89,0.93)), color-stop(25%, rgba(102,102,102,0.86)), color-stop(39%, rgba(71,71,71,0.77)), color-stop(49%, rgba(44,44,44,0.72)), color-stop(60%, rgba(17,17,17,0.65)), color-stop(75%, rgba(0,0,0,0.57)), color-stop(91%, rgba(28,28,28,0.47)), color-stop(100%, rgba(19,19,19,0.42)));
-	color: -webkit-linear-gradient(-45deg, rgba(76,76,76,1) 0%, rgba(89,89,89,0.93) 12%, rgba(102,102,102,0.86) 25%, rgba(71,71,71,0.77) 39%, rgba(44,44,44,0.72) 49%, rgba(17,17,17,0.65) 60%, rgba(0,0,0,0.57) 75%, rgba(28,28,28,0.47) 91%, rgba(19,19,19,0.42) 100%);
-	color: -o-linear-gradient(-45deg, rgba(76,76,76,1) 0%, rgba(89,89,89,0.93) 12%, rgba(102,102,102,0.86) 25%, rgba(71,71,71,0.77) 39%, rgba(44,44,44,0.72) 49%, rgba(17,17,17,0.65) 60%, rgba(0,0,0,0.57) 75%, rgba(28,28,28,0.47) 91%, rgba(19,19,19,0.42) 100%);
-	color: -ms-linear-gradient(-45deg, rgba(76,76,76,1) 0%, rgba(89,89,89,0.93) 12%, rgba(102,102,102,0.86) 25%, rgba(71,71,71,0.77) 39%, rgba(44,44,44,0.72) 49%, rgba(17,17,17,0.65) 60%, rgba(0,0,0,0.57) 75%, rgba(28,28,28,0.47) 91%, rgba(19,19,19,0.42) 100%);
-	color: linear-gradient(135deg, rgba(76,76,76,1) 0%, rgba(89,89,89,0.93) 12%, rgba(102,102,102,0.86) 25%, rgba(71,71,71,0.77) 39%, rgba(44,44,44,0.72) 49%, rgba(17,17,17,0.65) 60%, rgba(0,0,0,0.57) 75%, rgba(28,28,28,0.47) 91%, rgba(19,19,19,0.42) 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4c4c', endColorstr='#131313', GradientType=1 );
+    -webkit-font-smoothing: antialiased;
+   	color: #1d1c1e;
 }
 
 #action-message{
 	text-shadow: 0px 1px 0px rgba(255,255,255,.5);
+	-webkit-font-smoothing: antialiased;
+	color: black;
 }
 
 .authentication-error {
@@ -34,7 +29,6 @@ body {
 	height: 60%;
 	width: 100%;
 
-	
 	background: rgba(154,188,196,0.31);
 	background: -moz-linear-gradient(top, rgba(154,188,196,0.31) 0%, rgba(117,189,209,0.19) 41%, rgba(83,161,193,0.23) 48%, rgba(85,138,171,0.26) 65%, rgba(141,174,181,0.31) 100%);
 	background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(154,188,196,0.31)), color-stop(41%, rgba(117,189,209,0.19)), color-stop(48%, rgba(83,161,193,0.23)), color-stop(65%, rgba(85,138,171,0.26)), color-stop(100%, rgba(141,174,181,0.31)));
