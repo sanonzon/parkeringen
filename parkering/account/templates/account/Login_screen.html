@@ -21,11 +21,13 @@
           {{ LogForm.username }}<br>
           <!--Password:<br>-->
           {{ LogForm.password }}<br>
-          <a href="{% url 'account:Index_screen' %}" class="btn btn-success green" role="button">Return</a>
-          <input id="submit_button" class="btn btn-success green" type="submit" value="Log in">
-          <!-- display error messages -->
-          {{ LogForm.password.errors }}
+          <a href="{% url 'account:Index_screen' %}" class="btn btn-primary" role="button">Return</a>
+          <input id="submit_button" class="btn btn-primary" type="submit" value="Log in">
         </form>
+
+        <!-- display error messages -->
+         <h3 style="color: red;">{{ LogForm.password.errors }}</h3> 
+
         <a class="links" href="{% url 'account:Register_screen' %}">Don't have an account?</a><br>
         <a class="links" href="{% url 'account:reset' %}">Forgot your password?</a><br>
         <a class="links" href="{% url 'main:FAQ_screen' %}">FAQ</a>
