@@ -14,7 +14,7 @@
    <div class="row">
     <div id="mainContainer" class="col-lg-8 col-xs-12 col-centered">
       <div class="Login">
-        <h3>Log in to your account</h3>
+        <h3 id="login-text">Log in to your account</h3>
         <form action="{% url 'account:Login_check' %}" method="post" enctype='multipart/form-data'> 
           {% csrf_token %}
           <!--Username:<br>-->
