@@ -98,12 +98,20 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
 
 .navbar-default .navbar-nav > li > a {
     color: white;
+    font-weight: normal;
 }
 
-.navbar-default .navbar-nav > li > a:hover,
-.navbar-default .navbar-nav > li > a:focus  {
+.navbar-default .navbar-nav > li > a:hover  {
     color:#56b4f3;
+}
+
+.navbar-default .navbar-nav > li > a:focus {
     outline: none;
+    color: white;
+}
+
+.nav-icon {
+    padding-right: 7px;
 }
 
 /* ********** MEDIA QUERIES *********** */
