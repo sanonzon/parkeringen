@@ -9,23 +9,13 @@ from django.contrib.auth import logout
 from django.core.mail import EmailMessage
 from django.contrib.auth.views import password_reset, password_reset_confirm
 from django.core.urlresolvers import reverse
-from .forms import Booking_Form,Space_available_form,Rent_space_form, Request_space_form, Request_to_own_Parking_space, Unregister_Parking_Space
+from .forms import Rent_space_form, Request_space_form, Request_to_own_Parking_space, Unregister_Parking_Space
 from django.template import loader
 from datetime import datetime
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
 
-# Function to tryparse integers
-def intTryParse(value):
-    try:
-        return int(value), True
-    except ValueError:
-        return value, False
-
-
-def calendar(request):
-    ''' Onlick-event for events and days in the calendar. Renders the events for specific day.  '''
-    #~ if request.user.is_authenticated():
-    if request.is_ajax():        
+def calendar_click(request):
+    if request.is_ajax():
         if request.POST['date']:
             datelist = Booking.objects.filter(start_date__startswith=request.POST['date'],taken=False)
             requests = Requested_Space.objects.filter(start_date__startswith=request.POST['date'])
@@ -58,13 +48,8 @@ def calendar(request):
                 })
                             
             return HttpResponse(html)
-        else:
-            html = loader.render_to_string('kombo_parking/calendarmodal.html', {                    
-                })
-            return HttpResponse(html)
-            
-    else:        
-        return redirect("/frontpage")
+    else:
+        return redirect("/")
 
 def grab_parkingspace(request):
     ''' Books parking space if user already owns the space, otherwise deletes the space from being bookable'''
@@ -80,15 +65,39 @@ def grab_parkingspace(request):
                 item.taken = True            
                 item.save()
 
-        #~ print Booking.objects.filter(id=int(request.POST['booking_id'])
-            #~ html = loader.redirect('kombo_parking/calendar.html')
             return HttpResponse(loader.render_to_string('kombo_parking/calendar.html'))
     else:
-        return redirect("/frontpage")
+        return redirect("/")
+        
+''' Rents out your Parking space to chosen request'''
+def rentout_your_space_to_people(request):
+    if request.is_ajax():   
+        print(request.POST)
+        requested = Requested_Space.objects.filter(id=request.POST['booking_id']).get()
+        spaces = Parking_space.objects.values_list('number', flat=True).filter(owner=request.user)
+        print(spaces)
+                   
+        try:
+            try_number = int(request.POST['space'])
+            if try_number in spaces:
+                book = Booking()
+                book.owner = requested.renter
+                book.taken = True
+                book.space = Parking_space.objects.filter(number=try_number).get()
+                book.start_date = requested.start_date
+                book.stop_date = requested.stop_date
+            
+                book.save()
+                requested.delete()
+            
+        except ValueError:
+            pass
+    return redirect('/')
 
 
 @login_required(login_url='/not_authorized')
-def frontpage(request):
+def calendar(request):   
+    ''' START CALENDAR EVENTS '''
     bookings = Booking.objects.all()
     calendar = []
 
@@ -110,53 +119,53 @@ def frontpage(request):
                 'stop': event.stop_date.isoformat(),
                 'color': 'red' if event.taken else 'green',            
             })
-    rent_space_form = None
+            
+    ''' END CALENDAR EVENTS '''
     
-    request_form = Request_space_form()
-    if request.user.is_authenticated():
-        rent_space_form = Rent_space_form(request.user)        
-    context = {'rentout': rent_space_form, 'list': calendar, 'request_form': request_form, 'request_parking_space_form': Request_to_own_Parking_space,
-        'unregister_space_form': Unregister_Parking_Space(request.user)}
-    return render(request, 'main/base.html', context)
-
-def rentdetails(request):
+    ''' Init empty forms in case of not request.POST '''
+    rent_space_form = Rent_space_form(request.user, None)
+    request_form = Request_space_form
+    register_parking_space = Request_to_own_Parking_space
+    unregister_space_form = Unregister_Parking_Space(request.user, request.POST)
+    
+    
+    
+    
+    '''
+        Beginning of form handlers and request == POST,
+        If Form is correct -> Reloads page to avoid double post on Refresh.
+    '''    
     if request.method == 'POST':
-        rent_space_form = Rent_space_form(request.user, request.POST)
+        ''' Rent-out your space '''
+        if 'rentout_parking_space' in request.POST['form_content_check']:
+            rent_space_form = Rent_space_form(request.user, request.POST)
+        
+            if rent_space_form.is_valid():
+                space = rent_space_form.cleaned_data['space']
+                
+                start_date = rent_space_form.cleaned_data['start_date']
+                start_h = int(rent_space_form.cleaned_data['start_hour'])
+                start_m = int(rent_space_form.cleaned_data['start_minute'])
+                                
+                stop_date = rent_space_form.cleaned_data['stop_date']
+                stop_h = int(rent_space_form.cleaned_data['stop_hour'])
+                stop_m = int(rent_space_form.cleaned_data['stop_minute'])
+                
+                fixed_start = start_date.replace(hour=start_h, minute=start_m)
+                fixed_stop = stop_date.replace(hour=stop_h, minute=stop_m)     
+
+                booking = Booking()
+                booking.space = space
+                booking.start_date = fixed_start
+                booking.stop_date = fixed_stop
+                booking.save()
+                
+                return redirect('/calendar')
     
-        if rent_space_form.is_valid():
-            space = rent_space_form.cleaned_data['space']
-            
-            start_date = rent_space_form.cleaned_data['start_date']
-            start_h = int(rent_space_form.cleaned_data['start_hour'])
-            start_m = int(rent_space_form.cleaned_data['start_minute'])
-                            
-            stop_date = rent_space_form.cleaned_data['stop_date']
-            stop_h = int(rent_space_form.cleaned_data['stop_hour'])
-            stop_m = int(rent_space_form.cleaned_data['stop_minute'])
-            
-            fixed_start = start_date.replace(hour=start_h, minute=start_m)
-            fixed_stop = stop_date.replace(hour=stop_h, minute=stop_m)     
 
-            booking = Booking()
-            booking.space = space
-            booking.start_date = fixed_start
-            booking.stop_date = fixed_stop
-            booking.save()
-
-            return redirect('/frontpage')
-            #~ return render(request, 'main/base.html', {'rentout': Rent_space_form(request.user)})
-            
-        #return render(request, 'main/base.html', {'rentout': rent_space_form})
-    return redirect('/frontpage')
-            
-    ### call this with action="{%url 'kombo_parking:rentdetails'%}" in template in a html tag?
-
-def request_space(request):
-    if request.user.is_authenticated():
-        if request.POST:
-            request_form = Request_space_form(request.POST)
-            
-    
+        ''' Request Space Form '''
+        if 'request_parking_space' in request.POST['form_content_check']:
+            request_form = Request_space_form(request.POST)        
             if request_form.is_valid():                
                 start_date = request_form.cleaned_data['start_date']
                 start_h = int(request_form.cleaned_data['start_hour'])
@@ -176,58 +185,54 @@ def request_space(request):
               
                 request_space.save()
                 
-    return redirect('/frontpage')
+                return redirect('/calendar')
+            
+        ''' Register Parking Space Form '''
         
-        
-def rentout_your_space_to_people(request):
-    if request.user.is_authenticated():
-        if request.is_ajax():   
-            requested = Requested_Space.objects.filter(id=request.POST['booking_id']).get()
-            spaces = Parking_space.objects.values_list('number', flat=True).filter(owner=request.user)
-                       
-            try:
-                try_number = int(request.POST['space'])
-                if try_number in spaces:
-                    book = Booking()
-                    book.owner = requested.renter
-                    book.taken = True
-                    book.space = Parking_space.objects.filter(number=try_number).get()
-                    book.start_date = requested.start_date
-                    book.stop_date = requested.stop_date
-                
-                    book.save()
-                    requested.delete()
-                
-            except ValueError:
-                pass
-    return redirect('/frontpage')
-    
-    
-def register_for_parking_space(request):
-    if request.user.is_authenticated():
-        if request.POST:
-            request_form = Request_to_own_Parking_space(request.POST)
-            if request_form.is_valid():
-                space_number = request_form.cleaned_data['number']
+        if 'register_for_parking_space' in request.POST['form_content_check']:
+            register_parking_space = Request_to_own_Parking_space(request.POST)        
+            if register_parking_space.is_valid():
+                space_number = register_parking_space.cleaned_data['number']
                
                 space = Parking_space()
                 space.owner = request.user
                 space.number = space_number
             
                 space.save()
-        
-    return redirect("/frontpage")
-
-def unregister_for_parking_space(request):
-    if request.user.is_authenticated():
-        if request.POST:            
-            request_form = Unregister_Parking_Space(request.user, request.POST)
-            if request_form.is_valid():
-                space_number = request_form.cleaned_data['space']
+                
+                return redirect('/calendar')
+            
+        ''' Un-register Parking Space Form '''
+        if 'unregister_for_parking_space' in request.POST['form_content_check']:
+            unregister_space_form = Unregister_Parking_Space(request.user, request.POST)
+            if unregister_space_form.is_valid():
+                space_number = unregister_space_form.cleaned_data['space']
                 space_number.delete()
                 
-                # print("\n\ndoooooot: %s \n\n" %space_number)
-               
-                # Parking_space.objects.filter(number=space_number.number).get().delete()
+                return redirect('/calendar')
+            
+        ''' 
+            END of Form handlers 
+        '''
+     
+
+    ''' If any errors occured: Render those forms with their errors. '''
+    context = {'rentout': rent_space_form, 'list': calendar, 'request_form': request_form, 'request_parking_space_form': register_parking_space,
+        'unregister_space_form': unregister_space_form}
+    return render(request, 'main/base.html', context)
+
         
-    return redirect("/frontpage")
+        
+   
+        
+    '''
+    else:
+        request_form = Request_space_form()
+        rent_space_form = Rent_space_form(request.user)        
+    
+        
+        context = {'rentout': rent_space_form, 'list': calendar, 'request_form': request_form, 'request_parking_space_form': Request_to_own_Parking_space,
+            'unregister_space_form': Unregister_Parking_Space(request.user)}
+        return render(request, 'main/base.html', context)
+
+    '''

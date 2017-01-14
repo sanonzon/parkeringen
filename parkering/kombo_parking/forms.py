@@ -187,9 +187,8 @@ class Unregister_Parking_Space(forms.Form):
         
     
     def clean_number(self):
-        n = self.cleaned_data['number'].number
-        print("doot doot doot \n\n\n %t \n\n" % n)
-        if not Parking_space.objects.filter(owner=request.user, number=int(n)).exists():
+        n = self.cleaned_data['space'].number
+        if not Parking_space.objects.filter(owner=user, number=n).exists():
             raise forms.ValidationError(u"You are not the owner of this.")
             
         return n

@@ -9,12 +9,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/frontpage" id="siteBrand">Kombo Parking</a>
+      <a class="navbar-brand" href="/" id="siteBrand">Kombo Parking</a>
     </div>
     <div class="collapse navbar-collapse" id="KomboNav">
       <ul class="nav navbar-nav navbar-right">
         <li ><a href="#unregister_for_parking_space" class="glyphicon glyphicon-tag" role="button" data-toggle="modal" id="upload-modal"> <span class="navbarText">Unregister Space</span></a></li>
-        <li ><a href="#register_for_parking_space" class="glyphicon glyphicon-tag" role="button" data-toggle="modal" id="upload-modal"> <span class="navbarText">Request Space</span></a></li>
+        <li ><a href="#register_for_parking_space" class="glyphicon glyphicon-tag" role="button" data-toggle="modal" id="upload-modal"> <span class="navbarText">Register Space</span></a></li>
         <li ><a href="#myModal" class="glyphicon glyphicon-bullhorn" role="button" data-toggle="modal" id="slot-modal"> <span class="navbarText"> Rent Space</span></a></li>
         <li ><a class="glyphicon glyphicon-user" href="{% url 'account:Account_screen' %}" id="AccountLink"> <span class="navbarText"> User Management</span></a></li>
         <li ><a href="{% url 'account:Logout' %}" id="LogoutLink">Log Out</a></li>
@@ -47,7 +47,7 @@
             <div class="tab-content clearfix">
                 <div class="tab-pane active" id="hyra_ut">
                   <div id="wrapper">
-                    <form action="{%url 'kombo_parking:rentdetails' %}" method="POST" enctype='multipart/form-data'>{% csrf_token %}
+                    <form action="{%url 'kombo_parking:calendar' %}" method="POST" enctype='multipart/form-data'>{% csrf_token %}
                       <!-- tom lable skapar tillfälligt lite utrymme.-->  
                       <label class="control-label"></label>
                         <p class="RentSpace">{{ rentout.space }}</p>
@@ -68,29 +68,30 @@
                       -->
                       <div class="StartTime">
                         <label class="control-label">Start Time and Date</label>
-                        <p class="RentStartDate">{{rentout.start_date}} {{rentout.start_hour}} {{rentout.start_minute}}</p>
+                        <p class="RentStartDate">{{rentout.start_date}} {{rentout.start_hour}} {{rentout.start_minute}} {{rentout.start_date.errors}}{{rentout.start_hour.errors}}{{rentout.start_minute.errors}}</p>
                         <i class="glyphicons glyphicons-car form-control-feedback"></i>
                       </div>
 
                       <div class="EndTime">
                         <label class="control-label">End Time and Date</label>
-                        <p class="RentStopDate">{{rentout.stop_date}} {{rentout.stop_hour}} {{rentout.stop_minute}} </p>
+                        <p class="RentStopDate">{{rentout.stop_date}} {{rentout.stop_hour}} {{rentout.stop_minute}} {{rentout.stop_date.errors}}{{rentout.stop_hour.errors}}{{rentout.stop_minute.errors}}</p>
                         <i class="glyphicons glyphicons-car form-control-feedback"></i>
                       </div>
-
+                        <input class="hidden" name="form_content_check" value="rentout_parking_space">
                       <div class="footer">
                         <input id="submit_button" class="btn btn-sucess green" role="button"  value="Upload Rentable Space" type="submit" name="" />
                       </div>
                     </form>
                     </div>
                 </div>
-                <div class="tab-pane" id="be_om_plats">
-                    <form action="{%url 'kombo_parking:request_space' %}" method="POST" enctype='multipart/form-data'>
-                        {% csrf_token %}
 
+                <div class="tab-pane" id="be_om_plats">
+                    <form action="{%url 'kombo_parking:calendar' %}" method="POST" enctype='multipart/form-data'>
+                        {% csrf_token %}
+                        
                         {{request_form.as_p }}
 
-
+                    <input class="hidden" name="form_content_check" value="request_parking_space">
                         <div class="footer">
                             <input id="submit_button" class="btn btn-sucess green" role="button"  value="Request" type="submit" name="" />
                         </div>
@@ -118,11 +119,11 @@
           <!-- <h4 class="modal-title">Hyra Ut/Boka Plats</h4> -->
         </div>
         <div class="modal-body">
-            <form action="{%url 'kombo_parking:register_for_parking_space' %}" method="POST" enctype='multipart/form-data'>
+            <form action="{%url 'kombo_parking:calendar' %}" method="POST" enctype='multipart/form-data'>
 
             {% csrf_token %}
                 {{ request_parking_space_form.as_p }}
-
+                <input class="hidden" name="form_content_check" value="register_for_parking_space">
 
 
               <div class="footer">
@@ -149,17 +150,18 @@
           <!-- <h4 class="modal-title">Hyra Ut/Boka Plats</h4> -->
         </div>
         <div class="modal-body">
-            <form action="{%url 'kombo_parking:unregister_for_parking_space' %}" method="POST" enctype='multipart/form-data'>
-
-            {% csrf_token %}
+            
+            <form action="{%url 'kombo_parking:calendar' %}" method="POST" enctype='multipart/form-data'>
+                {% csrf_token %}
                 {{ unregister_space_form.space }}
-
+                <input class="hidden" name="form_content_check" value="unregister_for_parking_space">
 
 
               <div class="footer">
                 <input id="submit_button" class="btn btn-sucess green" role="button"  value="Remove space" type="submit" name="" />
               </div>
             </form>
+
         </div>
 
 

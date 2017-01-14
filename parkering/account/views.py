@@ -147,7 +147,8 @@ class Register:
             apartment = register_form.cleaned_data['apartment']
 
             if request.user.is_authenticated():
-                return redirect('/frontpage')
+                # return redirect('/frontpage')
+                return redirect('/calendar')
             else:
                 user = User(username=username)
                 user.email = email
@@ -166,7 +167,8 @@ class Register:
                 
                 if user:
                     auth.login(request, user)
-                    return redirect('/frontpage')
+                    # return redirect('/frontpage')
+                    return redirect('/calendar')
 
         return render(request, register, { 'RegForm': register_form })
 
@@ -191,7 +193,8 @@ class Login:
                 if user:
                     auth.login(request, user)
 
-                    return redirect('/frontpage')
+                    # return redirect('/frontpage')
+                    return redirect('/calendar')
 
                     
         else:
