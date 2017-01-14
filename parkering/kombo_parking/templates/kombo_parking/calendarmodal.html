@@ -98,7 +98,9 @@
     </div>
   </div>
 <script>
-    $( document ).ready(function() {
+    var csrftoken;
+    
+   $( document ).ready(function() {
         function getCookie(name) {
             var cookieValue = null;
             if (document.cookie && document.cookie != '') {
@@ -114,10 +116,10 @@
             }
             return cookieValue;
         }
-    
+    csrftoken = getCookie('csrftoken');
     });
-    var csrftoken = getCookie('csrftoken');
-   
+    
+
     
     $(".fancyButtonclicker").click(function() {
         var $item = $(this).closest("tr").find(".dootfacetwentyseven").text();  // Find row of clicked button, get td containing magic id with silly class name.
