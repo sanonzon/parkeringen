@@ -6,7 +6,7 @@ app_name = 'main'
 urlpatterns = [
 
 	# display index view
-    url(r'^$', views.Let_there_be_light, name='Render_all'),
+    url(r'^$', views.Let_there_be_light, name='Render_all'),    
 
     # display FAQ
     url(r'^faq$', views.FAQ_screen, name='FAQ_screen'),

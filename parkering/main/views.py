@@ -5,7 +5,8 @@ from django.contrib.auth.decorators import login_required
 def Let_there_be_light(request):
     # return render(request, 'main/base.html')
     if request.user.is_authenticated():
-        return redirect("/frontpage")
+        # return redirect("/frontpage")
+        return redirect("/calendar")
     else:
         return render(request, "main/base.html")
 

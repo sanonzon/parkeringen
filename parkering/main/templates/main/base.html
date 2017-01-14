@@ -11,20 +11,18 @@
 <body>
     {% if user.is_authenticated %}
 
-    <div class="Authenticated">
-        {% include 'kombo_parking/navbar.html' %} {% include 'kombo_parking/body.html' %}
-
-    </div>
-
+      <div class="Authenticated">
+        {% include 'kombo_parking/navbar.html' %}
+        {% include 'kombo_parking/body.html' %}
+        {% include 'kombo_parking/mainTemplateFooter.html' %}
+      </div>
 
     {% else %}
-
-    {% include 'account/Index_screen.html' %}
-
+    
+      {% include 'account/Index_screen.html' %}
+          
     {% endif %}
 
-
-</body>
-
+  </body>
 
 </html>

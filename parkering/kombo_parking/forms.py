@@ -93,7 +93,7 @@ class Rent_space_form(forms.Form):
         
     def __init__(self, user, *args, **kwargs):
         super(Rent_space_form, self).__init__(*args, **kwargs)
-        self.fields['space'].queryset = Parking_space.objects.filter(owner=user)
+        self.fields['space'].queryset = Parking_space.objects.filter(owner=user).order_by('number')
         
     ### description = forms.CharField(label='Beskrivning')
     """ def __init__(self, arg):
@@ -168,6 +168,31 @@ class Request_to_own_Parking_space(forms.Form):
             raise forms.ValidationError(u"Parking space already taken.")
         return n
     
+class Unregister_Parking_Space(forms.Form):
+    class _ParkingSpaceModelChoiceField(forms.ModelChoiceField):
+
+        # Overriding label_from_instance function
+        def label_from_instance(self, obj):
+            return "%s" % obj.number
     
+    space = _ParkingSpaceModelChoiceField(
+        queryset=Parking_space.objects.none(),
+        to_field_name="number",
+        empty_label=None)      
+
+        
+    def __init__(self, user, *args, **kwargs):
+        super(Unregister_Parking_Space, self).__init__(*args, **kwargs)
+        self.fields['space'].queryset = Parking_space.objects.filter(owner=user).order_by('number')
+        
     
-    
+    def clean_number(self):
+        n = self.cleaned_data['space'].number
+        if not Parking_space.objects.filter(owner=user, number=n).exists():
+            raise forms.ValidationError(u"You are not the owner of this.")
+            
+        return n
+        
+        
+        
+        

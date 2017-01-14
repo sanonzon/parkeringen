@@ -1,0 +1,30 @@
+.Logreg {
+	text-align: center !important;
+	margin-top: 15% !important;
+	height: 50% !important;
+	width: 100% !important;
+	
+ 
+} 
+
+#mainContainer {
+	margin-top: 1% !important;
+	color: white !important;
+}
+
+#logo{
+	font-size: 4em;
+	margin-bottom: 0.75em;
+}
+  
+
+.btn-success, #btnLogin, #btnRegister, #btnForgotPassword, #btnFaq {
+	margin:0.25em 0.25em 0.25em 0.25em !important;
+	padding: 0.75em 5em 0.75em 5em !important;
+
+}
+
+body{
+     background-image: url("http://www.publicdomainpictures.net/pictures/180000/velka/car-park.jpg"); 
+     background-size: cover;
+}

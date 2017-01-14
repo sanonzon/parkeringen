@@ -33,8 +33,11 @@
             <a class="login-links" href="{% url 'account:reset' %}">Forgot your password?</a><br>
             <a class="login-links" href="{% url 'main:FAQ_screen' %}">FAQ</a>
           </div>
+        </div>
       </div>
-  </div>
-</div>
+    </div>
 
+<div id="reset_password_success">
+    {{ ResetPasswordSuccess|safe }}
+</div>
 </body>
