@@ -1,11 +1,11 @@
 <!-- user account management view -->
-
+<!DOCTYPE html>
 {% load staticfiles %}
 
 <html>
 
   <head>
-    {% include 'kombo_parking/header.html' %} {% include 'meta/Meta.html' %}
+    {% include 'meta/Meta.html' %}
     <title>Account</title>
   </head>
 
@@ -15,6 +15,11 @@
     <a href="{% url 'account:UpdatePass_screen' %}" class="btn btn-primary" role="button">Update password</a>
     <a href="{% url 'account:UpdateDetails_screen' %}" class="btn btn-primary" role="button">Update information</a>
 
+    <!--/static files-->
+      <!--Bootstrap-->
+        {% include 'assets/bootstrap/Bootstrap.html' %}
+      <!--Css-->
+    <!--/static files-->
   </body>
 
 </html>

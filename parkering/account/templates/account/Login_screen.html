@@ -1,22 +1,23 @@
 <!-- user login view -->
-
+<!DOCTYPE html>
 {% load staticfiles %}
 
-<head>
-  {% include 'kombo_parking/header.html' %} {% include 'meta/Meta.html' %}
-  <title>KomboPark | Log in</title>
-</head>
+<html>
+  <head>
+    {% include 'meta/Meta.html' %}
+    <title>Log in</title>
+  </head>
 
-<body>
+  <body>
 
-<div class="jumbotron">
-  <div class="container">
-      <div class="row">
-          <div class="col-md-8 col-md-offset-2">
-              <h1>Log in</h1>
-          </div>
-      </div>
-      <div class="row">
+  <div class="jumbotron">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h1>Log in</h1>
+            </div>
+        </div>
+        <div class="row">
           <div class="col-md-8 col-md-offset-2 login-form">
             <form action="{% url 'account:Login_check' %}" method="post" enctype='multipart/form-data'> 
               {% csrf_token %}
@@ -37,7 +38,15 @@
       </div>
     </div>
 
-<div id="reset_password_success">
-    {{ ResetPasswordSuccess|safe }}
-</div>
-</body>
+    <div id="reset_password_success">
+        {{ ResetPasswordSuccess|safe }}
+    </div>
+
+    <!--/static files-->
+      <!--Bootstrap-->
+        {% include 'assets/bootstrap/Bootstrap.html' %}
+      <!--Css-->
+      <link rel="stylesheet" type="text/css" href="{% static 'main/css/main/mastercss.css' %}" />
+    <!--/static files-->
+  </body>
+<html>

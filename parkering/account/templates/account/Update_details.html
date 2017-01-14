@@ -1,9 +1,10 @@
+<!DOCTYPE html>
 {% load staticfiles %}
 
 <html>
 
   <head>
-    {% include 'kombo_parking/header.html' %} {% include 'meta/Meta.html' %}
+    {% include 'meta/Meta.html' %}
     <title>Update details</title>
   </head>
 
@@ -29,7 +30,11 @@
       <a href="{% url 'main:Render_all' %}" class="btn btn-success green" role="button">return to calendar</a>
     </div>
 
-
+    <!--/static files-->
+      <!--Bootstrap-->
+        {% include 'assets/bootstrap/Bootstrap.html' %}
+      <!--Css-->
+    <!--/static files-->
   </body>
 
 </html>
