@@ -28,6 +28,9 @@
               <input id="submit_button" class="btn btn-success green login-buttons" type="submit" value="Log in">
               <!-- display error messages -->
               {{ LogForm.password.errors }}
+              <div class="reset-password-success">
+                {{ ResetPasswordSuccess|safe }}
+              </div>
             </form>
             <a class="login-links" href="{% url 'account:Register_screen' %}">Don't have an account?</a><br>
             <a class="login-links" href="{% url 'account:reset' %}">Forgot your password?</a><br>
@@ -36,8 +39,4 @@
         </div>
       </div>
     </div>
-
-<div id="reset_password_success">
-    {{ ResetPasswordSuccess|safe }}
-</div>
 </body>
