@@ -8,7 +8,10 @@
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <div class="modal-body">
-          {% if list %}
+        {% if not requests and not list and not contacts %}
+            <p>No spaces available, use the options in the navbar to request a parking space.</p>            
+        {% endif %}
+        {% if list %}
            <h2>Available spaces</h2>
           <table class="table">
             <tr>
@@ -32,19 +35,19 @@
             {% endfor %}  
                          
           </table>
-          {% endif %} 
+        {% endif %} 
           
-          {% if requests%}
+        {% if requests %}
           <h2>Requested spaces</h2>
           
-          <table class="table">
+        <table class="table">
             <tr>
                 <th class="text-center">Start</th>
                 <th class="text-center">Stop</th>            
                 <th>Space to give</th>            
                 <th></th>            
             </tr>
-          {% for item in requests %}
+            {% for item in requests %}
             <tr>
                 <td class="ID_for_Give_Space hidden">{{item.id}}</td>
                 <td>{{item.start_date}}</td>
@@ -68,13 +71,21 @@
                 
             </tr>
             {% endfor %}
-            {% endif %}
-            {% if not requests and not list %}
-          <p>
-            No spaces available, use the options in the navbar to request a parking space.
+        </table>
+        {% endif %}
+        
+        {% if contacts %}        
+            {% for contact in contacts %}
+            <p class="text-left">
+                {{contact.booked_user.first_name}} {{contact.booked_user.last_name}} has booked space {{contact.number}} from {{contact.start_date}} to {{contact.stop_date}}.<br>
+                Contact: {{contact.booked_user_data.phone_number}}
             </p>
-           {% endif %}
-          </table>
+            {% endfor %}
+        
+        {% endif %}
+        
+        
+        
         
         
       </div> <!-- MODAL BODY END -->

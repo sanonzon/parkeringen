@@ -17,11 +17,13 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadReque
 def calendar_click(request):
     if request.is_ajax():
         if request.POST['date']:
+            booked = Booking.objects.filter(start_date__startswith=request.POST['date'],taken=True)
             datelist = Booking.objects.filter(start_date__startswith=request.POST['date'],taken=False)
             requests = Requested_Space.objects.filter(start_date__startswith=request.POST['date'])
 
             calendar = []
             request_list = []
+            booked_list = []
             
             if requests:
                 for event in requests:
@@ -40,11 +42,24 @@ def calendar_click(request):
                         'stop_date': event.stop_date.strftime("%Y-%m-%d %H:%M"),
                     })
 
+            if booked:
+                for event in booked:
+                    print(User_data.objects.filter(user=event.owner).get() if User_data.objects.filter(user=event.owner) else None)
+                    print(User.objects.filter(id=event.owner.id).get())
+                    booked_list.append({
+                        'id':event.id,
+                        'number': event.space.number,
+                        'start_date': event.start_date.strftime("%Y-%m-%d %H:%M"),
+                        'stop_date': event.stop_date.strftime("%Y-%m-%d %H:%M"),
+                        'booked_user_data' : User_data.objects.filter(user=event.owner).get() if User_data.objects.filter(user=event.owner) else None,
+                        'booked_user' : User.objects.filter(id=event.owner.id).get(),
+                    })
+                    
             html = loader.render_to_string('kombo_parking/calendarmodal.html', {
                     'list': calendar,
                     'requests' : request_list,
                     'parking_spaces': Parking_space.objects.filter(owner=request.user).values_list('number', flat=True).order_by('number'),
-                   
+                    'contacts': booked_list,                   
                 })
                             
             return HttpResponse(html)
