@@ -14,6 +14,11 @@ from django.template import loader
 from datetime import datetime
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
 
+
+# EmailMessage('Kombo Parking', 'Plats: %s uthyrd' % booking.space.number, to=[booking.space.owner.email]).send()
+def send_mail(subject, email_to, body,):
+    EmailMessage(subject, body, to=[email_to]).send()
+    
 def calendar_click(request):
     if request.is_ajax():
         if request.POST['date']:
@@ -78,8 +83,20 @@ def grab_parkingspace(request):
             else:
                 item.owner = request.user
                 item.taken = True            
+                
+                if request.user.email:
+                    subject = "Parking space rented"
+                    email_to = request.user.email
+                    start = item.start_date.strftime("%Y-%m-%d %H:%M")
+                    stop = item.stop_date.strftime("%Y-%m-%d %H:%M")
+                    body = 'Parking space %s rented to %s %s from %s to %s\nPhone number: %s' % (item.space.number, request.user.first_name, request.user.last_name, start, stop, User_data.objects.filter(user=request.user).get().phone_number)
+                    
+                    print ("%s\n%s\n%s\n%s\n%s" % (email_to, start, stop, body,User_data.objects.filter(user=request.user).get().phone_number))
+                    
+                    send_mail(subject, email_to, body)
+                
                 item.save()
-
+                
             return HttpResponse(loader.render_to_string('kombo_parking/calendar.html'))
     else:
         return redirect("/")
