@@ -1,57 +1,62 @@
 {% load staticfiles %}
 
-<html>
-
   <head>
-    {% include 'meta/Meta.html' %}
-    <title>Register account</title>
+    {% include 'kombo_parking/header.html' %} {% include 'meta/Meta.html' %}
+    <title>KomboPark | Register account</title>
   </head>
 
   <body>
-    <div class="Register">
-      <h3>Register an account</h3>
-      <form action="{% url 'account:Register_account' %}" method="post" enctype='multipart/form-data'> 
-      {% csrf_token %}
-        <!--Username:<br>-->
-        {{ RegForm.username }}<br>
-        {{ RegForm.username.errors }}
-        <!--E-mail address:<br>-->
-        {{ RegForm.email }}<br>
-        {{ RegForm.email.errors }}
-        <!--First name:<br>-->
-        {{ RegForm.first_name }}<br>
-        {{ RegForm.first_name.errors }}
-        <!--Last name:<br>-->
-        {{ RegForm.last_name }}<br>
-        {{ RegForm.last_name.errors }}
-        <!--Phone number:<br>-->
-        {{ RegForm.phone_number }}<br>
-        {{ RegForm.phone_number.errors }}
-        <!--Apartment number:<br>-->
-        {{ RegForm.apartment }}<br>
-        {{ RegForm.apartment.errors }}
-        <!--Password:<br>-->
-        {{ RegForm.password }}<br>
-        {{ RegForm.password.errors }}
-        <!--Repeat password:<br>-->
-        {{ RegForm.password_repeat }}<br>
-        {{ RegForm.password_repeat.errors }}
-<!--
-        <input type="password" placeholder="Repeat password" name="Repeat_password"><br>
--->
-        <a href="{% url 'account:Index_screen' %}" class="btn btn-success green" role="button">Return</a>
-        <input id="submit_button" class="btn btn-success green" type="submit" value="Register">
-        <!--display error messages-->
-      </form>
-      <a href="{% url 'account:Login_screen' %}">Already have an account?</a><br>
-      <a href="{% url 'main:FAQ_screen' %}">FAQ</a>
+
+<div class="jumbotron">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>Register an account</h1>
+      </div>
     </div>
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2 login-form">
+        <form action="{% url 'account:Register_account' %}" method="post" enctype='multipart/form-data'> 
+          {% csrf_token %}
+          <div class="col-sm-6 col-xs-12 register-first-half">
+            <!--Username:<br>-->
+            {{ RegForm.username }}<br>
+            {{ RegForm.username.errors }}
+            <!--E-mail address:<br>-->
+            {{ RegForm.email }}<br>
+            {{ RegForm.email.errors }}
+            <!--First name:<br>-->
+            {{ RegForm.first_name }}<br>
+            {{ RegForm.first_name.errors }}
+            <!--Last name:<br>-->
+            {{ RegForm.last_name }}<br>
+            {{ RegForm.last_name.errors }}
+          </div>
+          <div class="col-sm-6 col-xs-12 register-second-half">
+            <!--Phone number:<br>-->
+            {{ RegForm.phone_number }}<br>
+            {{ RegForm.phone_number.errors }}
+            <!--Apartment number:<br>-->
+            {{ RegForm.apartment }}<br>
+            {{ RegForm.apartment.errors }}
+            <!--Password:<br>-->
+            {{ RegForm.password }}<br>
+            {{ RegForm.password.errors }}
+            <!--Repeat password:<br>-->
+            {{ RegForm.password_repeat }}<br>
+            {{ RegForm.password_repeat.errors }}
+          </div>
 
-    <!--/static files-->
-      <!--Bootstrap-->
-        {% include 'assets/bootstrap/Bootstrap.html' %}
-    <!--/static files-->
+          <a href="{% url 'account:Index_screen' %}" class="btn btn-lg btn-info green register-buttons" role="button">Return</a>
+          <input id="submit_button" class="btn btn-lg btn-success green register-buttons" type="submit" value="Register">
+          <!--display error messages-->
+        </form>
 
-  </body>
+        <a class="register-links" href="{% url 'account:Login_screen' %}">Already have an account?</a><br>
+        <a class="register-links" href="{% url 'main:FAQ_screen' %}">FAQ</a>
+      </div>
+    </div>
+  </div>
+</div>
 
-</html>
+</body>

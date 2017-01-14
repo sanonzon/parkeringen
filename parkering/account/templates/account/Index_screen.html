@@ -1,19 +1,23 @@
 <!-- template to display index page options, user index view -->
 
+<head>
+    <title>KomboPark</title>
+</head>
 
-
-<div class="account-index">
-	<div class="container">
-	 <div class="row">
-		<div id="mainContainer" class="col-lg-8 col-xs-12 col-centered">
-			<h1 id="logo">KomboPark</h1>
-			<a id="btnLogin" href="{% url 'account:Login_screen' %}" class="btn btn-success green" role="button">Log in</a>
-			<a id="btnRegister" href="{% url 'account:Register_screen' %}" class="btn btn-success green" role="button">Register</a>
-			<a id="btnForgotPassword" href="{% url 'account:reset' %}" class="btn btn-success green" role="button">Forgot Password</a> 
-			<a id="btnFaq" href="{% url 'main:FAQ_screen' %}" class="btn btn-success green" role="button">FAQ<a> 
-			</div>	
-		</div>
-	</div>
+<div class="jumbotron">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h1>KomboPark</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 index-buttons">
+                <a id="btnLogin" href="{% url 'account:Login_screen' %}" class="btn btn-lg btn-success green" role="button">Log in</a>
+                <a id="btnRegister" href="{% url 'account:Register_screen' %}" class="btn btn-lg btn-success green" role="button">Register</a>
+                <a id="btnForgotPassword" href="{% url 'account:reset' %}" class="btn btn-lg btn-success green" role="button">Forgot Password</a>
+                <a id="btnFaq" href="{% url 'main:FAQ_screen' %}" class="btn btn-lg btn-success green" role="button">FAQ<a> 
+            </div>
+        </div>
+    </div>
 </div>
-
-
