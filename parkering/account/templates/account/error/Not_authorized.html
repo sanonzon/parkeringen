@@ -1,16 +1,16 @@
 <!-- user not authorized view -->
-
+<!DOCTYPE html>
 {% load staticfiles %}
 
 <html> 
 
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% include 'meta/Meta.html' %}
     <title>Not authorized</title>
   </head>
 
   <body class="autherror-body">
+
     <div class="authentication-error">
       <h1 id="error-message">Not authorized</h1>
       <h4 id="action-message">Please log in to continue</h4>
@@ -22,7 +22,7 @@
       <!--Bootstrap-->
         {% include 'assets/bootstrap/Bootstrap.html' %}
         <!--Css-->
-        <link rel="stylesheet" type="text/css" href="{% static 'main/css/account/Not_authorized.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'account/css/Not_authorized.css' %}" />
     <!--/static files-->
   </body>
 
