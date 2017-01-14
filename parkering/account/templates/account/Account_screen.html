@@ -5,7 +5,7 @@
 <html>
 
   <head>
-    {% include 'meta/Meta.html' %}
+    {% include 'kombo_parking/header.html' %} {% include 'meta/Meta.html' %}
     <title>Account</title>
   </head>
 
@@ -14,10 +14,7 @@
     <a href="{% url 'main:Render_all' %}" class="btn btn-primary" role="button">return to calendar</a>
     <a href="{% url 'account:UpdatePass_screen' %}" class="btn btn-primary" role="button">Update password</a>
     <a href="{% url 'account:UpdateDetails_screen' %}" class="btn btn-primary" role="button">Update information</a>
-    <!--/static files-->
-      <!--Bootstrap-->
-        {% include 'assets/bootstrap/Bootstrap.html' %}
-    <!--/static files-->
+
   </body>
 
 </html>
