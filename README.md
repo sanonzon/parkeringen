@@ -1,5 +1,10 @@
 # parkeringen
 
+## slö 'deploy'.
+python parkering/manage.py runserver LOKALT_IP:PORT<br>
+Forward:a PORT i din router till LOKALT_IP så folk kan använda det.
+
+
 #/account
 Everything related to user
 #/main
