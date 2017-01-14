@@ -72,10 +72,8 @@ def grab_parkingspace(request):
 ''' Rents out your Parking space to chosen request'''
 def rentout_your_space_to_people(request):
     if request.is_ajax():   
-        print(request.POST)
         requested = Requested_Space.objects.filter(id=request.POST['booking_id']).get()
         spaces = Parking_space.objects.values_list('number', flat=True).filter(owner=request.user)
-        print(spaces)
                    
         try:
             try_number = int(request.POST['space'])

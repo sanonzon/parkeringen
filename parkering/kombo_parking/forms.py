@@ -93,7 +93,7 @@ class Rent_space_form(forms.Form):
         
     def __init__(self, user, *args, **kwargs):
         super(Rent_space_form, self).__init__(*args, **kwargs)
-        self.fields['space'].queryset = Parking_space.objects.filter(owner=user)
+        self.fields['space'].queryset = Parking_space.objects.filter(owner=user).order_by('number')
         
     ### description = forms.CharField(label='Beskrivning')
     """ def __init__(self, arg):
@@ -183,7 +183,7 @@ class Unregister_Parking_Space(forms.Form):
         
     def __init__(self, user, *args, **kwargs):
         super(Unregister_Parking_Space, self).__init__(*args, **kwargs)
-        self.fields['space'].queryset = Parking_space.objects.filter(owner=user)
+        self.fields['space'].queryset = Parking_space.objects.filter(owner=user).order_by('number')
         
     
     def clean_number(self):
