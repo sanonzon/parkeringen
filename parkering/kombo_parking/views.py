@@ -49,22 +49,23 @@ def calendar_click(request):
 
             if booked:
                 for event in booked:
-                    print(User_data.objects.filter(user=event.owner).get() if User_data.objects.filter(user=event.owner) else None)
-                    print(User.objects.filter(id=event.owner.id).get())
                     booked_list.append({
                         'id':event.id,
                         'number': event.space.number,
                         'start_date': event.start_date.strftime("%Y-%m-%d %H:%M"),
                         'stop_date': event.stop_date.strftime("%Y-%m-%d %H:%M"),
-                        'booked_user_data' : User_data.objects.filter(user=event.owner).get() if User_data.objects.filter(user=event.owner) else None,
-                        'booked_user' : User.objects.filter(id=event.owner.id).get(),
+                        'booked_user_data' : User_data.objects.filter(user=event.owner).get() if User_data.objects.filter(user=event.owner).exists() else None,
+                        'booked_user' : User.objects.filter(id=event.owner.id).get(),                        
                     })
                     
             html = loader.render_to_string('kombo_parking/calendarmodal.html', {
                     'list': calendar,
                     'requests' : request_list,
                     'parking_spaces': Parking_space.objects.filter(owner=request.user).values_list('number', flat=True).order_by('number'),
-                    'contacts': booked_list,                   
+                    'bookings': booked_list, 
+                    'request': request,
+                    'you_have_booked_spaces': True if Booking.objects.filter(start_date__startswith=request.POST['date'],taken=True).filter(owner=request.user) else False
+                    
                 })
                             
             return HttpResponse(html)
@@ -72,29 +73,46 @@ def calendar_click(request):
         return redirect("/")
 
 def grab_parkingspace(request):
-    ''' Books parking space if user already owns the space, otherwise deletes the space from being bookable'''
+    ''' IF chosen booking is your own, Deletes your booking, making space bookable.
+        Else Books parking space for you.
+    '''
     if request.is_ajax():
         if request.POST['booking_id']:
-            item = Booking.objects.filter(id=int(request.POST['booking_id'])).get()
-            
-            if item.space.owner == request.user:
-                item.delete()
+            item = Booking.objects.filter(id=int(request.POST['booking_id'])).get()            
+                        
+            # Unbook, make it available to others.
+            if item.owner == request.user:
+                item.taken = False
+                item.owner = None
+                item.save()
+ 
+                if item.space.owner.email:
+                    subject = "Parking space %s no longer booked" % (item.space.number)
+                    email_to = item.space.owner.email
+                    start = item.start_date.strftime("%Y-%m-%d %H:%M")
+                    stop = item.stop_date.strftime("%Y-%m-%d %H:%M")
+                    body = "Parking space %s no longer booked" % (item.space.number)
+                    
+                    send_mail(subject, email_to, body)
+ 
+            #elif item.space.owner == request.user:
+            #    item.delete()
                 
             else:
                 item.owner = request.user
-                item.taken = True            
+                item.taken = True        
                 
-                if request.user.email:
+                if item.space.owner.email:
                     subject = "Parking space rented"
-                    email_to = request.user.email
+                    email_to = item.space.owner.email
                     start = item.start_date.strftime("%Y-%m-%d %H:%M")
                     stop = item.stop_date.strftime("%Y-%m-%d %H:%M")
-                    body = 'Parking space %s rented to %s %s from %s to %s\nPhone number: %s' % (item.space.number, request.user.first_name, request.user.last_name, start, stop, User_data.objects.filter(user=request.user).get().phone_number)
+                    body = "Parking space %s rented to %s %s from %s to %s\nPhone number: %s" % (item.space.number, request.user.first_name, request.user.last_name, start, stop, User_data.objects.filter(user=request.user).get().phone_number)
                     
-                    print ("%s\n%s\n%s\n%s\n%s" % (email_to, start, stop, body,User_data.objects.filter(user=request.user).get().phone_number))
                     
                     send_mail(subject, email_to, body)
                 
+                 
                 item.save()
                 
             return HttpResponse(loader.render_to_string('kombo_parking/calendar.html'))
