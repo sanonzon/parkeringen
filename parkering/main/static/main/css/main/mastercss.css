@@ -133,6 +133,26 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
     padding-right: 7px;
 }
 
+/* ********** LOGGED IN - FOOTER *********** */
+
+#calenderFooter{
+    height: 60px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border-color: #FFFFFF;
+    border-style: solid;
+    border-width: 2px;
+    color: white;
+}
+
+#footerPargrah
+{
+    margin-top: 20px;
+}
+#calenderFooter{
+    background-color: #333;
+}
+
 /* ********** MEDIA QUERIES *********** */
 
 /* for mobile phones: */
@@ -148,5 +168,12 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
 
     .register-second-half {
         text-align: center;
+    }
+
+    #calenderFooter{
+        margin-left: -20px;
+        margin-right: -20px;
+        padding-left: 20px;
+        padding-right: 20px;
     }
 }

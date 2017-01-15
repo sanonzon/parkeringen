@@ -1,15 +1,13 @@
 {% load staticfiles %}
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style type="text/css" media="screen">
-</style>
 
-<footer>
-	<div class="wrapper">
-		<nav>
-			<ul>
-				<li><p class="test">© Komboparking</p></li>
-				<li><a href="{% url 'main:FAQ_screen' %}" role="button">FAQ<a></a></li>
-			</ul>
-		</nav>
+<div id="calenderFooter">
+	<div class="container">
+		<p class="text-muted">
+			<p id="footerPargrah">
+				© Komboparking
+				<a href="{% url 'main:FAQ_screen' %}"> FAQ </a>
+			</p>
+		</p>
 	</div>
-</footer>
+</div>
