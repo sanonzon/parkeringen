@@ -135,6 +135,17 @@ def rentout_your_space_to_people(request):
                 book.start_date = requested.start_date
                 book.stop_date = requested.stop_date
             
+                
+                
+                if requested.renter.email:
+                    subject = "Parking request accepted"
+                    email_to = book.owner.email
+                    start = book.start_date.strftime("%Y-%m-%d %H:%M")
+                    stop = book.stop_date.strftime("%Y-%m-%d %H:%M")
+                    body = "Your request to rent a parking space has been accepted by %s %s.\nParking space: %s\nDate/time start: %s\nDate/time stop: %s\nUser contact: %s\n" %(request.user.first_name, request.user.last_name, book.space.number, start, stop, User_data.objects.filter(user=request.user).get().phone_number)
+                    
+                    send_mail(subject, email_to, body)
+                    
                 book.save()
                 requested.delete()
             
