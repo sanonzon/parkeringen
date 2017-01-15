@@ -1,0 +1,38 @@
+{% load staticfiles %}
+
+<!--sitewide meta-->
+{% include 'meta/Meta.html' %}
+
+<!--jquery for everything apart from project core to avoid problems-->
+{% if request.get_full_path != '/calendar/ '%}
+  <script
+    src="https://code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    crossorigin="anonymous">
+  </script>
+{% endif %}
+
+<!--project core-->
+{% if request.get_full_path == '/calendar/' %}
+  <link rel="stylesheet" href="{% static "kombo_parking/css/font-awesome.css" %}">
+  <link rel="stylesheet" href="{% static "kombo_parking/css/normalize.css" %}">
+  <link rel="stylesheet" href="{% static "kombo_parking/css/fullcalendar.css" %}">
+  <link rel="stylesheet" href="{% static "kombo_parking/css/fullcalendar-customize.css" %}">
+  <link rel="stylesheet" href="{% static "kombo_parking/css/jquery.nailthumb.1.1.min.css" %}">
+
+  <script src="{% static "kombo_parking/script/lib/jquery.min.js" %}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
+  <script src="{% static "kombo_parking/script/jquery.nailthumb.1.1.min.js" %}"></script>
+  <script src="{% static "kombo_parking/script/lib/moment.min.js" %}"></script>
+  <script src="{% static "kombo_parking/script/fullcalendar.js" %}"></script>
+  <script src="{% static "kombo_parking/script/script.js" %}"></script>
+
+<!--account/not_authorized-->
+{% elif request.get_full_path == '/not_authorized' %}
+  <link rel="stylesheet" type="text/css" href="{% static 'account/css/Not_authorized.css' %}" />
+
+{% endif %}
+
+<!--sitewide style-->
+{% include 'assets/bootstrap/Bootstrap.html' %}
+{% include 'assets/mastercss/Mastercss.html' %}

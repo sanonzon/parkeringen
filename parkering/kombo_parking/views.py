@@ -125,7 +125,7 @@ def rentout_your_space_to_people(request):
     return redirect('/')
 
 
-@login_required(login_url='/not_authorized')
+@login_required(login_url='/not_authorized',redirect_field_name=None)
 def calendar(request):   
     ''' START CALENDAR EVENTS '''
     bookings = Booking.objects.all()

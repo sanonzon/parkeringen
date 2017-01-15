@@ -3,28 +3,17 @@
 {% load staticfiles %}
 
 <html> 
-
   <head>
-    {% include 'meta/Meta.html' %}
+    {% include 'nexus/Nexus.html' %}
     <title>Not authorized</title>
   </head>
 
   <body class="autherror-body">
-
     <div class="authentication-error">
       <h1 id="error-message">Not authorized</h1>
       <h4 id="action-message">Please log in to continue</h4>
       <a href="{% url 'account:Index_screen' %}" class="btn btn-success" id="button" role="button">Return</a>
       <a href="{% url 'account:Login_screen' %}" class="btn btn-success" id="button" role="button">Log in</a>
     </div>
-
-    <!--/static files-->
-      <!--Bootstrap-->
-        {% include 'assets/bootstrap/Bootstrap.html' %}
-        <!--Css-->
-        {% include 'assets/mastercss/Mastercss.html' %}
-        <link rel="stylesheet" type="text/css" href="{% static 'account/css/Not_authorized.css' %}" />
-    <!--/static files-->
   </body>
-
 </html>

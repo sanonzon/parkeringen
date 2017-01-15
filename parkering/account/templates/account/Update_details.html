@@ -4,7 +4,7 @@
 <html>
 
   <head>
-    {% include 'meta/Meta.html' %}
+    {% include 'nexus/Nexus.html' %}
     <title>Update details</title>
   </head>
 
@@ -29,13 +29,5 @@
       <a href="{% url 'account:Account_screen' %}" class="btn btn-success green" role="button">Return</a>
       <a href="{% url 'main:Render_all' %}" class="btn btn-success green" role="button">return to calendar</a>
     </div>
-
-    <!--/static files-->
-      <!--Bootstrap-->
-        {% include 'assets/bootstrap/Bootstrap.html' %}
-      <!--Css-->
-        {% include 'assets/mastercss/Mastercss.html' %}
-    <!--/static files-->
   </body>
-
 </html>

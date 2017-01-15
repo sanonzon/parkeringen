@@ -1,28 +1,21 @@
 <!-- junction to render content from various applications to allow modularity -->
-
-{% load staticfiles %}
-
 <!DOCTYPE html>
 
-<head>
-    {% include 'kombo_parking/header.html' %} {% include 'meta/Meta.html' %}
-</head>
+{% load staticfiles %}
+<html>
+  <head>
+    {% include 'nexus/Nexus.html' %}
+  </head>
 
-<body>
+  <body>
     {% if user.is_authenticated %}
-
       <div class="Authenticated">
         {% include 'kombo_parking/navbar.html' %}
         {% include 'kombo_parking/body.html' %}
         {% include 'kombo_parking/mainTemplateFooter.html' %}
       </div>
-
     {% else %}
-    
-      {% include 'account/Index_screen.html' %}
-          
+      {% include 'account/Index_screen.html' %}   
     {% endif %}
-
   </body>
-
 </html>

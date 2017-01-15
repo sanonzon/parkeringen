@@ -46,27 +46,27 @@ class Error:
 # class for handling account management functionality
 class AccountManagement:
     # render account management page
-    @login_required(login_url='/not_authorized')
+    @login_required(login_url='/not_authorized',redirect_field_name=None)
     def Account_screen(request):
         return render(request, account_management)
 
-    @login_required(login_url='/not_authorized')
+    @login_required(login_url='/not_authorized',redirect_field_name=None)
     def UpdatePass_screen(request):
         context = {'ChangePass': ChangePassword(request.user)}
         return render(request, updatePass, context)
 
-    @login_required(login_url='/not_authorized')
+    @login_required(login_url='/not_authorized',redirect_field_name=None)
     def UpdateDetails_screen(request):
         context = {'ChangeDetails': ChangeDetails}
         return render(request, updateDetails, context)
 
-    @login_required(login_url='/not_authorized')
+    @login_required(login_url='/not_authorized',redirect_field_name=None)
     def Update_details(request):
         return render(request, account_management)
 
 
     # Update user password and update page
-    @login_required(login_url='/not_authorized')
+    @login_required(login_url='/not_authorized',redirect_field_name=None)
     def Update_password(request):
         context = {'ChangePass': ChangePassword(request.user)}
 
@@ -91,7 +91,7 @@ class AccountManagement:
         return render(request, updatePass, context)
 
     # Update user password and update page
-    @login_required(login_url='/not_authorized')
+    @login_required(login_url='/not_authorized',redirect_field_name=None)
     def Update_details(request):
 
         context = {'ChangeDetails': ChangeDetails}
