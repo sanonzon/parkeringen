@@ -12,7 +12,7 @@ h1 {
 /* ********** INDEX SCREEN *********** */
 
 .jumbotron {
-    background-image: url("http://www.publicdomainpictures.net/pictures/180000/velka/car-park.jpg");
+    background-image: url("../../img/car-park.jpg");
     background-size: cover;
     min-height: 100vh !important;
     position: relative;
