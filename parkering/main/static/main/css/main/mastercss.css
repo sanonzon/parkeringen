@@ -55,7 +55,7 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
 }
 
 .login-buttons {
-    margin: 0 auto;
+    margin: 10px auto;
 }
 
 .login-links {
@@ -68,10 +68,11 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
     text-decoration: none;
 }
 
-.errorList {
+.errorlist li {
     color: #ffa7c4;
     margin-top: 10px;
     font-style: italic;
+    list-style: none;
 }
 
 .reset-password-success {
