@@ -80,7 +80,7 @@ class Rent_space_form(forms.Form):
         self.arg = arg """
         
     def clean_stop_minute(self):
-        parking_space = self.cleaned_data['space']
+        #parking_space = self.cleaned_data['space']
         start = self.cleaned_data['start_date']
         stop = self.cleaned_data['stop_date']
         
@@ -98,11 +98,16 @@ class Rent_space_form(forms.Form):
             elif stop_m < start_m:
                 raise forms.ValidationError(u"Stop minute cannot be before start minute.")
         
-        datetime_start = start.replace(hour=start_h, minute=start_m)
-        datetime_stop = stop.replace(hour=stop_h, minute=stop_m)   
+        #datetime_start = start.replace(hour=start_h, minute=start_m)
+        #datetime_stop = stop.replace(hour=stop_h, minute=stop_m)   
         
-        if Booking.objects.filter(space=parking_space, start_date__lte=datetime_start, stop_date__gte=datetime_stop):            
-            raise forms.ValidationError(u"Parking space already rented out within that interval.")
+        # input_start is later than db_start AND input_stop is earlier than db_stop
+        #if Booking.objects.filter(space=parking_space, start_date__lte=datetime_start, stop_date__gte=datetime_stop):
+        #   raise forms.ValidationError(u"Parking space already rented out within that interval.")
+            
+        # input_start is later than db_start AND input_stop is earlier than db_stop
+        #elif Booking.objects.filter(space=parking_space, start_date__gte=datetime_start, stop_date__lte=datetime_stop):             
+        #    raise forms.ValidationError(u"Parking space already rented out within that interval.")
                 
         return stop_m    
 
