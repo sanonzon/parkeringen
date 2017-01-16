@@ -80,40 +80,46 @@ def grab_parkingspace(request):
         if request.POST['booking_id']:
             item = Booking.objects.filter(id=int(request.POST['booking_id'])).get()            
                         
-            # Unbook, make it available to others.
-            if item.owner == request.user:
-                item.taken = False
-                item.owner = None
-                item.save()
- 
-                if item.space.owner.email:
-                    subject = "Parking space %s no longer booked" % (item.space.number)
-                    email_to = item.space.owner.email
-                    start = item.start_date.strftime("%Y-%m-%d %H:%M")
-                    stop = item.stop_date.strftime("%Y-%m-%d %H:%M")
-                    body = "Parking space %s no longer booked" % (item.space.number)
-                    
-                    send_mail(subject, email_to, body)
- 
-            #elif item.space.owner == request.user:
-            #    item.delete()
+            # Remove your available parking space (if you you uploaded wrong info)
+            if item.space.owner == request.user and item.taken == False:
+                item.delete()
                 
-            else:
-                item.owner = request.user
-                item.taken = True        
                 
-                if item.space.owner.email:
-                    subject = "Parking space rented"
-                    email_to = item.space.owner.email
-                    start = item.start_date.strftime("%Y-%m-%d %H:%M")
-                    stop = item.stop_date.strftime("%Y-%m-%d %H:%M")
-                    body = "Parking space %s rented to %s %s from %s to %s\nPhone number: %s" % (item.space.number, request.user.first_name, request.user.last_name, start, stop, User_data.objects.filter(user=request.user).get().phone_number)
+            else:            
+                # Unbook, make it available to others.
+                if item.owner == request.user:
+                    item.taken = False
+                    item.owner = None
+                    item.save()
+     
+                    if item.space.owner.email:
+                        subject = "Parking space %s no longer booked" % (item.space.number)
+                        email_to = item.space.owner.email
+                        start = item.start_date.strftime("%Y-%m-%d %H:%M")
+                        stop = item.stop_date.strftime("%Y-%m-%d %H:%M")
+                        body = "Parking space %s no longer booked" % (item.space.number)
+                        
+                        send_mail(subject, email_to, body)
+     
+                #elif item.space.owner == request.user:
+                #    item.delete()
                     
+                else:
+                    item.owner = request.user
+                    item.taken = True        
                     
-                    send_mail(subject, email_to, body)
-                
-                 
-                item.save()
+                    if item.space.owner.email:
+                        subject = "Parking space rented"
+                        email_to = item.space.owner.email
+                        start = item.start_date.strftime("%Y-%m-%d %H:%M")
+                        stop = item.stop_date.strftime("%Y-%m-%d %H:%M")
+                        body = "Parking space %s rented to %s %s from %s to %s\nPhone number: %s" % (item.space.number, request.user.first_name, request.user.last_name, start, stop, User_data.objects.filter(user=request.user).get().phone_number)
+                        
+                        
+                        send_mail(subject, email_to, body)
+                    
+                     
+                    item.save()
                 
             return HttpResponse(loader.render_to_string('kombo_parking/calendar.html'))
     else:
