@@ -2,6 +2,9 @@
 
 <!--sitewide meta-->
 {% include 'meta/Meta.html' %}
+<link rel="shortcut icon" type="image/png" href="{% static "kombo_parking/icon/favicon-32x32.ico" %}" sizes="32x32" >
+<link rel="shortcut icon" type="image/png" href="{% static "kombo_parking/icon/favicon-16x16.ico" %}" sizes="16x16" >
+
 
 <!--jquery for everything apart from project core to avoid problems-->
 {% if request.get_full_path != '/calendar/ '%}
