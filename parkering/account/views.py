@@ -57,7 +57,7 @@ class AccountManagement:
 
     @login_required(login_url='/not_authorized',redirect_field_name=None)
     def UpdateDetails_screen(request):
-        context = {'ChangeDetails': ChangeDetails}
+        context = {'ChangeDetails': ChangeDetails(request.user)}
         return render(request, updateDetails, context)
 
     @login_required(login_url='/not_authorized',redirect_field_name=None)
@@ -84,7 +84,8 @@ class AccountManagement:
                 user = auth.authenticate(username = request.user.username, password = new_password)
                 auth.login(request, user)
                 
-                return redirect('/account_management')
+                context = {'ChangePass': ChangePassword(request.user), 'SuccessMessage': 'Password updated.'}
+                return render(request, updatePass, context)
             else:
                 context['ChangePass'] = change_password_form
 
@@ -94,10 +95,10 @@ class AccountManagement:
     @login_required(login_url='/not_authorized',redirect_field_name=None)
     def Update_details(request):
 
-        context = {'ChangeDetails': ChangeDetails}
+        context = {'ChangeDetails': ChangeDetails(request.user)}
 
         if request.POST:
-            change_details_form = ChangeDetails(request.POST)
+            change_details_form = ChangeDetails(request.user, request.POST)
             
             if change_details_form.is_valid():
                 first_name = change_details_form.cleaned_data['first_name']
@@ -118,8 +119,10 @@ class AccountManagement:
                 if phone_number:
                     user_data.phone_number = phone_number
                 user_data.save()
-
-                return redirect('/update_details')
+                
+                # render with success message if information was updated
+                context = {'ChangeDetails': ChangeDetails(request.user), 'SuccessMessage': 'Account information updated.'}
+                return render(request, updateDetails, context)
             else:
                 context['ChangeDetails'] = change_details_form
 

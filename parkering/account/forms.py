@@ -164,7 +164,8 @@ class ChangeDetails(forms.Form):
     # validation
 
     # extra validation through django native
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
         super(ChangeDetails, self).__init__(*args, **kwargs)
 
         for key in self.fields:
@@ -173,9 +174,9 @@ class ChangeDetails(forms.Form):
     # check if email already exist
     def clean_email(self):
         cleaned_email = self.cleaned_data['email']
-
-        # cast error if exists
-        if User.objects.filter(email=cleaned_email).exists():
+        
+        # cast error if email is in use of another account
+        if cleaned_email != None and len(cleaned_email) > 0 and cleaned_email != self.user.email and User.objects.filter(email=cleaned_email).exists():
             raise forms.ValidationError(u"This email already belongs to another account.")
 
         return cleaned_email

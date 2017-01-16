@@ -28,6 +28,8 @@
               <!--Phone number:<br>-->
               {{ ChangeDetails.phone_number }}<br>
               <input id="submit_button" class="btn btn-success green" type="submit" value="Change details">
+              <!-- display success message when information was updated -->
+              <div id="update_successfull"> {{ SuccessMessage|safe }} </div>
               <!-- display error messages -->
               {{ ChangeDetails.first_name.errors }}
               {{ ChangeDetails.last_name.errors }}
