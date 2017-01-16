@@ -25,10 +25,8 @@
                 <td class="dootfacetwentyseven hidden">{{item.id}}</td>
                 <td>{{item.number}}</td>
                 <td>{{item.start_date}}</td>
-                <td>{{item.stop_date}}</td>
-                {% if item.number in parking_spaces %}
-                <td><button class="fancyButtonclicker">Remove</button></td>
-                {% else %}
+                <td>{{item.stop_date}}</td>                                
+                {% if item.number not in parking_spaces %}
                 <td><button class="fancyButtonclicker">Book</button></td>
                {% endif %}
             </tr>
