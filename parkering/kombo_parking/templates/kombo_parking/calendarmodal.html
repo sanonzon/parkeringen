@@ -28,6 +28,8 @@
                 <td>{{item.stop_date}}</td>                                
                 {% if item.number not in parking_spaces %}
                 <td><button class="fancyButtonclicker">Book</button></td>
+                {% else %} 
+                <td></td>
                {% endif %}
             </tr>
             {% endfor %}  
