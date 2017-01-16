@@ -5,6 +5,7 @@
   <head>
     {% include 'nexus/Nexus.html' %}
     <title>Register account</title>
+
   </head>
 
   <body>
@@ -16,32 +17,44 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-8 col-md-offset-2 login-form">
+          <div class="testDiv col-md-8 col-md-offset-2 login-form">
             <form action="{% url 'account:Register_account' %}" method="post" enctype='multipart/form-data'> 
               {% csrf_token %}
-              <div class="col-sm-6 col-xs-12 register-first-half">
+
+                <div style="text-align: left;margin-left: 10em;margin-right: 10em; padding: 5px;"
+
+                >
+
+          <!--    <div class="col-sm-6 col-xs-12 register-first-half"> -->
                 <!--Username:<br>-->
                 {{ RegForm.username }}<br>
+                <br>
                 <!--E-mail address:<br>-->
                 {{ RegForm.email }}<br>
+                <br>
                 <!--First name:<br>-->
                 {{ RegForm.first_name }}<br>
+                <br>
                 <!--Last name:<br>-->
                 {{ RegForm.last_name }}<br>
-              </div>
-              <div class="col-sm-6 col-xs-12 register-second-half">
+                <br>
+             <!-- <div class="col-sm-6 col-xs-12 register-second-half">-->
                 <!--Phone number:<br>-->
                 {{ RegForm.phone_number }}<br>
+                  <br>
+
                 <!--Apartment number:<br>-->
                 {{ RegForm.apartment }}<br>
+                <br>
                 <!--Password:<br>-->
                 {{ RegForm.password }}<br>
+                <br>
                 <!--Repeat password:<br>-->
                 {{ RegForm.password_repeat }}<br>
               </div>
 
-              <a href="{% url 'account:Index_screen' %}" class="btn btn-lg btn-info green register-buttons" role="button">Return</a>
-              <input id="submit_button" class="btn btn-lg btn-success green register-buttons" type="submit" value="Register">
+              <a href="{% url 'account:Index_screen' %}" class="knapp btn btn-lg btn-info green register-buttons" role="button">Return</a>
+              <input id="submit_button" class="knapp btn btn-lg btn-success green register-buttons" type="submit" value="Register">
               <!--display error messages-->
               {{ RegForm.username.errors }}
               {{ RegForm.email.errors }}
