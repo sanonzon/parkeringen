@@ -45,27 +45,14 @@
             </ul>
 
             <div class="tab-content clearfix">
-                <div class="tab-pane active" id="hyra_ut">
+                <div class="tab-pane active booking-form" id="hyra_ut">
                   <div id="wrapper">
                     <form action="{%url 'kombo_parking:calendar' %}" method="POST" enctype='multipart/form-data'>{% csrf_token %}
                       <!-- tom lable skapar tillfälligt lite utrymme.-->  
                       <label class="control-label"></label>
-                        <p class="RentSpace">{{ rentout.space }}</p>
-                        <!-- parking space input
-                        <div class="">
-                          <label class="control-label">Parking Space</label>
-                          {{rentout.space}}
-                          <i class="glyphicons glyphicons-car form-control-feedback"></i>
-                        </div>
-                      -->
 
-                        <!--
-                        <div class="">
-                          <label class="control-label">Description</label>
-                          {{rentout.description}}
-                          <i class="glyphicons glyphicons-car form-control-feedback"></i>
-                        </div>
-                      -->
+                      <p class="RentSpace">{{ rentout.space }}</p>
+
                       <div class="StartTime">
                         <label class="control-label">Start Time and Date</label>
                         <p class="RentStartDate">{{rentout.start_date}} {{rentout.start_hour}} {{rentout.start_minute}} {{rentout.start_date.errors}}{{rentout.start_hour.errors}}{{rentout.start_minute.errors}}</p>
@@ -85,7 +72,7 @@
                     </div>
                 </div>
 
-                <div class="tab-pane" id="be_om_plats">
+                <div class="tab-pane booking-form" id="be_om_plats">
                     <form action="{%url 'kombo_parking:calendar' %}" method="POST" enctype='multipart/form-data'>
                         {% csrf_token %}
                         
@@ -118,7 +105,7 @@
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           <!-- <h4 class="modal-title">Hyra Ut/Boka Plats</h4> -->
         </div>
-        <div class="modal-body">
+        <div class="modal-body booking-form">
           <h4>Register your parking space</h4>
           <form action="{%url 'kombo_parking:calendar' %}" method="POST" enctype='multipart/form-data'>
 

@@ -153,6 +153,21 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
     background-color: #333;
 }
 
+
+/* ********** LOGGED IN - RENTOUT REQUEST SPACE - MODAL *********** */
+
+.booking-form{
+    text-align: center;
+    margin-top: 20px;
+}
+
+.booking-form select{
+    margin-bottom: 7px;
+    padding: 6px;
+    border-radius: 5px;
+    border: 1px solid black;
+}
+
 /* ********** MEDIA QUERIES *********** */
 
 /* for mobile phones: */
