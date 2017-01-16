@@ -170,6 +170,14 @@ class ChangeDetails(forms.Form):
 
         for key in self.fields:
             self.fields[key].required = False
+            
+        self.fields['email'].initial = self.user.email
+        
+        self.fields['first_name'].initial = self.user.first_name
+        
+        self.fields['last_name'].initial = self.user.last_name
+        
+        self.fields['phone_number'].initial = User_data.objects.get(user=self.user).phone_number
 
     # check if email already exist
     def clean_email(self):
