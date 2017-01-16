@@ -1,29 +1,21 @@
 <!-- junction to render content from various applications to allow modularity -->
+<!DOCTYPE html>
 
 {% load staticfiles %}
-
 <html>
-
   <head>
-    {% include 'meta/Meta.html' %}
-    <title>Kombo</title>
+    {% include 'nexus/Nexus.html' %}
   </head>
 
   <body>
-    {% if not user.is_authenticated %}
-      <div class="Logreg">
-        {% include 'account/Index_screen.html' %}
-      </div>
-    {% elif user.is_authenticated %}
+    {% if user.is_authenticated %}
       <div class="Authenticated">
-        <h1>Post-login goes here</h1>
+        {% include 'kombo_parking/navbar.html' %}
+        {% include 'kombo_parking/body.html' %}
+        {% include 'kombo_parking/mainTemplateFooter.html' %}
       </div>
+    {% else %}
+      {% include 'account/Index_screen.html' %}   
     {% endif %}
-
-    <!--/static files-->
-      <!--Bootstrap-->
-        {% include 'assets/bootstrap/Bootstrap.html' %}
-    <!--/static files-->
   </body>
-
 </html>

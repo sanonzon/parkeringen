@@ -1,0 +1,70 @@
+<div id="calendar"></div>
+
+<script>
+    $(document).ready(function () {
+    //~ console.log("{{list}}");
+
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+
+    $('#calendar').fullCalendar({
+        header: {
+            left: 'month,agendaWeek,agendaDay',
+            center: 'title',
+            right:  'today, prev,next,prevYear,nextYear'
+        },
+       {% if list %} events: {{ list|safe }}, {% endif %}
+        dayClick: function(date, jsEvent, view) {
+             $.ajax({
+                type: "POST",
+                url: "/calendar_click/",
+                data: {
+                    'date': date.format(),
+                    'csrfmiddlewaretoken': csrftoken,
+                },
+                success: function(newData) {
+                    $('#modalArea').html(newData);
+                    $('#calendarmodal').modal('show');
+                }
+           })
+        },
+
+        eventClick: function(calEvent, jsEvent, view) {              
+            $.ajax({
+                type: "POST",
+                url: "/calendar_click/",
+                data: {
+                    'date': calEvent.start.format().substr(0,10),
+                    'csrfmiddlewaretoken': csrftoken,
+                },
+                success: function(newData) {
+                    $('#modalArea').html(newData);
+                    $('#calendarmodal').modal('show');
+                }
+           })
+        },
+        
+    });
+    
+
+});
+</script>
+
+<div id="modalArea">
+    
+</div>
+
