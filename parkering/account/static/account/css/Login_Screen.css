@@ -1,0 +1,17 @@
+h1
+
+{
+	padding-bottom: 0.4em;
+}
+
+
+input[type="text"], input[type="password"], input[type="email"]
+{
+    width: 50%;
+}
+
+.knapp
+{
+    width: 25%;
+  	margin-bottom: 1em;  
+}
