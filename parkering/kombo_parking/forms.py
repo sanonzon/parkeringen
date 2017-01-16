@@ -14,30 +14,9 @@ MINUTES = (
     )
     
 HOURS = (
-    ('00','00'),
-    ('01','01'),
-    ('02','02'),
-    ('03','03'),
-    ('04','04'),
-    ('05','05'),
-    ('06','06'),
-    ('07','07'),
-    ('08','08'),
-    ('09','09'),
-    ('10','10'),
-    ('11','11'),
-    ('12','12'),
-    ('13','13'),
-    ('14','14'),
-    ('15','15'),
-    ('16','16'),
-    ('17','17'),
-    ('18','18'),
-    ('19','19'),
-    ('20','20'),
-    ('21','21'),
-    ('22','22'),
-    ('23','23'),
+    ('00','00'),('01','01'),('02','02'),('03','03'),('04','04'),('05','05'),('06','06'),('07','07'),('08','08'),('09','09'),
+    ('10','10'),('11','11'),('12','12'),('13','13'),('14','14'),('15','15'),('16','16'),('17','17'),('18','18'),('19','19'),
+    ('20','20'),('21','21'),('22','22'),('23','23'),
     )
     
     
@@ -101,6 +80,7 @@ class Rent_space_form(forms.Form):
         self.arg = arg """
         
     def clean_stop_minute(self):
+        parking_space = self.cleaned_data['space']
         start = self.cleaned_data['start_date']
         stop = self.cleaned_data['stop_date']
         
@@ -117,6 +97,12 @@ class Rent_space_form(forms.Form):
                 raise forms.ValidationError(u"Stop hour cannot be before start hour.")
             elif stop_m < start_m:
                 raise forms.ValidationError(u"Stop minute cannot be before start minute.")
+        
+        datetime_start = start.replace(hour=start_h, minute=start_m)
+        datetime_stop = stop.replace(hour=stop_h, minute=stop_m)   
+        
+        if Booking.objects.filter(space=parking_space, start_date__lte=datetime_start, stop_date__gte=datetime_stop):            
+            raise forms.ValidationError(u"Parking space already rented out within that interval.")
                 
         return stop_m    
 
