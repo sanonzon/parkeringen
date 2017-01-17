@@ -39,6 +39,11 @@
                 success: function(newData) {
                     $('#modalArea').html(newData);
                     $('#calendarmodal').modal('show');
+                    $("#calendarmodal").not('.btn btn-default, #register-button, button, .ui-dialog-titlebar-close').off( 'click' );
+                    $( ".btn btn-default, #register-button, button" ).click(function() {
+                      $("#calendarmodal").not('.btn btn-default, #register-button, button, .ui-dialog-titlebar-close').on( 'click' );
+                      $(".modal, #calendermodal").modal('hide');
+                    });
                 }
            })
         },
@@ -54,9 +59,16 @@
                 success: function(newData) {
                     $('#modalArea').html(newData);
                     $('#calendarmodal').modal('show');
+                    $("#calendarmodal").not('.btn btn-default, #register-button, button, .ui-dialog-titlebar-close').off( 'click' );
+                    $( ".btn btn-default, #register-button, button" ).click(function() {
+                      $("#calendarmodal").not('.btn btn-default, #register-button, button, .ui-dialog-titlebar-close').on( 'click' );
+                      $(".modal, #calendermodal").modal('hide');
+                    });
                 }
            })
         },
+
+        
         
     });
     
