@@ -22,51 +22,71 @@ def send_mail(subject, email_to, body,):
 def calendar_click(request):
     if request.is_ajax():
         if request.POST['date']:
-            booked = Booking.objects.filter(start_date__startswith=request.POST['date'],taken=True)
-            datelist = Booking.objects.filter(start_date__startswith=request.POST['date'],taken=False)
-            requests = Requested_Space.objects.filter(start_date__startswith=request.POST['date'])
-
-            calendar = []
-            request_list = []
-            booked_list = []
+            FILENAME = None
+            result_list = []
             
-            if requests:
-                for event in requests:
-                    request_list.append({
-                        'id':event.id,                        
-                        'start_date': event.start_date.strftime("%Y-%m-%d %H:%M"),
-                        'stop_date': event.stop_date.strftime("%Y-%m-%d %H:%M"),
-                    })               
-            
-            if datelist:
-                for event in datelist:
-                    calendar.append({
-                        'id':event.id,
-                        'number': event.space.number,
-                        'start_date': event.start_date.strftime("%Y-%m-%d %H:%M"),
-                        'stop_date': event.stop_date.strftime("%Y-%m-%d %H:%M"),
+            if "REQUESTS" in request.POST['event_type_magic_string']:
+                FILENAME = 'kombo_parking/calendarmodal_REQUESTS.html'
+                requests = Requested_Space.objects.filter(start_date__startswith=request.POST['date'])
+                
+                if requests:
+                    for event in requests:
+                        result_list.append({
+                            'id':event.id,                        
+                            'start_date': event.start_date.strftime("%Y-%m-%d %H:%M"),
+                            'stop_date': event.stop_date.strftime("%Y-%m-%d %H:%M"),
+                        }) 
+                html = loader.render_to_string(FILENAME, {
+                        'requests': result_list,                    
+                        'parking_spaces': Parking_space.objects.filter(owner=request.user).values_list('number', flat=True).order_by('number'),                    
+                        'you_have_booked_spaces': True if Booking.objects.filter(start_date__startswith=request.POST['date'],taken=True).filter(owner=request.user) else False,
+                        'request': request,
+                        
                     })
-
-            if booked:
-                for event in booked:
-                    booked_list.append({
-                        'id':event.id,
-                        'number': event.space.number,
-                        'start_date': event.start_date.strftime("%Y-%m-%d %H:%M"),
-                        'stop_date': event.stop_date.strftime("%Y-%m-%d %H:%M"),
-                        'booked_user_data' : User_data.objects.filter(user=event.owner).get() if User_data.objects.filter(user=event.owner).exists() else None,
-                        'booked_user' : User.objects.filter(id=event.owner.id).get(),                        
+                
+            elif "BOOKINGS" in request.POST['event_type_magic_string']:
+                FILENAME = 'kombo_parking/calendarmodal_BOOKINGS.html'
+                booked = Booking.objects.filter(start_date__startswith=request.POST['date'],taken=True)
+                
+                if booked:
+                    for event in booked:
+                        result_list.append({
+                            'id':event.id,
+                            'number': event.space.number,
+                            'start_date': event.start_date.strftime("%Y-%m-%d %H:%M"),
+                            'stop_date': event.stop_date.strftime("%Y-%m-%d %H:%M"),
+                            'booked_user_data' : User_data.objects.filter(user=event.owner).get() if User_data.objects.filter(user=event.owner).exists() else None,
+                            'booked_user' : User.objects.filter(id=event.owner.id).get(),                       
+                        })
+                        
+                html = loader.render_to_string(FILENAME, {
+                        'bookings': result_list,                    
+                        'parking_spaces': Parking_space.objects.filter(owner=request.user).values_list('number', flat=True).order_by('number'),                    
+                        'you_have_booked_spaces': True if Booking.objects.filter(start_date__startswith=request.POST['date'],taken=True).filter(owner=request.user) else False,
+                        'request': request,
+                        
                     })
-                    
-            html = loader.render_to_string('kombo_parking/calendarmodal.html', {
-                    'list': calendar,
-                    'requests' : request_list,
-                    'parking_spaces': Parking_space.objects.filter(owner=request.user).values_list('number', flat=True).order_by('number'),
-                    'bookings': booked_list, 
-                    'request': request,
-                    'you_have_booked_spaces': True if Booking.objects.filter(start_date__startswith=request.POST['date'],taken=True).filter(owner=request.user) else False
-                    
-                })
+                
+            elif "AVAILABLE" in request.POST['event_type_magic_string']:
+                FILENAME = 'kombo_parking/calendarmodal_AVAILABLE.html'
+                datelist = Booking.objects.filter(start_date__startswith=request.POST['date'],taken=False)
+                
+                if datelist:
+                    for event in datelist:
+                        result_list.append({
+                            'id':event.id,
+                            'number': event.space.number,
+                            'start_date': event.start_date.strftime("%Y-%m-%d %H:%M"),
+                            'stop_date': event.stop_date.strftime("%Y-%m-%d %H:%M"),
+                        })
+              
+                html = loader.render_to_string(FILENAME, {
+                        'list': result_list,                    
+                        'parking_spaces': Parking_space.objects.filter(owner=request.user).values_list('number', flat=True).order_by('number'),                    
+                        'you_have_booked_spaces': True if Booking.objects.filter(start_date__startswith=request.POST['date'],taken=True).filter(owner=request.user) else False,
+                        'request': request,
+                        
+                    })
                             
             return HttpResponse(html)
     else:
@@ -174,27 +194,55 @@ def rentout_your_space_to_people(request):
 @login_required(login_url='/not_authorized',redirect_field_name=None)
 def calendar(request):   
     ''' START CALENDAR EVENTS '''
-    bookings = Booking.objects.all()
+    bookings = Booking.objects.all().order_by('start_date')
+    requests = Requested_Space.objects.all().order_by('start_date')
+    
     calendar = []
-
-    requests = Requested_Space.objects.all()
+    
     if requests:
+        recent_date_start = None
         for event in requests:
-            calendar.append({
-                'id':event.id,
-                'start': event.start_date.isoformat(),
-                'stop': event.stop_date.isoformat(),
-                'color': 'orange',
-            })
+            #print("current_event_date: %s\nevents_in_list: %s" % (event.start_date))
+            
+            if recent_date_start != event.start_date.strftime("%Y-%m-%d"):
+                calendar.append({
+                    'title':"Requests: %s" %(Requested_Space.objects.filter(start_date__startswith=event.start_date.strftime("%Y-%m-%d")).count()),
+                    'id':event.id,
+                    'start': event.start_date.strftime("%Y-%m-%d"),
+                    'stop': event.stop_date.strftime("%Y-%m-%d"),
+                    'color': 'orange',
+                    'event_type_magic_string' : 'REQUESTS',
+                })
+                
+            recent_date_start = event.start_date.strftime("%Y-%m-%d")
+            
     if bookings:
-        for event in bookings:
-            calendar.append({
-                'id':event.id,
-                'number': event.space.number,
-                'start': event.start_date.isoformat(),
-                'stop': event.stop_date.isoformat(),
-                'color': 'red' if event.taken else 'green',            
-            })
+        list_taken = []
+        
+        for event in bookings:              
+            if event.taken and 'TAKEN %s' % event.start_date.strftime("%Y-%m-%d") not in list_taken:
+                calendar.append({                  
+                    'title': "Bookings: %s" % (Booking.objects.filter(start_date__startswith=event.start_date.strftime("%Y-%m-%d")).filter(taken=True).count()),
+                    'id':event.id,
+                    'number': event.space.number,
+                    'start': event.start_date.strftime("%Y-%m-%d"),
+                    'stop': event.stop_date.strftime("%Y-%m-%d"),
+                    'color': 'red',   
+                    'event_type_magic_string' : 'BOOKINGS',
+                })
+                list_taken.append('TAKEN %s' % event.start_date.strftime("%Y-%m-%d"))
+                
+            elif 'NOT_TAKEN %s' % event.start_date.strftime("%Y-%m-%d") not in list_taken:
+                calendar.append({                  
+                    'title': "Available: %s" %(Booking.objects.filter(start_date__startswith=event.start_date.strftime("%Y-%m-%d")).filter(taken=False).count()),
+                    'id':event.id,
+                    'number': event.space.number,
+                    'start': event.start_date.strftime("%Y-%m-%d"),
+                    'stop': event.stop_date.strftime("%Y-%m-%d"),
+                    'color': 'green',   
+                    'event_type_magic_string' : 'AVAILABLE',
+                })
+                list_taken.append('NOT_TAKEN %s' % event.start_date.strftime("%Y-%m-%d"))
             
     ''' END CALENDAR EVENTS '''
     

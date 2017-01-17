@@ -8,72 +8,7 @@
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <div class="modal-body">
-        {% if not requests and not list and not bookings %}
-            <p>No spaces available, use the options in the navbar to request a parking space.</p>            
-        {% endif %}
-        {% if list %}
-           <h2>Available spaces</h2>
-          <table class="table">
-            <tr>
-                <th class="text-center">Space</th>
-                <th class="text-center">Start</th>
-                <th class="text-center">Stop</th>            
-                <th></th>            
-            </tr>
-            {% for item in list %}
-            <tr>
-                <td class="dootfacetwentyseven hidden">{{item.id}}</td>
-                <td>{{item.number}}</td>
-                <td>{{item.start_date}}</td>
-                <td>{{item.stop_date}}</td>
-                {% if item.number in parking_spaces %}
-                <td><button class="fancyButtonclicker">Remove</button></td>
-                {% else %}
-                <td><button class="fancyButtonclicker">Book</button></td>
-               {% endif %}
-            </tr>
-            {% endfor %}  
-                         
-          </table>
-        {% endif %} 
-          
-        {% if requests %}
-          <h2>Requested spaces</h2>
-          
-        <table class="table">
-            <tr>
-                <th class="text-center">Start</th>
-                <th class="text-center">Stop</th>            
-                <th>Space to give</th>            
-                <th></th>            
-            </tr>
-            {% for item in requests %}
-            <tr>
-                <td class="ID_for_Give_Space hidden">{{item.id}}</td>
-                <td>{{item.start_date}}</td>
-                <td>{{item.stop_date}}</td>
-                <!-- <td><input id="{{item.id}}" type="text" name="space_to_lend"></td> -->
-                
-                {% if parking_spaces %}
-                <td>
-                    <select>
-                    {% for space in parking_spaces %}
-                        <option value="{{space}}">{{space}}</option>
-                    {% endfor %}
-                    </select>
-                </td>
-                
-                <td><button class="Give_That_Space">Give space</button></td>
-                {% else %}
-                <td>No spaces to lend</td>
-                <td></td>
-                {% endif %}
-                
-            </tr>
-            {% endfor %}
-        </table>
-        {% endif %}
-        
+      
         {% if bookings %} 
             <!-- Step 1: Print out all the bookings you own and can un-book. -->
             {% if you_have_booked_spaces %}
@@ -85,6 +20,7 @@
                             <th class="text-center">Stop</th>            
                             <th></th>            
                         </tr>
+                
                 {% for booking in bookings %}
                     {% if booking.booked_user.id == request.user.id %}                        
                         <tr>

@@ -21,14 +21,17 @@
     }
     var csrftoken = getCookie('csrftoken');
 
+    console.log({{ list|safe }});
+    
     $('#calendar').fullCalendar({
         header: {
             left: 'month,agendaWeek,agendaDay',
             center: 'title',
             right:  'today, prev,next,prevYear,nextYear'
         },
+        displayEventTime: false,
        {% if list %} events: {{ list|safe }}, {% endif %}
-        dayClick: function(date, jsEvent, view) {
+      /*  dayClick: function(date, jsEvent, view) {
              $.ajax({
                 type: "POST",
                 url: "/calendar_click/",
@@ -47,15 +50,17 @@
                     }
                 }
            })
-        },
+        }, */
 
-        eventClick: function(calEvent, jsEvent, view) {              
+        eventClick: function(calEvent, jsEvent, view) {      
+            console.log(calEvent);
             $.ajax({
                 type: "POST",
                 url: "/calendar_click/",
                 data: {
                     'date': calEvent.start.format().substr(0,10),
                     'csrfmiddlewaretoken': csrftoken,
+                    'event_type_magic_string' : calEvent.event_type_magic_string,
                 },
                 success: function(newData) {
                     $('#modalArea').html(newData);
