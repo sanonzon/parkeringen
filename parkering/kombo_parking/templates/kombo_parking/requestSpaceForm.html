@@ -1,0 +1,11 @@
+  <div class="StartTime">
+    <label class="control-label">Start Time and Date</label>
+    <p class="RentStartDate">{{request_form.start_date}} {{request_form.start_hour}} {{request_form.start_minute}} {{rentout.start_date.errors}}{{request_form.start_hour.errors}}{{request_form.start_minute.errors}}</p>
+    <i class="glyphicons glyphicons-car form-control-feedback"></i>
+  </div>
+
+  <div class="EndTime">
+    <label class="control-label">End Time and Date</label>
+    <p class="RentStopDate">{{request_form.stop_date}} {{request_form.stop_hour}} {{request_form.stop_minute}} {{request_form.stop_date.errors}}{{request_form.stop_hour.errors}}{{request_form.stop_minute.errors}}</p>
+    <i class="glyphicons glyphicons-car form-control-feedback"></i>
+  </div>

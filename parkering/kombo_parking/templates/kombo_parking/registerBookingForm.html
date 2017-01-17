@@ -1,0 +1,14 @@
+  <h4>Select space</h4>
+  <p class="RentSpace">{{ rentout.space }}</p>
+
+  <div class="StartTime">
+    <label class="control-label">Start Time and Date</label>
+    <p class="RentStartDate">{{rentout.start_date}} {{rentout.start_hour}} {{rentout.start_minute}} {{rentout.start_date.errors}}{{rentout.start_hour.errors}}{{rentout.start_minute.errors}}</p>
+    <i class="glyphicons glyphicons-car form-control-feedback"></i>
+  </div>
+
+  <div class="EndTime">
+    <label class="control-label">End Time and Date</label>
+    <p class="RentStopDate">{{rentout.stop_date}} {{rentout.stop_hour}} {{rentout.stop_minute}} {{rentout.stop_date.errors}}{{rentout.stop_hour.errors}}{{rentout.stop_minute.errors}}</p>
+    <i class="glyphicons glyphicons-car form-control-feedback"></i>
+  </div>
