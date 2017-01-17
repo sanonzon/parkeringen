@@ -4,9 +4,6 @@
     $(document).ready(function () {
     //~ console.log("{{list}}");
 
-    // set modals active/inactive
-    var isActive = false;
-
     function getCookie(name) {
         var cookieValue = null;
         if (document.cookie && document.cookie != '') {
@@ -41,13 +38,10 @@
                 },
                 success: function(newData) {
                     $('#modalArea').html(newData);
-                    // if modal is not visible and isActive is not true
-                    if(!$('#calendarmodal').is(':visible') && !isActive){
-                        isActive = true;
+                    if(!$('#calendarmodal').is(':visible')){
                         // show modal
                         $('#calendarmodal').modal('show');
-                    } else if(isActive){
-                        isActive = false;
+                    } else{
                         // close modal
                         $("#calendermodal").modal('hide');
                     }
@@ -66,14 +60,11 @@
                 success: function(newData) {
                     $('#modalArea').html(newData);
                     // if modal is not visible and isActive is not true
-                    if(!$('#calendarmodal').is(':visible') && !isActive){
-                        isActive = true;
+                    if(!$('#calendarmodal').is(':visible')){
                         // show modal
                         $('#calendarmodal').modal('show');
                     } 
-                    // if isActive is true
-                    else if(isActive){
-                        isActive = false;
+                    else{
                         // close modal
                         $("#calendermodal").modal('hide');
                     }
