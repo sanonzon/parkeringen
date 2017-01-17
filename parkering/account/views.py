@@ -84,6 +84,7 @@ class AccountManagement:
                 user = auth.authenticate(username = request.user.username, password = new_password)
                 auth.login(request, user)
                 
+                # render with successmessage if password was successfully updated
                 context = {'ChangePass': ChangePassword(request.user), 'SuccessMessage': 'Password updated.'}
                 return render(request, updatePass, context)
             else:
@@ -91,7 +92,7 @@ class AccountManagement:
 
         return render(request, updatePass, context)
 
-    # Update user password and update page
+    # Update user information and update page
     @login_required(login_url='/not_authorized',redirect_field_name=None)
     def Update_details(request):
 
@@ -121,7 +122,7 @@ class AccountManagement:
                 user_data.save()
                 
                 # render with success message if information was updated
-                context = {'ChangeDetails': ChangeDetails(request.user), 'SuccessMessage': 'Account information updated.'}
+                context = {'ChangeDetails': change_details_form, 'SuccessMessage': 'Account information updated.'}
                 return render(request, updateDetails, context)
             else:
                 context['ChangeDetails'] = change_details_form
