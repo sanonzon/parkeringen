@@ -30,10 +30,6 @@
   <script src="{% static "kombo_parking/script/fullcalendar.js" %}"></script>
   <script src="{% static "kombo_parking/script/script.js" %}"></script>
 
-<!--account/not_authorized-->
-{% elif request.get_full_path == '/not_authorized' %}
-  <link rel="stylesheet" type="text/css" href="{% static 'account/css/Not_authorized.css' %}" />
-
 <!--main/information/FAQ_screen-->
 {% elif request.get_full_path == '/faq' %}
   <link rel="stylesheet" type="text/css" href="{% static 'main/css/main/faqcss.css' %}" />

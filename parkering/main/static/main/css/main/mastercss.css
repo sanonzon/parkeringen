@@ -167,6 +167,14 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
     border: 1px solid black;
 }
 
+/* ********** NOT AUTHORIZED SITE *********** */
+
+.not-authorized-login {
+    text-align: center;
+    color: white;
+    margin-top: 10px;
+}
+
 /* ********** MEDIA QUERIES *********** */
 
 /* for mobile phones: */
