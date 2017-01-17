@@ -32,48 +32,53 @@
         },
        {% if list %} events: {{ list|safe }}, {% endif %}
         dayClick: function(date, jsEvent, view) {
-            if(!$('#calendarmodal').is(':visible') && !isActive){
-                 $.ajax({
-                    type: "POST",
-                    url: "/calendar_click/",
-                    data: {
-                        'date': date.format(),
-                        'csrfmiddlewaretoken': csrftoken,
-                    },
-                    success: function(newData) {
-                        $('#modalArea').html(newData);
-                        
-                            isActive = true;
-                            $('#calendarmodal').modal('show');
-                        
+             $.ajax({
+                type: "POST",
+                url: "/calendar_click/",
+                data: {
+                    'date': date.format(),
+                    'csrfmiddlewaretoken': csrftoken,
+                },
+                success: function(newData) {
+                    $('#modalArea').html(newData);
+                    // if modal is not visible and isActive is not true
+                    if(!$('#calendarmodal').is(':visible') && !isActive){
+                        isActive = true;
+                        // show modal
+                        $('#calendarmodal').modal('show');
+                    } else if(isActive){
+                        isActive = false;
+                        // close modal
+                        $("#calendermodal").modal('hide');
                     }
-               })
-            } else if(isActive){
-                isActive = false;
-                $("#calendermodal").modal('hide');
-            }
+                }
+           })
         },
 
-        eventClick: function(calEvent, jsEvent, view) {   
-            if(!$('#calendarmodal').is(':visible') && !isActive){           
-                    $.ajax({
-                        type: "POST",
-                        url: "/calendar_click/",
-                        data: {
-                            'date': calEvent.start.format().substr(0,10),
-                            'csrfmiddlewaretoken': csrftoken,
-                        },
-                        success: function(newData) {
-                            $('#modalArea').html(newData);
-                                isActive = true;
-                                $('#calendarmodal').modal('show');
-                        }
-                   })
+        eventClick: function(calEvent, jsEvent, view) {              
+            $.ajax({
+                type: "POST",
+                url: "/calendar_click/",
+                data: {
+                    'date': calEvent.start.format().substr(0,10),
+                    'csrfmiddlewaretoken': csrftoken,
+                },
+                success: function(newData) {
+                    $('#modalArea').html(newData);
+                    // if modal is not visible and isActive is not true
+                    if(!$('#calendarmodal').is(':visible') && !isActive){
+                        isActive = true;
+                        // show modal
+                        $('#calendarmodal').modal('show');
+                    } 
+                    // if isActive is true
+                    else if(isActive){
+                        isActive = false;
+                        // close modal
+                        $("#calendermodal").modal('hide');
+                    }
                 }
-            else if(isActive){
-                isActive = false;
-                $("#calendermodal").modal('hide');
-            }
+           })
         },
     });
     
