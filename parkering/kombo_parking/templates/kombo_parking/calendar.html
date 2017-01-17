@@ -44,7 +44,7 @@
                     if(!$('#calendarmodal').is(':visible') && !isActive){
                         isActive = true;
                         $('#calendarmodal').modal('show');
-                    } else{
+                    } else if(isActive){
                         isActive = false;
                         $("#calendermodal").modal('hide');
                     }
@@ -65,7 +65,7 @@
                     if(!$('#calendarmodal').is(':visible') && !isActive){
                         isActive = true;
                         $('#calendarmodal').modal('show');
-                    } else{
+                    } else if(isActive){
                         isActive = false;
                         $("#calendermodal").modal('hide');
                     }
