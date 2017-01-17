@@ -152,6 +152,26 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
     background-color: #333;
 }
 
+/* ********** LOGGED IN - UNREGISTER SPACE - MODAL *********** */
+
+.modal-body h4 {
+    text-align: center;
+}
+
+.selects {
+    text-align: center;
+}
+
+.selects select {
+    font-size: 14px;
+    width: 20%;
+    margin: 15px;
+}
+
+.modal-button {
+    margin: 0 auto;
+}
+
 
 /* ********** LOGGED IN - RENTOUT REQUEST SPACE - MODAL *********** */
 

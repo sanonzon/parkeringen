@@ -109,7 +109,7 @@
 
 
             <div class="footer">
-              <input id="submit_button" class="btn btn-sucess green" role="button"  value="Register space" type="submit" name="" />
+              <input id="submit_button" class="btn btn-success green" role="button"  value="Register space" type="submit" name="" />
             </div>
           </form>
         </div>
@@ -136,12 +136,14 @@
           <h4>Unregister your parking space</h4>
           <form action="{%url 'kombo_parking:calendar' %}" method="POST" enctype='multipart/form-data'>
               {% csrf_token %}
+              <div class="selects">
               {{ unregister_space_form.space }}
               <input class="hidden" name="form_content_check" value="unregister_for_parking_space">
-
+              <input id="submit_button" class="btn btn-danger modal-button" role="button"  value="Remove space" type="submit" name="" />
+              </div>
 
             <div class="footer">
-              <input id="submit_button" class="btn btn-sucess green" role="button"  value="Remove space" type="submit" name="" />
+              
             </div>
           </form>
         </div>
