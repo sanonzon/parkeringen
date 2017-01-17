@@ -41,11 +41,14 @@
                 },
                 success: function(newData) {
                     $('#modalArea').html(newData);
+                    // if modal is not visible and isActive is not true
                     if(!$('#calendarmodal').is(':visible') && !isActive){
                         isActive = true;
+                        // show modal
                         $('#calendarmodal').modal('show');
                     } else if(isActive){
                         isActive = false;
+                        // close modal
                         $("#calendermodal").modal('hide');
                     }
                 }
@@ -62,11 +65,16 @@
                 },
                 success: function(newData) {
                     $('#modalArea').html(newData);
+                    // if modal is not visible and isActive is not true
                     if(!$('#calendarmodal').is(':visible') && !isActive){
                         isActive = true;
+                        // show modal
                         $('#calendarmodal').modal('show');
-                    } else if(isActive){
+                    } 
+                    // if isActive is true
+                    else if(isActive){
                         isActive = false;
+                        // close modal
                         $("#calendermodal").modal('hide');
                     }
                 }
