@@ -4,8 +4,8 @@ from kombo_parking.models import Booking
 
 def run():
 
-    # fetch all bookings with a stop date older than 31 days
-    bookings = Booking.objects.filter(stop_date__lte=datetime.now()-timedelta(days=31))
+    # fetch all bookings with a stop date older than 1 days
+    bookings = Booking.objects.filter(stop_date__lte=datetime.now()-timedelta(days=1)
     
     # delete all bookings from database if there are any
     if bookings.exists():

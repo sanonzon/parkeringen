@@ -24,7 +24,7 @@ class Booking(models.Model):
             return "%s - %s, %s -> %s booked by %s %s"%(self.space.number, "Taken" if self.taken is True else "Available", self.start_date, self.stop_date, self.owner.first_name, self.owner.last_name)
         else:
             return "%s - %s -> %s" % (self.space.number, self.start_date, self.stop_date)
-
+    
 class Requested_Space(models.Model):
     renter = models.ForeignKey(User)
     start_date = models.DateTimeField()
