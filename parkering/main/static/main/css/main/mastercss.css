@@ -135,7 +135,7 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
 
 /* ********** LOGGED IN - FOOTER *********** */
 
-#calenderFooter{
+#calenderFooter {
     height: 60px;
     margin-top: 10px;
     border-radius: 5px;
@@ -145,11 +145,10 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
     color: white;
 }
 
-#footerPargrah
-{
+#footerPargrah {
     margin-top: 20px;
 }
-#calenderFooter{
+#calenderFooter {
     background-color: #333;
 }
 
@@ -172,6 +171,10 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
 
 /* for mobile phones: */
 @media only screen and (max-width: 768px) {
+    .jumbotron h1 {
+    font-size: 40px;
+    }
+
     .index-buttons a {
         display: block;
         margin: 10px 25px;
