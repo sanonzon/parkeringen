@@ -30,29 +30,8 @@
         },
         displayEventTime: false,
        {% if list %} events: {{ list|safe }}, {% endif %}
-      /*  dayClick: function(date, jsEvent, view) {
-             $.ajax({
-                type: "POST",
-                url: "/calendar_click/",
-                data: {
-                    'date': date.format(),
-                    'csrfmiddlewaretoken': csrftoken,
-                },
-                success: function(newData) {
-                    $('#modalArea').html(newData);
-                    if(!$('#calendarmodal').is(':visible')){
-                        // show modal
-                        $('#calendarmodal').modal('show');
-                    } else{
-                        // close modal
-                        $("#calendermodal").modal('hide');
-                    }
-                }
-           })
-        }, */
 
-        eventClick: function(calEvent, jsEvent, view) {     
-            console.log( $calendar_click_spam_fix )
+        eventClick: function(calEvent, jsEvent, view) {
             if ($calendar_click_spam_fix == true) {
                 $calendar_click_spam_fix = false;
                 $.ajax({
