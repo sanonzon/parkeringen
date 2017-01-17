@@ -38,6 +38,14 @@
 {% elif request.get_full_path == '/faq' %}
   <link rel="stylesheet" type="text/css" href="{% static 'main/css/main/faqcss.css' %}" />
 
+  <!--account/Register_screen-->
+{% elif request.get_full_path == '/register' %}
+  <link rel="stylesheet" type="text/css" href="{% static 'account/css/Register_Screen.css' %}" />
+
+    <!--account/Password_reset_screen-->
+{% elif request.get_full_path == '/reset_password' %}
+  <link rel="stylesheet" type="text/css" href="{% static 'account/css/Password_reset_screen.css' %}" />
+
 {% endif %}
 
 <!--sitewide style-->

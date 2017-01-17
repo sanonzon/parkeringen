@@ -1,0 +1,26 @@
+.col-md-8{
+
+	text-align: left;
+	margin-left: 10em;
+	margin-right: 10em;
+	padding: 5px;
+}
+
+input[type="text"], input[type="password"], input[type="email"]
+{
+    width: 100%;
+}
+
+h1
+{
+    padding-bottom: 0.4em;
+}
+
+.knapp
+{
+  width: 30%;   
+}
+
+
+
+

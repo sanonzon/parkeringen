@@ -108,15 +108,26 @@ def grab_parkingspace(request):
                     item.owner = request.user
                     item.taken = True        
                     
+                    # Send emil to the owner of parking space with info who rented it.
                     if item.space.owner.email:
                         subject = "Parking space rented"
                         email_to = item.space.owner.email
                         start = item.start_date.strftime("%Y-%m-%d %H:%M")
                         stop = item.stop_date.strftime("%Y-%m-%d %H:%M")
                         body = "Parking space %s rented to %s %s from %s to %s\nPhone number: %s" % (item.space.number, request.user.first_name, request.user.last_name, start, stop, User_data.objects.filter(user=request.user).get().phone_number)
-                        
-                        
+                                                
                         send_mail(subject, email_to, body)
+                        
+                        # Send confirmation email to the user who rented it.
+                        subject = "Parking space rented"
+                        email_to = request.user.email
+                        start = item.start_date.strftime("%Y-%m-%d %H:%M")
+                        stop = item.stop_date.strftime("%Y-%m-%d %H:%M")
+                        body = "Parking space %s rented.\nDate/time start: %s\nDate/time stop: %s\nOwner phone: %s" % (item.space.number, start, stop, User_data.objects.get(user=item.space.owner).phone_number)
+                                                
+                        send_mail(subject, email_to, body)
+                        
+                    
                     
                      
                     item.save()
