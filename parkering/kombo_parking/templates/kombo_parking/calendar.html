@@ -4,6 +4,7 @@
     $(document).ready(function () {
     //~ console.log("{{list}}");
 
+
     function getCookie(name) {
         var cookieValue = null;
         if (document.cookie && document.cookie != '') {
@@ -38,7 +39,11 @@
                 },
                 success: function(newData) {
                     $('#modalArea').html(newData);
-                    $('#calendarmodal').modal('show');
+                    if(!$('#calendarmodal').is(':visible')){
+                        $('#calendarmodal').modal('show');
+                    } else{
+                        $("#calendermodal").modal('hide');
+                    }
                 }
            })
         },
@@ -53,11 +58,14 @@
                 },
                 success: function(newData) {
                     $('#modalArea').html(newData);
-                    $('#calendarmodal').modal('show');
+                    if(!$('#calendarmodal').is(':visible')){
+                        $('#calendarmodal').modal('show');
+                    } else{
+                        $("#calendermodal").modal('hide');
+                    }
                 }
            })
         },
-        
     });
     
 
