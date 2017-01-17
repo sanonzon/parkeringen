@@ -29,7 +29,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 align="center">Hyra Ut/Boka Plats<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button></h4>
           <!-- <h4 class="modal-title">Hyra Ut/Boka Plats</h4> -->
         </div>
         <div class="modal-body">
@@ -96,7 +96,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 align="center">Regristera Plats<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button></h4>
           <!-- <h4 class="modal-title">Hyra Ut/Boka Plats</h4> -->
         </div>
         <div class="modal-body booking-form">
@@ -129,11 +129,11 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4>Unregister your parking space<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button></h4>
           <!-- <h4 class="modal-title">Hyra Ut/Boka Plats</h4> -->
         </div>
         <div class="modal-body">
-          <h4>Unregister your parking space</h4>
+          
           <form action="{%url 'kombo_parking:calendar' %}" method="POST" enctype='multipart/form-data'>
               {% csrf_token %}
               <div class="selects">
