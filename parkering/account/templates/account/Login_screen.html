@@ -1,30 +1,43 @@
 <!-- user login view -->
-
+<!DOCTYPE html>
 {% load staticfiles %}
 
-<html> 
-
+<html>
   <head>
-    {% include 'meta/Meta.html' %}
+    {% include 'nexus/Nexus.html' %}
     <title>Log in</title>
   </head>
 
   <body>
-    <div class="Login">
-      <form action="{% url 'account:Login_check' %}" method="post" enctype='multipart/form-data'> {% csrf_token %}
-        <!--Username:<br>-->
-        <input type="text" placeholder="Username" name="Username"><br>
-        <!--Password:<br>-->
-        <input type="Password" placeholder="Password" name="Password"><br>
-        <a href="{% url 'account:Index_screen' %}" class="btn btn-success green" role="button">Return</a>
-        <input id="submit_button" class="btn btn-success green" type="submit" value="Log in">
-      </form>
+  <div class="jumbotron">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h1>Log in</h1>
+            </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8 col-md-offset-2 login-form">
+            <form action="{% url 'account:Login_check' %}" method="post" enctype='multipart/form-data'> 
+              {% csrf_token %}
+              <!--Username:<br>-->
+              {{ LogForm.username }}<br>
+              <!--Password:<br>-->
+              {{ LogForm.password }}<br>
+              <a href="{% url 'account:Index_screen' %}" class="btn btn-info green login-buttons" role="button">Return</a>
+              <input id="submit_button" class="btn btn-success green login-buttons" type="submit" value="Log in">
+              <!-- display error messages -->
+              {{ LogForm.password.errors }}
+              <div class="success-messages">
+                {{ ResetPasswordSuccess|safe }}
+              </div>
+            </form>
+            <a class="login-links" href="{% url 'account:Register_screen' %}">Don't have an account?</a><br>
+            <a class="login-links" href="{% url 'account:reset' %}">Forgot your password?</a><br>
+            <a class="login-links" href="{% url 'main:FAQ_screen' %}">FAQ</a>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <!--/static files-->
-      <!--Bootstrap-->
-        {% include 'assets/bootstrap/Bootstrap.html' %}
-    <!--/static files-->
   </body>
-
-</html>
+<html>

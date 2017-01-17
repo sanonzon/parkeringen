@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+
+<html>
+
+  <head>
+    {% include 'nexus/Nexus.html' %}
+    <title>Update details</title>
+  </head>
+
+  <body>
+    <div class="jumbotron">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h1>Update your information</h1>
+            </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8 col-md-offset-2 login-form">
+            <form action="{% url 'account:Update_details' %}" method="post" enctype='multipart/form-data'> {% csrf_token %}
+              <!--First name:<br>-->
+              {{ ChangeDetails.first_name }}<br>
+              <!--Last name:<br>-->
+              {{ ChangeDetails.last_name }}<br>
+              <!--Email address:<br>-->
+              {{ ChangeDetails.email }}<br>
+              <!--Phone number:<br>-->
+              {{ ChangeDetails.phone_number }}<br>
+              <input id="submit_button" class="btn btn-success green" type="submit" value="Change details">
+              <!-- display success message when information was updated -->
+              <div class="success-messages"> {{ SuccessMessage|safe }} </div>
+              <!-- display error messages -->
+              {{ ChangeDetails.first_name.errors }}
+              {{ ChangeDetails.last_name.errors }}
+              {{ ChangeDetails.email.errors }}
+              {{ ChangeDetails.phone_number.errors }}
+            </form>
+            <a href="{% url 'account:Account_screen' %}" class="btn btn-info green account-buttons" role="button">Return</a>
+            <a href="{% url 'main:Render_all' %}" class="btn btn-info green account-buttons" role="button">Return to calendar</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

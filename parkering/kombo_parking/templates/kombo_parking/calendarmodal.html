@@ -1,0 +1,204 @@
+{% load staticfiles %}
+
+<div id="calendarmodal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Register Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        {% if not requests and not list and not bookings %}
+            <p>No spaces available, use the options in the navbar to request a parking space.</p>            
+        {% endif %}
+        {% if list %}
+           <h2>Available spaces</h2>
+          <table class="table">
+            <tr>
+                <th class="text-center">Space</th>
+                <th class="text-center">Start</th>
+                <th class="text-center">Stop</th>            
+                <th></th>            
+            </tr>
+            {% for item in list %}
+            <tr>
+                <td class="dootfacetwentyseven hidden">{{item.id}}</td>
+                <td>{{item.number}}</td>
+                <td>{{item.start_date}}</td>
+                <td>{{item.stop_date}}</td>
+                {% if item.number in parking_spaces %}
+                <td><button class="fancyButtonclicker">Remove</button></td>
+                {% else %}
+                <td><button class="fancyButtonclicker">Book</button></td>
+               {% endif %}
+            </tr>
+            {% endfor %}  
+                         
+          </table>
+        {% endif %} 
+          
+        {% if requests %}
+          <h2>Requested spaces</h2>
+          
+        <table class="table">
+            <tr>
+                <th class="text-center">Start</th>
+                <th class="text-center">Stop</th>            
+                <th>Space to give</th>            
+                <th></th>            
+            </tr>
+            {% for item in requests %}
+            <tr>
+                <td class="ID_for_Give_Space hidden">{{item.id}}</td>
+                <td>{{item.start_date}}</td>
+                <td>{{item.stop_date}}</td>
+                <!-- <td><input id="{{item.id}}" type="text" name="space_to_lend"></td> -->
+                
+                {% if parking_spaces %}
+                <td>
+                    <select>
+                    {% for space in parking_spaces %}
+                        <option value="{{space}}">{{space}}</option>
+                    {% endfor %}
+                    </select>
+                </td>
+                
+                <td><button class="Give_That_Space">Give space</button></td>
+                {% else %}
+                <td>No spaces to lend</td>
+                <td></td>
+                {% endif %}
+                
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+        
+        {% if bookings %} 
+            <!-- Step 1: Print out all the bookings you own and can un-book. -->
+            {% if you_have_booked_spaces %}
+                <h2>Your bookings</h2>
+                    <table class="table">
+                        <tr>
+                            <th class="text-center">Space</th>
+                            <th class="text-center">Start</th>
+                            <th class="text-center">Stop</th>            
+                            <th></th>            
+                        </tr>
+                {% for booking in bookings %}
+                    {% if booking.booked_user.id == request.user.id %}                        
+                        <tr>
+                            <td class="dootfacetwentyseven hidden">{{booking.id}}</td>
+                            <td>{{booking.number}}</td>
+                            <td>{{booking.start_date}}</td>
+                            <td>{{booking.stop_date}}</td>
+                            <td><button class="fancyButtonclicker">Remove</button></td>
+                        </tr>                          
+                    {% endif %}                
+                {% endfor %}  
+                    </table> 
+            {% endif %}
+            
+             <!-- Step 2: Print out all the bookings that you do not own. -->
+            {% for booking in bookings %}              
+                {% if not booking.booked_user.id == request.user.id %}                       
+                    <p class="text-left">
+                        {{booking.booked_user.first_name}} {{booking.booked_user.last_name}} has booked space {{booking.number}} from {{booking.start_date}} to {{booking.stop_date}}.<br>
+                        Contact: {{booking.booked_user_data.phone_number}}
+                    </p>                         
+                {% endif %}            
+            {% endfor %}        
+        {% endif %}
+        
+        
+        
+        
+        
+      </div> <!-- MODAL BODY END -->
+      <div class="modal-footer">
+          <div class="col-6">
+            <button type="button" class="btn btn-default" id="register-button" data-dismiss="modal">Stäng</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+    var csrftoken;
+    
+   $( document ).ready(function() {
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    csrftoken = getCookie('csrftoken');
+    });
+    
+
+    
+    $(".fancyButtonclicker").click(function() {
+        var $item = $(this).closest("tr").find(".dootfacetwentyseven").text();  // Find row of clicked button, get td containing magic id with silly class name.
+        console.log($item);
+        
+        $.ajax({
+            type: "POST",
+            url: "/grab_parkingspace/",
+            data: {
+                'booking_id': $item,
+                'csrfmiddlewaretoken': csrftoken,
+            },
+            success: function(data) {
+               //alert("Bokat, gör en häftigare notis eller redirect eller något.")           
+               location.reload();
+            }
+       })
+    });
+    
+    
+     $(".Give_That_Space").click(function() {
+        var $item_id = $(this).closest("tr").find(".ID_for_Give_Space").text();  // Find row of clicked button, get td containing magic id with silly class name.
+        var $space = $(this).closest("tr").find("select option:selected").text();  // Find row of clicked button, get td containing magic id with silly class name.                
+       
+       $.ajax({
+            type: "POST",
+            url: "/rentout_your_space_to_people/",
+            data: {
+                'booking_id': $item_id,
+                'space':$space,
+                'csrfmiddlewaretoken': csrftoken,
+            },
+            success: function(data) {
+               //alert("Bokat, gör en häftigare notis eller redirect eller något.")           
+               location.reload();
+            }
+       })
+      
+    });
+   
+    
+    
+    //~ function(date, jsEvent, view) {
+             //~ $.ajax({
+                //~ type: "POST",
+                //~ url: "/grab_parkingspace/",
+                //~ data: {
+                    //~ 'booking_id': ,
+                    //~ 'csrfmiddlewaretoken': csrftoken,
+                //~ },
+                //~ success: function(newData) {
+                    //~ alert('Farsågod.');
+                //~ }
+           //~ })
+        //~ },
+</script>

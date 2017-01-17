@@ -1,40 +1,63 @@
+<!DOCTYPE html>
 {% load staticfiles %}
 
 <html>
-
   <head>
-    {% include 'meta/Meta.html' %}
+    {% include 'nexus/Nexus.html' %}
     <title>Register account</title>
   </head>
 
   <body>
-    <div class="Register">
-      <form action="{% url 'account:Register_account' %}" method="post" enctype='multipart/form-data'> 
-      {% csrf_token %}
-        <!--Username:<br>-->
-        <input type="text" placeholder="Username" name="Username"><br>
-        <!--E-mail address:<br>-->
-        <input type="text" placeholder="E-mail address" name="Email_address"><br>
-        <!--First name:<br>-->
-        <input type="text" placeholder="First name" name="First_name"><br>
-        <!--Last name:<br>-->
-        <input type="text" placeholder="Last name" name="Last_name"><br>
-        <!--Phone number:<br>-->
-        <input type="text" placeholder="Phone number" name="Phone_number"><br>
-        <!--Password:<br>-->
-        <input type="password" placeholder="Password" name="Password"><br>
-        <!--Repeat password:<br>-->
-        <input type="password" placeholder="Repeat password" name="Repeat_password"><br>
-        <a href="{% url 'account:Index_screen' %}" class="btn btn-success green" role="button">Return</a>
-        <input id="submit_button" class="btn btn-success green" type="submit" value="Register">
-      </form>
+    <div class="jumbotron">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8 col-md-offset-2">
+            <h1>Register an account</h1>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8 col-md-offset-2 login-form">
+            <form action="{% url 'account:Register_account' %}" method="post" enctype='multipart/form-data'> 
+              {% csrf_token %}
+              <div class="col-sm-6 col-xs-12 register-first-half">
+                <!--Username:<br>-->
+                {{ RegForm.username }}<br>
+                <!--E-mail address:<br>-->
+                {{ RegForm.email }}<br>
+                <!--First name:<br>-->
+                {{ RegForm.first_name }}<br>
+                <!--Last name:<br>-->
+                {{ RegForm.last_name }}<br>
+              </div>
+              <div class="col-sm-6 col-xs-12 register-second-half">
+                <!--Phone number:<br>-->
+                {{ RegForm.phone_number }}<br>
+                <!--Apartment number:<br>-->
+                {{ RegForm.apartment }}<br>
+                <!--Password:<br>-->
+                {{ RegForm.password }}<br>
+                <!--Repeat password:<br>-->
+                {{ RegForm.password_repeat }}<br>
+              </div>
+
+              <a href="{% url 'account:Index_screen' %}" class="btn btn-lg btn-info green register-buttons" role="button">Return</a>
+              <input id="submit_button" class="btn btn-lg btn-success green register-buttons" type="submit" value="Register">
+              <!--display error messages-->
+              {{ RegForm.username.errors }}
+              {{ RegForm.email.errors }}
+              {{ RegForm.first_name.errors }}
+              {{ RegForm.last_name.errors }}
+              {{ RegForm.phone_number.errors }}
+              {{ RegForm.apartment.errors }}
+              {{ RegForm.password.errors }}
+              {{ RegForm.password_repeat.errors }}
+            </form>
+
+            <a class="register-links" href="{% url 'account:Login_screen' %}">Already have an account?</a><br>
+            <a class="register-links" href="{% url 'main:FAQ_screen' %}">FAQ</a>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <!--/static files-->
-      <!--Bootstrap-->
-        {% include 'assets/bootstrap/Bootstrap.html' %}
-    <!--/static files-->
-
   </body>
-
 </html>

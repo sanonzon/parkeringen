@@ -1,0 +1,79 @@
+<!-- FAQ view -->
+<!DOCTYPE html>
+{% load staticfiles %}
+
+<html>
+  <head>
+    {% include 'nexus/Nexus.html' %}
+    <title>FAQ</title>
+  </head>
+
+  <body class="jumbotron">
+    <h1>FAQ</h1>
+    <div id="faq-container">
+      <div id="faq-center">
+          <!--faq:1-->
+          <h3 class="faq-header">What is Kombo?</h3>
+          <p class="faq-text">
+            Kombo is a system specificially designed to ease the communication between users when borrowing and lending one or more parking spaces to oneanother.
+          </p>
+          <!--faq:2-->
+          <h3 class="faq-header">What can i do here?</h3>
+          <p class="faq-text">
+            Kombo is an easy navigable website where you can:
+          </p>
+          <ul class="faq-list">
+            <li>
+              Lend your parking space(s) to others by filling out a simple form.
+            </li>
+            <li>
+              Borrow someone else's parking space by finding your preferred date within a calendar and click the "Borrow" button.
+            </li>
+            <li>
+              Request parking space by clicking the "Request" button.
+            </li>
+          </ul>
+          <p class="faq-text">Other actions that may be done:</p>
+          <ul class="faq-list">
+            <li>
+              Create an account.
+            </li>
+            <li>
+              Reset password by logging in and navigate to "Account", then click on "Update password".
+            </li>
+            <li>
+              Update your information by navigating to "Account", then click "Update information".
+            </li>
+            <li>
+              Change password by navigating to "Forgot password" and type in your e-mail address to send a one-use link to a secure password reset page.
+            </li>
+          </ul>
+          <!--faq:3-->
+          <h3 class="faq-header">Why can't i register an account?</h3>
+          <p class="faq-text">
+            Only users who have requested to use this website and provided their apartment number to the website administrator may register on this website. 
+            furthermore each apartment number may only be used once, should you see an error displaying that your provided apartment number is already in use please check your input and try again. Should the problem persist it is advised to contact your site administrator as soon as possible to resolve this issue.
+          </p>
+          <!--faq:4-->
+          <h3 class="faq-header">Why can't i log in?</h3>
+          <p class="faq-text">
+            Only registered users may log in by providing the username and password they chose upon registration.
+          </p>
+          <!--faq:5-->
+          <h3 class="faq-header">I forgot my password, how can i retrieve it?</h3>
+          <p class="faq-text">
+            If you have forgot your password you may click on the "Forgot password" button or "Forgot your password?" link. 
+            You will then be redirected to a page where you may type the e-mail address you used to register your account.
+            If the e-mail exists you will recieve an e-mail with a one-use link leading to a secure page where you may reset your password.
+          </p>
+          <!--faq:6-->
+          <h3 class="faq-header">I have forgotten my login details and e-mail address, what should i do?</h3>
+          <p class="faq-text">
+            Should you forget your login details, you should at first try to recover your password/username through the "Forgot password" functionality. If this is not possible you should contact your site administrator to resolve this issue.
+          </p>
+      </div>
+    </div>
+    <!--faq:return-->
+      <a href="{% url 'account:Index_screen' %}" class="btn btn-success green"  id="faq-return" role="button">Return</a>
+  </body>
+</html>

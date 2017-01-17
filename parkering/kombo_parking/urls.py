@@ -1,13 +1,12 @@
-from django.conf.urls import url, include
+from django.conf.urls import include, url
 from . import views
 
-app_name = 'main'
+app_name = 'kombo_parking'
 
 urlpatterns = [
-
-    # display index view
-    url(r'^$', views.Let_there_be_light, name='Render_all'),
-
-    # display test view
-    url(r'^frontpage$', views.frontpage, name='frontpage'),
+    # url(r'^calendar/$', views.frontpage, name='frontpage'),
+    url(r'^calendar/$', views.calendar, name='calendar'),
+    url(r'^calendar_click/$', views.calendar_click, name='calendar_click'),
+    url(r'^grab_parkingspace/', views.grab_parkingspace),    
+    url(r'^rentout_your_space_to_people/$', views.rentout_your_space_to_people, name='rentout_your_space_to_people'),
 ]

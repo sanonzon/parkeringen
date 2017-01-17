@@ -1,0 +1,45 @@
+#faq-container{
+    background-color: white;
+    border-radius: 1.5em;
+    border-right: 0.1em solid #0a111c;
+    border-bottom: 0.1em solid #0a111c;
+    border-left: 0.1em solid #0a111c;
+    border-top: 0.1em solid #0a111c;
+}
+
+.faq-header{
+    font-size: 1.5em;
+}
+
+.faq-text{
+    font-size: 1em !important;
+    color: black !important;
+}
+
+.faq-list{
+    font-size: 0.9em !important;
+}
+
+#faq-return{
+    margin:0.6em;
+}
+
+.jumbotron{
+    margin-top: -15% !important;
+}
+
+@media only screen and (min-width: 768px) {
+    .jumbotron{
+        padding:5em;
+    }
+}
+
+@media only screen and (min-width: 368px) {
+    #faq-center{
+        padding:1em; 
+    }
+} @media only screen and (max-width: 368px) {
+    #faq-center{
+        padding:0.3em; 
+    }
+}
