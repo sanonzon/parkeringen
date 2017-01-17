@@ -151,8 +151,8 @@ def rentout_your_space_to_people(request):
                     body = "Your request to rent a parking space has been accepted by %s %s.\nParking space: %s\nDate/time start: %s\nDate/time stop: %s\nUser contact: %s\n" %(request.user.first_name, request.user.last_name, book.space.number, start, stop, User_data.objects.filter(user=request.user).get().phone_number)
                     
                     send_mail(subject, email_to, body)
-                    
-                book.save()
+                 
+                    book.save()
                 requested.delete()
             
         except ValueError:
@@ -282,8 +282,14 @@ def calendar(request):
      
 
     ''' If any errors occured: Render those forms with their errors. '''
-    context = {'rentout': rent_space_form, 'list': calendar, 'request_form': request_form, 'request_parking_space_form': register_parking_space,
-        'unregister_space_form': unregister_space_form}
+    context = {
+        'rentout': rent_space_form,
+        'list': calendar,
+        'request_form': request_form,
+        'request_parking_space_form': register_parking_space,
+        'unregister_space_form': unregister_space_form
+    }
+
     return render(request, 'main/base.html', context)
 
         

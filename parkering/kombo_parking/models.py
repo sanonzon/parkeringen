@@ -22,6 +22,11 @@ class Booking(models.Model):
     def clean(self):
         if self.start_date >= self.stop_date:
             raise ValidationError("Stop date cannot be earlier than the start date!")
+
+    def save(self, *args, **kwargs):
+        self.clean()
+
+        super(Booking, self).save(*args, **kwargs)
           
     def __str__(self):
         if self.owner:
@@ -33,10 +38,15 @@ class Requested_Space(models.Model):
     renter = models.ForeignKey(User)
     start_date = models.DateTimeField()
     stop_date = models.DateTimeField()
-    
+        
     def clean(self):
         if self.start_date >= self.stop_date:
             raise ValidationError("Stop date cannot be earlier than the start date!")
+
+    def save(self, *args, **kwargs):
+        self.clean()
+
+        super(Requested_Space, self).save(*args, **kwargs)
           
     def __str__(self):
         return "%s Requests space FROM %s TO %s" % (self.renter, self.start_date, self.stop_date)

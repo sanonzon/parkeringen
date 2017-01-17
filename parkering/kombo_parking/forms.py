@@ -97,6 +97,8 @@ class Rent_space_form(forms.Form):
                 raise forms.ValidationError(u"Stop hour cannot be before start hour.")
             elif stop_m < start_m:
                 raise forms.ValidationError(u"Stop minute cannot be before start minute.")
+            else:
+                raise forms.ValidationError(u"The booking cannot start and stop at the same time.")
         
         #datetime_start = start.replace(hour=start_h, minute=start_m)
         #datetime_stop = stop.replace(hour=stop_h, minute=stop_m)   
@@ -147,6 +149,8 @@ class Request_space_form(forms.Form):
                 raise forms.ValidationError(u"Stop hour cannot be before start hour.")
             elif stop_m < start_m:
                 raise forms.ValidationError(u"Stop minute cannot be before start minute.")
+            else:
+                raise forms.ValidationError(u"The requested time cannot start and stop at the same time.")
                 
         return stop_m
         

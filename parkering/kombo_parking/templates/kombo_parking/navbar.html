@@ -51,20 +51,10 @@
                       <!-- tom lable skapar tillfälligt lite utrymme.-->  
                       <label class="control-label"></label>
 
-                      <h4>Select space</h4>
-                      <p class="RentSpace">{{ rentout.space }}</p>
+                        <div id="register-booking-form">
+                          {% include 'kombo_parking/registerBookingForm.html' %}
+                        </div>
 
-                      <div class="StartTime">
-                        <label class="control-label">Start Time and Date</label>
-                        <p class="RentStartDate">{{rentout.start_date}} {{rentout.start_hour}} {{rentout.start_minute}} {{rentout.start_date.errors}}{{rentout.start_hour.errors}}{{rentout.start_minute.errors}}</p>
-                        <i class="glyphicons glyphicons-car form-control-feedback"></i>
-                      </div>
-
-                      <div class="EndTime">
-                        <label class="control-label">End Time and Date</label>
-                        <p class="RentStopDate">{{rentout.stop_date}} {{rentout.stop_hour}} {{rentout.stop_minute}} {{rentout.stop_date.errors}}{{rentout.stop_hour.errors}}{{rentout.stop_minute.errors}}</p>
-                        <i class="glyphicons glyphicons-car form-control-feedback"></i>
-                      </div>
                         <input class="hidden" name="form_content_check" value="rentout_parking_space">
                       <div class="footer">
                         <input id="submit_button" class="btn btn-sucess green" role="button"  value="Upload Rentable Space" type="submit" name="" />
@@ -75,10 +65,13 @@
 
                 <div class="tab-pane booking-form" id="be_om_plats">
                     <form action="{%url 'kombo_parking:calendar' %}" method="POST" enctype='multipart/form-data'>
-                        {% csrf_token %}
-                        
-                        {{request_form.as_p }}
+                    {% csrf_token %}
+                      <label class="control-label"></label>
 
+                      <div id="request-space-form">
+                          {% include 'kombo_parking/requestSpaceForm.html' %}
+                      </div>
+                      
                     <input class="hidden" name="form_content_check" value="request_parking_space">
                         <div class="footer">
                             <input id="submit_button" class="btn btn-sucess green" role="button"  value="Request" type="submit" name="" />
