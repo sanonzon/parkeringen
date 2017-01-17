@@ -4,6 +4,7 @@
     $(document).ready(function () {
     //~ console.log("{{list}}");
 
+
     function getCookie(name) {
         var cookieValue = null;
         if (document.cookie && document.cookie != '') {
@@ -38,12 +39,11 @@
                 },
                 success: function(newData) {
                     $('#modalArea').html(newData);
-                    $('#calendarmodal').modal('show');
-                    $("#calendarmodal").not('.btn btn-default, #register-button, button, .ui-dialog-titlebar-close').off( 'click' );
-                    $( ".btn btn-default, #register-button, button" ).click(function() {
-                      $("#calendarmodal").not('.btn btn-default, #register-button, button, .ui-dialog-titlebar-close').on( 'click' );
-                      $(".modal, #calendermodal").modal('hide');
-                    });
+                    if(!$('#calendarmodal').is(':visible')){
+                        $('#calendarmodal').modal('show');
+                    } else{
+                        $("#calendermodal").modal('hide');
+                    }
                 }
            })
         },
@@ -58,18 +58,14 @@
                 },
                 success: function(newData) {
                     $('#modalArea').html(newData);
-                    $('#calendarmodal').modal('show');
-                    $("#calendarmodal").not('.btn btn-default, #register-button, button, .ui-dialog-titlebar-close').off( 'click' );
-                    $( ".btn btn-default, #register-button, button" ).click(function() {
-                      $("#calendarmodal").not('.btn btn-default, #register-button, button, .ui-dialog-titlebar-close').on( 'click' );
-                      $(".modal, #calendermodal").modal('hide');
-                    });
+                    if(!$('#calendarmodal').is(':visible')){
+                        $('#calendarmodal').modal('show');
+                    } else{
+                        $("#calendermodal").modal('hide');
+                    }
                 }
            })
         },
-
-        
-        
     });
     
 
