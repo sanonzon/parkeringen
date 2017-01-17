@@ -220,9 +220,12 @@ def calendar(request):
         list_taken = []
         
         for event in bookings:              
-            if event.taken and 'TAKEN %s' % event.start_date.strftime("%Y-%m-%d") not in list_taken:
+            booked_query = Booking.objects.filter(start_date__startswith=event.start_date.strftime("%Y-%m-%d")).filter(taken=True)
+            avail_query = Booking.objects.filter(start_date__startswith=event.start_date.strftime("%Y-%m-%d")).filter(taken=False)
+            
+            if event.taken and 'TAKEN %s' % event.start_date.strftime("%Y-%m-%d") not in list_taken and booked_query:            
                 calendar.append({                  
-                    'title': "Bookings: %s" % (Booking.objects.filter(start_date__startswith=event.start_date.strftime("%Y-%m-%d")).filter(taken=True).count()),
+                    'title': "Bookings: %s" % booked_query.count(),
                     'id':event.id,
                     'number': event.space.number,
                     'start': event.start_date.strftime("%Y-%m-%d"),
@@ -231,10 +234,11 @@ def calendar(request):
                     'event_type_magic_string' : 'BOOKINGS',
                 })
                 list_taken.append('TAKEN %s' % event.start_date.strftime("%Y-%m-%d"))
-                
-            elif 'NOT_TAKEN %s' % event.start_date.strftime("%Y-%m-%d") not in list_taken:
+            
+            
+            elif 'NOT_TAKEN %s' % event.start_date.strftime("%Y-%m-%d") not in list_taken and avail_query:
                 calendar.append({                  
-                    'title': "Available: %s" %(Booking.objects.filter(start_date__startswith=event.start_date.strftime("%Y-%m-%d")).filter(taken=False).count()),
+                    'title': "Available: %s" % avail_query.count(),
                     'id':event.id,
                     'number': event.space.number,
                     'start': event.start_date.strftime("%Y-%m-%d"),
