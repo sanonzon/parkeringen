@@ -85,8 +85,7 @@
     
     $(".fancyButtonclicker").click(function() {
         var $item = $(this).closest("tr").find(".dootfacetwentyseven").text();  // Find row of clicked button, get td containing magic id with silly class name.
-        console.log($item);
-        
+     
         $.ajax({
             type: "POST",
             url: "/grab_parkingspace/",

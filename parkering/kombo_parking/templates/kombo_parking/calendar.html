@@ -20,8 +20,6 @@
         return cookieValue;
     }
     var csrftoken = getCookie('csrftoken');
-
-    console.log({{ list|safe }});
     
     $('#calendar').fullCalendar({
         header: {
@@ -53,7 +51,6 @@
         }, */
 
         eventClick: function(calEvent, jsEvent, view) {      
-            console.log(calEvent);
             $.ajax({
                 type: "POST",
                 url: "/calendar_click/",
