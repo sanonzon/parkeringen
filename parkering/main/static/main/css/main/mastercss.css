@@ -182,9 +182,8 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
 
 .booking-form select{
     margin-bottom: 7px;
-    padding: 6px;
-    border-radius: 5px;
-    border: 1px solid black;
+    margin-right: 5px;
+    height: 30px;
 }
 
 /* ********** NOT AUTHORIZED SITE *********** */
