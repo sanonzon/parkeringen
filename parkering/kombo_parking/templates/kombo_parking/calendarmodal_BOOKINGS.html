@@ -84,6 +84,8 @@
 
     
     $(".fancyButtonclicker").click(function() {
+     $(this).prop("disabled",true);
+     
         var $item = $(this).closest("tr").find(".dootfacetwentyseven").text();  // Find row of clicked button, get td containing magic id with silly class name.
      
         $.ajax({
@@ -102,6 +104,8 @@
     
     
      $(".Give_That_Space").click(function() {
+      $(this).prop("disabled",true);
+      
         var $item_id = $(this).closest("tr").find(".ID_for_Give_Space").text();  // Find row of clicked button, get td containing magic id with silly class name.
         var $space = $(this).closest("tr").find("select option:selected").text();  // Find row of clicked button, get td containing magic id with silly class name.                
        
