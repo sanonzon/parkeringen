@@ -4,6 +4,8 @@
     $(document).ready(function () {
     //~ console.log("{{list}}");
 
+    // set modals active/inactive
+    var isActive = false;
 
     function getCookie(name) {
         var cookieValue = null;
@@ -39,9 +41,11 @@
                 },
                 success: function(newData) {
                     $('#modalArea').html(newData);
-                    if(!$('#calendarmodal').is(':visible')){
+                    if(!$('#calendarmodal').is(':visible') && !isActive){
+                        isActive = true;
                         $('#calendarmodal').modal('show');
                     } else{
+                        isActive = false;
                         $("#calendermodal").modal('hide');
                     }
                 }
@@ -58,9 +62,11 @@
                 },
                 success: function(newData) {
                     $('#modalArea').html(newData);
-                    if(!$('#calendarmodal').is(':visible')){
+                    if(!$('#calendarmodal').is(':visible') && !isActive){
+                        isActive = true;
                         $('#calendarmodal').modal('show');
                     } else{
+                        isActive = false;
                         $("#calendermodal").modal('hide');
                     }
                 }
