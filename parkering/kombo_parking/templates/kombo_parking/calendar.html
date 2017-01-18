@@ -24,9 +24,8 @@
     
     $('#calendar').fullCalendar({
         header: {
-            left: 'month,agendaWeek,agendaDay',
-            center: 'title',
-            right:  'today, prev,next,prevYear,nextYear'
+            left: 'title',            
+            right:  'today, prev, next, prevYear, nextYear'
         },
         displayEventTime: false,
        {% if list %} events: {{ list|safe }}, {% endif %}
