@@ -25,7 +25,13 @@
                 <td>{{item.stop_date}}</td>
                 <!-- <td><input id="{{item.id}}" type="text" name="space_to_lend"></td> -->
                 
-                {% if parking_spaces %}
+                <!-- if the user herself own the request -->
+                {% if item.user.id == request.user.id %}
+                <td></td>
+                <td><button class="btn btn-danger Give_That_Space">Remove</button></td>
+            
+                    
+                {% elif parking_spaces %}
                 <td>
                     <select>
                     {% for space in parking_spaces %}
@@ -33,7 +39,7 @@
                     {% endfor %}
                     </select>
                 </td>
-                
+ 
                 <td><button class="btn btn-primary Give_That_Space">Give space</button></td>
                 {% else %}
                 <td>No spaces to lend</td>

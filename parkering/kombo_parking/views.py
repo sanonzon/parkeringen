@@ -35,6 +35,7 @@ def calendar_click(request):
                             'id':event.id,                        
                             'start_date': event.start_date.strftime("%Y-%m-%d %H:%M"),
                             'stop_date': event.stop_date.strftime("%Y-%m-%d %H:%M"),
+                            'user' : event.renter,
                         }) 
                 html = loader.render_to_string(FILENAME, {
                         'requests': result_list,                    
@@ -161,33 +162,38 @@ def rentout_your_space_to_people(request):
     if request.is_ajax():   
         requested = Requested_Space.objects.filter(id=request.POST['booking_id']).get()
         spaces = Parking_space.objects.values_list('number', flat=True).filter(owner=request.user)
-                   
-        try:
-            try_number = int(request.POST['space'])
-            if try_number in spaces:
-                book = Booking()
-                book.owner = requested.renter
-                book.taken = True
-                book.space = Parking_space.objects.filter(number=try_number).get()
-                book.start_date = requested.start_date
-                book.stop_date = requested.stop_date
-            
+        
+        # IF request user is same as logged in user. Remove request.
+        if requested.renter.id == request.user.id:
+            requested.delete()
+         
+        else:
+            try:
+                try_number = int(request.POST['space'])
+                if try_number in spaces:
+                    book = Booking()
+                    book.owner = requested.renter
+                    book.taken = True
+                    book.space = Parking_space.objects.filter(number=try_number).get()
+                    book.start_date = requested.start_date
+                    book.stop_date = requested.stop_date
                 
-                
-                if requested.renter.email:
-                    subject = "Parking request accepted"
-                    email_to = book.owner.email
-                    start = book.start_date.strftime("%Y-%m-%d %H:%M")
-                    stop = book.stop_date.strftime("%Y-%m-%d %H:%M")
-                    body = "Your request to rent a parking space has been accepted by %s %s.\nParking space: %s\nDate/time start: %s\nDate/time stop: %s\nUser contact: %s\n" %(request.user.first_name, request.user.last_name, book.space.number, start, stop, User_data.objects.filter(user=request.user).get().phone_number)
                     
-                    send_mail(subject, email_to, body)
-                 
-                    book.save()
-                requested.delete()
-            
-        except ValueError:
-            pass
+                    
+                    if requested.renter.email:
+                        subject = "Parking request accepted"
+                        email_to = book.owner.email
+                        start = book.start_date.strftime("%Y-%m-%d %H:%M")
+                        stop = book.stop_date.strftime("%Y-%m-%d %H:%M")
+                        body = "Your request to rent a parking space has been accepted by %s %s.\nParking space: %s\nDate/time start: %s\nDate/time stop: %s\nUser contact: %s\n" %(request.user.first_name, request.user.last_name, book.space.number, start, stop, User_data.objects.filter(user=request.user).get().phone_number)
+                        
+                        send_mail(subject, email_to, body)
+                     
+                        book.save()
+                    requested.delete()
+                
+            except ValueError:
+                pass
     return redirect('/')
 
 
