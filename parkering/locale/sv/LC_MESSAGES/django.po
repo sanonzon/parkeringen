@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-20 15:55+0100\n"
+"POT-Creation-Date: 2017-01-20 17:14+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -77,6 +77,7 @@ msgid "Close"
 msgstr "Stäng"
 
 #: kombo_parking/templates/kombo_parking/navbar.html:16
+#: kombo_parking/views.py:217
 msgid "Requests"
 msgstr "Förfrågningar"
 
@@ -110,21 +111,17 @@ msgstr "Ladda upp"
 msgid "Request"
 msgstr "Förfrågningar"
 
-#: kombo_parking/views.py:217
-#, fuzzy, python-format
-#| msgid "Requests"
-msgid "Requests: %s"
-msgstr "Förfrågningar: %s"
-
 #: kombo_parking/views.py:236
-#, python-format
-msgid "Bookings: %s"
-msgstr "Bokningar: %s"
+#, fuzzy
+#| msgid "Bookings: %s"
+msgid "Bookings"
+msgstr "Bokningar"
 
 #: kombo_parking/views.py:249
-#, python-format
-msgid "Available: %s"
-msgstr "Lediga: %s"
+#, fuzzy
+#| msgid "Available: %s"
+msgid "Available"
+msgstr "Lediga"
 
 #: parking/settings.py:16
 msgid "English"
@@ -133,3 +130,8 @@ msgstr "Engelska"
 #: parking/settings.py:17
 msgid "Swedish"
 msgstr "Svenska"
+
+#, fuzzy
+#~| msgid "Requests"
+#~ msgid "Requests: %s"
+#~ msgstr "Förfrågningar: %s"

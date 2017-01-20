@@ -201,6 +201,7 @@ def rentout_your_space_to_people(request):
 
 @login_required(login_url='/not_authorized',redirect_field_name=None)
 def calendar(request):   
+    activate('sv')
     ''' START CALENDAR EVENTS '''
     bookings = Booking.objects.all().order_by('start_date')
     requests = Requested_Space.objects.all().order_by('start_date')
@@ -214,7 +215,7 @@ def calendar(request):
             
             if recent_date_start != event.start_date.strftime("%Y-%m-%d"):
                 calendar.append({
-                    'title': _("Requests: %s" %(Requested_Space.objects.filter(start_date__startswith=event.start_date.strftime("%Y-%m-%d")).count())),
+                    'title': "Förfrågningar" if request.LANGUAGE_CODE == 'sv' else "Requests" +": %s" %(Requested_Space.objects.filter(start_date__startswith=event.start_date.strftime("%Y-%m-%d")).count()),
                     'id':event.id,
                     'start': event.start_date.strftime("%Y-%m-%d"),
                     'stop': event.stop_date.strftime("%Y-%m-%d"),
@@ -233,7 +234,7 @@ def calendar(request):
             
             if event.taken and 'TAKEN %s' % event.start_date.strftime("%Y-%m-%d") not in list_taken and booked_query:            
                 calendar.append({                  
-                    'title': _("Bookings: %s" % booked_query.count()),
+                    'title': "Bokningar" if 'sv' in request.LANGUAGE_CODE else "Bookings" +": %s" % booked_query.count(),
                     'id':event.id,
                     'number': event.space.number,
                     'start': event.start_date.strftime("%Y-%m-%d"),
@@ -246,7 +247,7 @@ def calendar(request):
             
             elif 'NOT_TAKEN %s' % event.start_date.strftime("%Y-%m-%d") not in list_taken and avail_query:
                 calendar.append({                  
-                    'title': _("Available: %s" % avail_query.count()),
+                    'title': "Lediga" if 'sv' in request.LANGUAGE_CODE else "Available" +": %s" % avail_query.count(),
                     'id':event.id,
                     'number': event.space.number,
                     'start': event.start_date.strftime("%Y-%m-%d"),
