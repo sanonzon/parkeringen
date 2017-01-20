@@ -1,14 +1,49 @@
-  <label>Select space</label>
-  <p class="RentSpace">{{ rentout.space }}</p>
+{% load i18n %}
+    <div class="StartTime">
+        <label class="control-label">{% trans "Start" %}</label>
+        <p class="RentStartDate">
+        {{rentout.rentout_start_date}}
+            <script>
+                $( function() {
+                    $( "#id_rentout_start_date" ).datepicker({
+                        beforeShow: function(input, inst) {
+                            var widget = $(inst).datepicker('widget');
+                            widget.css('margin-right', $(input).outerWidth() - widget.outerWidth());
+                        }
+                    });
+                } );
+            </script>        
+        {{rentout.rentout_start_date.errors}}
+        </p>
+        <i class="glyphicons glyphicons-car form-control-feedback"></i>
+    </div>
 
-  <div class="StartTime">
-    <label class="control-label">Start Time and Date</label>
-    <p class="RentStartDate">{{rentout.start_date}} {{rentout.start_hour}} {{rentout.start_minute}} {{rentout.start_date.errors}}{{rentout.start_hour.errors}}{{rentout.start_minute.errors}}</p>
-    <i class="glyphicons glyphicons-car form-control-feedback"></i>
-  </div>
+    <div class="EndTime">
+        <label class="control-label">{% trans "Stop" %}</label>
+        <div class="RentStopDate">
+        {{rentout.rentout_stop_date}} 
+            <script>
+                $( function() {
+                    $( "#id_rentout_stop_date" ).datepicker({
+                        beforeShow: function(input, inst) {
+                            var widget = $(inst).datepicker('widget');
+                            widget.css('margin-right', $(input).outerWidth() - widget.outerWidth());
+                        }
+                    });
+                } );
+            </script>
+        {{rentout.rentout_stop_date.errors}}
+        </div>
+        <i class="glyphicons glyphicons-car form-control-feedback"></i>
+    </div>
+    <input class="hidden" name="form_content_check" value="rentout_parking_space">
+    <div class="footer">
+        <div>
+            <label class="control-label">{% trans "Space" %}</label>
+            <div>{{ rentout.space }}</div>
+            <input id="submit_button" class="btn btn-success green pull-right" role="button"  value="{% trans 'Upload' %}" type="submit" name="" />
+        </div>               
+    </div>
+    
 
-  <div class="EndTime">
-    <label class="control-label">End Time and Date</label>
-    <p class="RentStopDate">{{rentout.stop_date}} {{rentout.stop_hour}} {{rentout.stop_minute}} {{rentout.stop_date.errors}}{{rentout.stop_hour.errors}}{{rentout.stop_minute.errors}}</p>
-    <i class="glyphicons glyphicons-car form-control-feedback"></i>
-  </div>
+    

@@ -20,23 +20,6 @@ HOURS = (
     )
     
     
-
-class Booking_Form(forms.ModelForm):
-
-    class Meta:
-        model = Booking
-        fields = ('start_date','stop_date')
-
-#~ def get_spaces(request):
-    #~ return Parking_space.objects.filter(owner=request.user.id)
-
-
-class Space_available_form(forms.Form):
-    space = forms.CharField(label='Plats')
-    start_date = forms.DateTimeField(label='Start',widget=SelectDateWidget)
-    stop_date = forms.DateTimeField(label='Stop',widget=SelectDateWidget)
-
-
 class Rent_space_form(forms.Form):
     """docstring for Rent_space_form"""
 
@@ -53,21 +36,20 @@ class Rent_space_form(forms.Form):
         to_field_name="number",
         empty_label=None)
         
-    start_date = forms.DateTimeField(
-        label='Start',
-        widget=SelectDateWidget)
-    start_hour = forms.ChoiceField(
-        choices=HOURS)
-    start_minute = forms.ChoiceField(
-        choices=MINUTES)
+    rentout_start_date = forms.DateTimeField(
+        label='Start')
+    #start_hour = forms.ChoiceField(
+    #    choices=HOURS)
+    #start_minute = forms.ChoiceField(
+    #    choices=MINUTES)
         
-    stop_date = forms.DateTimeField(
-        label='Stop',
-        widget=SelectDateWidget)
-    stop_hour = forms.ChoiceField(
-        choices=HOURS)
-    stop_minute = forms.ChoiceField(
-        choices=MINUTES)  
+    rentout_stop_date = forms.DateTimeField(
+        label='Stop')
+    #    widget=SelectDateWidget)
+    #stop_hour = forms.ChoiceField(
+    #    choices=HOURS)
+    #stop_minute = forms.ChoiceField(
+    #    choices=MINUTES)  
         
         
     def __init__(self, user, *args, **kwargs):
@@ -79,6 +61,17 @@ class Rent_space_form(forms.Form):
         super(Rent_space_form, self).__init__()
         self.arg = arg """
         
+    def clean_stop_date(self):
+        start = self.cleaned_data['rentout_start_date']
+        stop = self.cleaned_data['rentout_stop_date']
+        
+        if stop < start:
+            raise forms.ValidationError(u"Stop date cannot be before start date.")
+            
+        return stop
+        
+''' NOT USING THIS ANYMORE. SAVE JUST IN CASE
+    
     def clean_stop_minute(self):
         #parking_space = self.cleaned_data['space']
         start = self.cleaned_data['start_date']
@@ -99,7 +92,7 @@ class Rent_space_form(forms.Form):
                 raise forms.ValidationError(u"Stop minute cannot be before start minute.")
             else:
                 raise forms.ValidationError(u"The booking cannot start and stop at the same time.")
-        
+      
         #datetime_start = start.replace(hour=start_h, minute=start_m)
         #datetime_stop = stop.replace(hour=stop_h, minute=stop_m)   
         
@@ -112,26 +105,35 @@ class Rent_space_form(forms.Form):
         #    raise forms.ValidationError(u"Parking space already rented out within that interval.")
                 
         return stop_m    
+'''
 
 class Request_space_form(forms.Form):
     """docstring for Request_space_form"""
       
-    start_date = forms.DateTimeField(
-        label='Start',
-        widget=SelectDateWidget)
-    start_hour = forms.ChoiceField(
-        choices=HOURS)
-    start_minute = forms.ChoiceField(
-        choices=MINUTES)
+    request_start_date = forms.DateTimeField(
+        label='Start')
+    #start_hour = forms.ChoiceField(
+    #    choices=HOURS)
+    #start_minute = forms.ChoiceField(
+    #    choices=MINUTES)
         
-    stop_date = forms.DateTimeField(
-        label='Stop',
-        widget=SelectDateWidget) 
-    stop_hour = forms.ChoiceField(
-        choices=HOURS)
-    stop_minute = forms.ChoiceField(
-        choices=MINUTES)      
+    request_stop_date = forms.DateTimeField(
+        label='Stop') 
+    #stop_hour = forms.ChoiceField(
+    #    choices=HOURS)
+    #stop_minute = forms.ChoiceField(
+    #    choices=MINUTES)      
+
+    def clean_request_stop_date(self):
+        start = self.cleaned_data['request_start_date']
+        stop = self.cleaned_data['request_stop_date']
         
+        if stop < start:
+            raise forms.ValidationError(u"Stop date cannot be before start date.")
+            
+        return stop
+        
+''' NO LONGER USED    
     def clean_stop_minute(self):
         start = self.cleaned_data['start_date']
         stop = self.cleaned_data['stop_date']
@@ -153,7 +155,8 @@ class Request_space_form(forms.Form):
                 raise forms.ValidationError(u"The requested time cannot start and stop at the same time.")
                 
         return stop_m
-        
+'''  
+     
 class Request_to_own_Parking_space(forms.Form):
     number = forms.IntegerField(label='Parking space')
     

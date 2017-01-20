@@ -13,13 +13,15 @@ from .forms import Rent_space_form, Request_space_form, Request_to_own_Parking_s
 from django.template import loader
 from datetime import datetime
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
-
+from django.utils.translation import ugettext as _
+from django.utils.translation import activate
 
 # EmailMessage('Kombo Parking', 'Plats: %s uthyrd' % booking.space.number, to=[booking.space.owner.email]).send()
 def send_mail(subject, email_to, body,):
     EmailMessage(subject, body, to=[email_to]).send()
-    
+      
 def calendar_click(request):
+    print(request)
     if request.is_ajax():
         if request.POST['date']:
             FILENAME = None
@@ -120,7 +122,7 @@ def grab_parkingspace(request):
                         stop = item.stop_date.strftime("%Y-%m-%d %H:%M")
                         body = "Parking space %s no longer booked" % (item.space.number)
                         
-                        send_mail(subject, email_to, body)
+                        #send_mail(subject, email_to, body)
      
                 #elif item.space.owner == request.user:
                 #    item.delete()
@@ -137,7 +139,7 @@ def grab_parkingspace(request):
                         stop = item.stop_date.strftime("%Y-%m-%d %H:%M")
                         body = "Parking space %s rented to %s %s from %s to %s\nPhone number: %s" % (item.space.number, request.user.first_name, request.user.last_name, start, stop, User_data.objects.filter(user=request.user).get().phone_number)
                                                 
-                        send_mail(subject, email_to, body)
+                        #send_mail(subject, email_to, body)
                         
                         # Send confirmation email to the user who rented it.
                         subject = "Parking space rented"
@@ -146,7 +148,7 @@ def grab_parkingspace(request):
                         stop = item.stop_date.strftime("%Y-%m-%d %H:%M")
                         body = "Parking space %s rented.\nDate/time start: %s\nDate/time stop: %s\nOwner phone: %s" % (item.space.number, start, stop, User_data.objects.get(user=item.space.owner).phone_number)
                                                 
-                        send_mail(subject, email_to, body)
+                        #send_mail(subject, email_to, body)
                         
                     
                     
@@ -187,7 +189,7 @@ def rentout_your_space_to_people(request):
                         stop = book.stop_date.strftime("%Y-%m-%d %H:%M")
                         body = "Your request to rent a parking space has been accepted by %s %s.\nParking space: %s\nDate/time start: %s\nDate/time stop: %s\nUser contact: %s\n" %(request.user.first_name, request.user.last_name, book.space.number, start, stop, User_data.objects.filter(user=request.user).get().phone_number)
                         
-                        send_mail(subject, email_to, body)
+                        #send_mail(subject, email_to, body)
                      
                         book.save()
                     requested.delete()
@@ -212,7 +214,7 @@ def calendar(request):
             
             if recent_date_start != event.start_date.strftime("%Y-%m-%d"):
                 calendar.append({
-                    'title':"Requests: %s" %(Requested_Space.objects.filter(start_date__startswith=event.start_date.strftime("%Y-%m-%d")).count()),
+                    'title': _("Requests: %s" %(Requested_Space.objects.filter(start_date__startswith=event.start_date.strftime("%Y-%m-%d")).count())),
                     'id':event.id,
                     'start': event.start_date.strftime("%Y-%m-%d"),
                     'stop': event.stop_date.strftime("%Y-%m-%d"),
@@ -231,7 +233,7 @@ def calendar(request):
             
             if event.taken and 'TAKEN %s' % event.start_date.strftime("%Y-%m-%d") not in list_taken and booked_query:            
                 calendar.append({                  
-                    'title': "Bookings: %s" % booked_query.count(),
+                    'title': _("Bookings: %s" % booked_query.count()),
                     'id':event.id,
                     'number': event.space.number,
                     'start': event.start_date.strftime("%Y-%m-%d"),
@@ -244,7 +246,7 @@ def calendar(request):
             
             elif 'NOT_TAKEN %s' % event.start_date.strftime("%Y-%m-%d") not in list_taken and avail_query:
                 calendar.append({                  
-                    'title': "Available: %s" % avail_query.count(),
+                    'title': _("Available: %s" % avail_query.count()),
                     'id':event.id,
                     'number': event.space.number,
                     'start': event.start_date.strftime("%Y-%m-%d"),
@@ -277,21 +279,21 @@ def calendar(request):
             if rent_space_form.is_valid():
                 space = rent_space_form.cleaned_data['space']
                 
-                start_date = rent_space_form.cleaned_data['start_date']
-                start_h = int(rent_space_form.cleaned_data['start_hour'])
-                start_m = int(rent_space_form.cleaned_data['start_minute'])
+                start_date = rent_space_form.cleaned_data['rentout_start_date']
+                #start_h = int(rent_space_form.cleaned_data['start_hour'])
+                #start_m = int(rent_space_form.cleaned_data['start_minute'])
                                 
-                stop_date = rent_space_form.cleaned_data['stop_date']
-                stop_h = int(rent_space_form.cleaned_data['stop_hour'])
-                stop_m = int(rent_space_form.cleaned_data['stop_minute'])
+                stop_date = rent_space_form.cleaned_data['rentout_stop_date']
+                #stop_h = int(rent_space_form.cleaned_data['stop_hour'])
+                #stop_m = int(rent_space_form.cleaned_data['stop_minute'])
                 
-                fixed_start = start_date.replace(hour=start_h, minute=start_m)
-                fixed_stop = stop_date.replace(hour=stop_h, minute=stop_m)     
-
+                #fixed_start = start_date.replace(hour=start_h, minute=start_m)
+                #fixed_stop = stop_date.replace(hour=stop_h, minute=stop_m)     
+                
                 booking = Booking()
                 booking.space = space
-                booking.start_date = fixed_start
-                booking.stop_date = fixed_stop
+                booking.start_date = start_date
+                booking.stop_date = stop_date
                 booking.save()
                 
                 return redirect('/calendar')
@@ -301,21 +303,21 @@ def calendar(request):
         if 'request_parking_space' in request.POST['form_content_check']:
             request_form = Request_space_form(request.POST)        
             if request_form.is_valid():                
-                start_date = request_form.cleaned_data['start_date']
-                start_h = int(request_form.cleaned_data['start_hour'])
-                start_m = int(request_form.cleaned_data['start_minute'])
+                start_date = request_form.cleaned_data['request_start_date']
+                #start_h = int(request_form.cleaned_data['start_hour'])
+                #start_m = int(request_form.cleaned_data['start_minute'])
                                 
-                stop_date = request_form.cleaned_data['stop_date']
-                stop_h = int(request_form.cleaned_data['stop_hour'])
-                stop_m = int(request_form.cleaned_data['stop_minute'])
+                stop_date = request_form.cleaned_data['request_stop_date']
+                #stop_h = int(request_form.cleaned_data['stop_hour'])
+                #stop_m = int(request_form.cleaned_data['stop_minute'])
                 
-                fixed_start = start_date.replace(hour=start_h, minute=start_m)
-                fixed_stop = stop_date.replace(hour=stop_h, minute=stop_m)                               
+                #fixed_start = start_date.replace(hour=start_h, minute=start_m)
+                #fixed_stop = stop_date.replace(hour=stop_h, minute=stop_m)                               
                 
                 request_space = Requested_Space()
                 request_space.renter = request.user            
-                request_space.start_date = fixed_start
-                request_space.stop_date = fixed_stop
+                request_space.start_date = start_date
+                request_space.stop_date = stop_date
               
                 request_space.save()
                 

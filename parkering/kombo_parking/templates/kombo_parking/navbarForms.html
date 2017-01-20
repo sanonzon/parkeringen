@@ -1,0 +1,36 @@
+{% load i18n %}
+<div id="RequestForms" class="ml-1">
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a href ="#hyra_ut" data-toggle="tab">{% trans "Rent-out space" %}</a>
+        </li>
+        <li href="#be_om_plats">
+            <a href ="#be_om_plats" data-toggle="tab">{% trans "Request space" %}</a>
+        </li>
+    </ul>
+
+    <div class="tab-content clearfix">
+        <div class="tab-pane active booking-form" id="hyra_ut">
+            <div id="wrapper">
+                <form action="{%url 'kombo_parking:calendar' %}" method="POST" enctype='multipart/form-data'>
+                    {% csrf_token %}              
+                    <!-- <div id="register-booking-form"> -->
+                      {% include 'kombo_parking/registerBookingForm.html' %}
+                    <!-- </div> -->
+                </form>
+            </div>
+        </div>
+
+        <div class="tab-pane booking-form" id="be_om_plats">
+            <div id="wrapper">
+                <form action="{%url 'kombo_parking:calendar' %}" method="POST" enctype='multipart/form-data'>
+                    {% csrf_token %}
+                    <!-- <div id="request-space-form"> -->
+                    {% include 'kombo_parking/requestSpaceForm.html' %}
+                    <!-- </div>                              -->
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

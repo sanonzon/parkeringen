@@ -1,11 +1,44 @@
-  <div class="StartTime">
-    <label class="control-label">Start Time and Date</label>
-    <p class="RentStartDate">{{request_form.start_date}} {{request_form.start_hour}} {{request_form.start_minute}} {{rentout.start_date.errors}}{{request_form.start_hour.errors}}{{request_form.start_minute.errors}}</p>
-    <i class="glyphicons glyphicons-car form-control-feedback"></i>
-  </div>
+{% load i18n %}
+    <div class="StartTime">
+        <label class="control-label">{% trans "Start" %}</label>
+        <p class="RentStartDate">
+        {{request_form.request_start_date}} 
+            <script>
+                $( function() {
+                    $( "#id_request_start_date" ).datepicker({
+                        beforeShow: function(input, inst) {
+                            var widget = $(inst).datepicker('widget');
+                            widget.css('margin-right', $(input).outerWidth() - widget.outerWidth());
+                        }
+                    });
+                } );
+            </script>
+        {{rentout.request_start_date.errors}}
+        </p>
+        <i class="glyphicons glyphicons-car form-control-feedback"></i>
+    </div>
 
-  <div class="EndTime">
-    <label class="control-label">End Time and Date</label>
-    <p class="RentStopDate">{{request_form.stop_date}} {{request_form.stop_hour}} {{request_form.stop_minute}} {{request_form.stop_date.errors}}{{request_form.stop_hour.errors}}{{request_form.stop_minute.errors}}</p>
-    <i class="glyphicons glyphicons-car form-control-feedback"></i>
-  </div>
+    <div class="EndTime">
+        <label class="control-label">{% trans "Stop" %}</label>
+        <p class="RentStopDate">
+        {{request_form.request_stop_date}} 
+            <script>
+                $( function() {
+                    $( "#id_request_stop_date" ).datepicker({
+                        beforeShow: function(input, inst) {
+                            var widget = $(inst).datepicker('widget');
+                            widget.css('margin-right', $(input).outerWidth() - widget.outerWidth());
+                        }
+                    });
+                } );
+            </script>        
+        {{request_form.request_stop_date.errors}}
+        </p>
+        <i class="glyphicons glyphicons-car form-control-feedback"></i>
+    </div>
+    <input class="hidden" name="form_content_check" value="request_parking_space">
+    <div class="footer">
+        <div>         
+            <input id="submit_button" class="btn btn-success green pull-right" role="button"  value="{% trans "Request" %}" type="submit" name="" />
+        </div>
+    </div>

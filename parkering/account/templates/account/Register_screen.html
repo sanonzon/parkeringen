@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 {% load staticfiles %}
+{% load i18n %}
 
 <html>
   <head>
     {% include 'nexus/Nexus.html' %}
-    <title>Register account</title>
+    <title>{% trans "Register account" %}</title>
   </head>
 
   <body>
@@ -12,7 +13,7 @@
       <div class="container">
         <div class="row">
           <div class="col-md-8 col-md-offset-2">
-            <h1>Register an account</h1>
+            <h1>{% trans "Register an account" %}</h1>
           </div>
         </div>
         <div class="row">
@@ -40,7 +41,7 @@
                 {{ RegForm.password_repeat }}<br>
               </div>
 
-              <a href="{% url 'account:Index_screen' %}" class="btn btn-lg btn-info green register-buttons" role="button">Return</a>
+              <a href="{% url 'account:Index_screen' %}" class="btn btn-lg btn-info green register-buttons" role="button">{% trans "Return" %}</a>
               <input id="submit_button" class="btn btn-lg btn-success green register-buttons" type="submit" value="Register">
               <!--display error messages-->
               {{ RegForm.username.errors }}
@@ -53,7 +54,7 @@
               {{ RegForm.password_repeat.errors }}
             </form>
 
-            <a class="register-links" href="{% url 'account:Login_screen' %}">Already have an account?</a><br>
+            <a class="register-links" href="{% url 'account:Login_screen' %}">{% trans "Already have an account" %}?</a><br>
             <a class="register-links" href="{% url 'main:FAQ_screen' %}">FAQ</a>
           </div>
         </div>

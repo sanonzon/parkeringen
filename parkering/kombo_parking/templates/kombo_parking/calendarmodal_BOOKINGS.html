@@ -1,41 +1,41 @@
 {% load staticfiles %}
-
+{% load i18n %}
 <div id="calendarmodal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+    <div class="modal-dialog">
     <!-- Register Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-      <div class="modal-body">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
       
-        {% if bookings %} 
-            <!-- Step 1: Print out all the bookings you own and can un-book. -->
-            {% if you_have_booked_spaces %}
-                <h2>Your bookings</h2>
-                    <table class="table">
-                        <tr>
-                            <th class="text-center">Space</th>
-                            <th class="text-center">Start</th>
-                            <th class="text-center">Stop</th>            
-                            <th></th>            
-                        </tr>
-                
+            {% if bookings %} 
+                <!-- Step 1: Print out all the bookings you own and can un-book. -->
+                {% if you_have_booked_spaces %}
+                <h2>{% trans "Your bookings" %}</h2>
+                <table class="table">
+                    <tr>
+                        <th class="text-center">Space</th>
+                        <th class="text-center">Start</th>
+                        <th class="text-center">Stop</th>            
+                        <th></th>            
+                    </tr>
+            
                 {% for booking in bookings %}
                     {% if booking.booked_user.id == request.user.id %}                        
-                        <tr>
-                            <td class="dootfacetwentyseven hidden">{{booking.id}}</td>
-                            <td>{{booking.number}}</td>
-                            <td>{{booking.start_date}}</td>
-                            <td>{{booking.stop_date}}</td>
-                            <td><button class="btn btn-danger fancyButtonclicker">Remove</button></td>
-                        </tr>                          
+                    <tr>
+                        <td class="dootfacetwentyseven hidden">{{booking.id}}</td>
+                        <td>{{booking.number}}</td>
+                        <td>{{booking.start_date}}</td>
+                        <td>{{booking.stop_date}}</td>
+                        <td><button class="btn btn-danger fancyButtonclicker">Remove</button></td>
+                    </tr>                          
                     {% endif %}                
                 {% endfor %}  
-                    </table> 
+                </table> 
             {% endif %}
-            
-             <!-- Step 2: Print out all the bookings that you do not own. -->
+                
+                 <!-- Step 2: Print out all the bookings that you do not own. -->
             {% for booking in bookings %}              
                 {% if not booking.booked_user.id == request.user.id %}                       
                     <p class="text-left">
@@ -45,20 +45,20 @@
                 {% endif %}            
             {% endfor %}        
         {% endif %}
-        
-        
-        
-        
-        
-      </div> <!-- MODAL BODY END -->
-      <div class="modal-footer">
-          <div class="col-6" id="button-switch">
-            <button type="button" class="btn btn-default" id="register-button" data-dismiss="modal">Close</button>
-          </div>
+            
+            
+            
+            
+            
+            </div> <!-- MODAL BODY END -->
+            <div class="modal-footer">
+                <div class="col-6" id="button-switch">
+                    <button type="button" class="btn btn-default" id="register-button" data-dismiss="modal">Close</button>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
+</div>
 <script>
     var csrftoken;
     

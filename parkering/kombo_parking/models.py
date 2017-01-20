@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
+# DB User parking spaces
 class Parking_space(models.Model):
     number = models.IntegerField(unique=True)
     owner = models.ForeignKey(User)
@@ -11,7 +12,8 @@ class Parking_space(models.Model):
     def __str__(self):
         return "%s - %s %s"%(str(self.number),str(self.owner.first_name),str(self.owner.last_name))
 
-    
+
+# DB bookings. Available and taken.        
 class Booking(models.Model):
     space = models.ForeignKey(Parking_space)
     owner = models.ForeignKey(User, null=True, blank=True)
@@ -33,7 +35,8 @@ class Booking(models.Model):
             return "%s - %s, %s -> %s booked by %s %s"%(self.space.number, "Taken" if self.taken is True else "Available", self.start_date, self.stop_date, self.owner.first_name, self.owner.last_name)
         else:
             return "%s - %s -> %s" % (self.space.number, self.start_date, self.stop_date)
-    
+
+#DB Requests            
 class Requested_Space(models.Model):
     renter = models.ForeignKey(User)
     start_date = models.DateTimeField()

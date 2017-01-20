@@ -1,5 +1,5 @@
 {% load staticfiles %}
-
+{% load i18n %}
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <nav class="navbar navbar-default" id="navbar">
   <div class="container-fluid">
@@ -13,11 +13,9 @@
     </div>
     <div class="collapse navbar-collapse" id="KomboNav">
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#unregister_for_parking_space" role="button" data-toggle="modal" id="upload-modal"><span class="glyphicon glyphicon-tag nav-icon"></span>Unregister Space</a></li>
-        <li><a href="#register_for_parking_space" role="button" data-toggle="modal" id="upload-modal"><span class="glyphicon glyphicon-tag nav-icon"></span>Register Space</a></li>
-        <li><a href="#myModal" role="button" data-toggle="modal" id="slot-modal"><span class="glyphicon glyphicon-bullhorn nav-icon"></span>Rent/Request Space</a></li>
-        <li><a href="{% url 'account:Account_screen' %}" id="AccountLink"><span class="glyphicon glyphicon-user nav-icon"></span>Account Management</a></li>
-        <li><a href="{% url 'account:Logout' %}" id="LogoutLink">Log Out</a></li>
+        <li><a href="#RequestForms" role="button"><span class="glyphicon glyphicon-bullhorn nav-icon"></span>{% trans "Requests" %}</a></li>
+        <li><a href="{% url 'account:Account_screen' %}" id="AccountLink"><span class="glyphicon glyphicon-user nav-icon"></span>{% trans "Account Management" %}</a></li>
+        <li><a href="{% url 'account:Logout' %}" id="LogoutLink">{% trans "Log out" %}</a></li>
       </ul>
     </div>
   </div>
@@ -25,137 +23,3 @@
 
   <!-- Modal Test-->
 
-  <div id="myModal" class="modal fade">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 align="center">Rent-out/Request space<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button></h4>
-          <!-- <h4 class="modal-title">Hyra Ut/Boka Plats</h4> -->
-        </div>
-        <div class="modal-body">
-
-
-            <ul class="nav nav-tabs">
-                <li class="active">
-                    <a href ="#hyra_ut" data-toggle="tab">Rent-out space</a>
-                </li>
-                <li href="#be_om_plats">
-                    <a href ="#be_om_plats" data-toggle="tab">Request space</a>
-                </li>
-            </ul>
-
-            <div class="tab-content clearfix">
-                <div class="tab-pane active booking-form" id="hyra_ut">
-                  <div id="wrapper">
-                    <form action="{%url 'kombo_parking:calendar' %}" method="POST" enctype='multipart/form-data'>{% csrf_token %}
-                      <!-- tom lable skapar tillfälligt lite utrymme.-->  
-                      <label class="control-label"></label>
-
-                        <div id="register-booking-form">
-                          {% include 'kombo_parking/registerBookingForm.html' %}
-                        </div>
-
-                        <input class="hidden" name="form_content_check" value="rentout_parking_space">
-                      <div class="footer">
-                        <input id="submit_button" class="btn btn-success green" role="button"  value="Upload Rentable Space" type="submit" name="" />
-                      </div>
-                    </form>
-                    </div>
-                </div>
-
-                <div class="tab-pane booking-form" id="be_om_plats">
-                    <form action="{%url 'kombo_parking:calendar' %}" method="POST" enctype='multipart/form-data'>
-                    {% csrf_token %}
-                      <label class="control-label"></label>
-
-                      <div id="request-space-form">
-                          {% include 'kombo_parking/requestSpaceForm.html' %}
-                      </div>
-                      
-                    <input class="hidden" name="form_content_check" value="request_parking_space">
-                        <div class="footer">
-                            <input id="submit_button" class="btn btn-success green" role="button"  value="Request" type="submit" name="" />
-                        </div>
-                    </form>
-                </div>
-
-
-          <!-- <div class="form-group has-feedback">
-            <input type="text" class="form-control" placeholder="{{request.user.get_full_name}}" readonly />
-            <i class="glyphicons glyphicons-car form-control-feedback"></i>
-            </div> -->
-
-        </div>
-
-      </div>
-    </div>
-  </div>
-</div>
-
-  <div id="register_for_parking_space" class="modal fade">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 align="center">Register your parking space<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button></h4>
-          <!-- <h4 class="modal-title">Hyra Ut/Boka Plats</h4> -->
-        </div>
-        <div class="modal-body booking-form">
-          <!-- <h4>Register your parking space</h4> -->
-          <form action="{%url 'kombo_parking:calendar' %}" method="POST" enctype='multipart/form-data'>
-
-          {% csrf_token %}
-              {{ request_parking_space_form.as_p }}
-              <input class="hidden" name="form_content_check" value="register_for_parking_space">
-
-
-            <div class="footer">
-              <input id="submit_button" class="btn btn-success green" role="button"  value="Register space" type="submit" name="" />
-            </div>
-          </form>
-        </div>
-
-
-          <!-- <div class="form-group has-feedback">
-            <input type="text" class="form-control" placeholder="{{request.user.get_full_name}}" readonly />
-            <i class="glyphicons glyphicons-car form-control-feedback"></i>
-            </div> -->
-
-        </div>
-
-      </div>
-    </div>
-
-    <div id="unregister_for_parking_space" class="modal fade">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4>Unregister your parking space<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button></h4>
-          <!-- <h4 class="modal-title">Hyra Ut/Boka Plats</h4> -->
-        </div>
-        <div class="modal-body">
-          
-          <form action="{%url 'kombo_parking:calendar' %}" method="POST" enctype='multipart/form-data'>
-              {% csrf_token %}
-              <div class="selects">
-              {{ unregister_space_form.space }}
-              <input class="hidden" name="form_content_check" value="unregister_for_parking_space">
-              <input id="submit_button" class="btn btn-danger modal-button" role="button"  value="Remove space" type="submit" name="" />
-              </div>
-
-            <div class="footer">
-              
-            </div>
-          </form>
-        </div>
-
-
-          <!-- <div class="form-group has-feedback">
-            <input type="text" class="form-control" placeholder="{{request.user.get_full_name}}" readonly />
-            <i class="glyphicons glyphicons-car form-control-feedback"></i>
-            </div> -->
-
-        </div>
-
-      </div>
-    </div>
-</nav>
