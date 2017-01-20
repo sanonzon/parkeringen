@@ -16,12 +16,21 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadReque
 from django.utils.translation import ugettext as _
 from django.utils.translation import activate
 
+def get_event_text(request, variable):
+    if request.LANGUAGE_CODE == "sv":
+        return {
+        'Bookings': "Bokningar",
+        'Requests': "Förfrågningar",
+        'Available': "Lediga",
+        }[variable]
+    else:
+        return variable
+
 # EmailMessage('Kombo Parking', 'Plats: %s uthyrd' % booking.space.number, to=[booking.space.owner.email]).send()
 def send_mail(subject, email_to, body,):
     EmailMessage(subject, body, to=[email_to]).send()
       
 def calendar_click(request):
-    print(request)
     if request.is_ajax():
         if request.POST['date']:
             FILENAME = None
@@ -214,8 +223,9 @@ def calendar(request):
             #print("current_event_date: %s\nevents_in_list: %s" % (event.start_date))
             
             if recent_date_start != event.start_date.strftime("%Y-%m-%d"):
+                request_count = Requested_Space.objects.filter(start_date__startswith=event.start_date.strftime("%Y-%m-%d")).count()
                 calendar.append({
-                    'title': "Förfrågningar" if request.LANGUAGE_CODE == 'sv' else "Requests" +": %s" %(Requested_Space.objects.filter(start_date__startswith=event.start_date.strftime("%Y-%m-%d")).count()),
+                    'title': "%s: %s" % (get_event_text(request,"Requests"), request_count),
                     'id':event.id,
                     'start': event.start_date.strftime("%Y-%m-%d"),
                     'stop': event.stop_date.strftime("%Y-%m-%d"),
@@ -234,7 +244,7 @@ def calendar(request):
             
             if event.taken and 'TAKEN %s' % event.start_date.strftime("%Y-%m-%d") not in list_taken and booked_query:            
                 calendar.append({                  
-                    'title': "Bokningar" if 'sv' in request.LANGUAGE_CODE else "Bookings" +": %s" % booked_query.count(),
+                    'title': "%s: %s" % (get_event_text(request,"Bookings"), booked_query.count()),
                     'id':event.id,
                     'number': event.space.number,
                     'start': event.start_date.strftime("%Y-%m-%d"),
@@ -247,7 +257,7 @@ def calendar(request):
             
             elif 'NOT_TAKEN %s' % event.start_date.strftime("%Y-%m-%d") not in list_taken and avail_query:
                 calendar.append({                  
-                    'title': "Lediga" if 'sv' in request.LANGUAGE_CODE else "Available" +": %s" % avail_query.count(),
+                    'title': "%s: %s" % (get_event_text(request,"Available"), avail_query.count()),
                     'id':event.id,
                     'number': event.space.number,
                     'start': event.start_date.strftime("%Y-%m-%d"),
