@@ -1,8 +1,9 @@
-# parkeringen
+# Parkeringspussel
 
-## slö 'deploy'.
-python parkering/manage.py runserver LOKALT_IP:PORT<br>
-Forward:a PORT i din router till LOKALT_IP så folk kan använda det.
+Ett förenklat sätt för personer i en förening att dela parkeringsplatser.
+Man lägger upp sin plats de dagar som de är lediga.
+Man får då en plats av principen "först till kvarn".
+
 
 
 #/account
