@@ -9,10 +9,10 @@
       </div>
       <div class="modal-body">
         {% if list %}
-           <h2 class="">Available spaces</h2>
+           <h2 class="">{% trans "Available spaces" %}</h2>
           <table class="table">
             <tr>
-                <th class="text-center">Space</th>
+                <th class="text-center">{% trans "Space" %}</th>
                 <th class="text-center">Start</th>
                 <th class="text-center">Stop</th>            
                 <th></th>            
@@ -24,9 +24,9 @@
                 <td>{{item.start_date}}</td>
                 <td>{{item.stop_date}}</td>
                 {% if item.number in parking_spaces %}
-                <td><button class="btn btn-danger fancyButtonclicker">Remove</button></td>
+                <td><button class="btn btn-danger fancyButtonclicker">{% trans "Remove" %}</button></td>
                 {% else %}
-                <td><button class="btn btn-primary fancyButtonclicker">Book</button></td>
+                <td><button class="btn btn-primary fancyButtonclicker">{% trans "Book" %}</button></td>
                {% endif %}
             </tr>
             {% endfor %}  
@@ -39,7 +39,7 @@
       </div> <!-- MODAL BODY END -->
       <div class="modal-footer">
           <div class="col-6" id="button-switch">
-            <button type="button" class="btn btn-default" id="register-button" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-default" id="register-button" data-dismiss="modal">{% trans "Close" %}</button>
           </div>
         </div>
       </div>

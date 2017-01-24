@@ -1,14 +1,14 @@
-# SOME DESCRIPTIVE TITLE.
+# Swedish translation for kombo parking project
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Axel Pennsäter <EMAIL@ADDRESS>, 2017.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-20 17:14+0100\n"
+"POT-Creation-Date: 2017-01-24 10:55+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,9 +34,51 @@ msgstr "Tillbaka"
 msgid "Already have an account"
 msgstr "Redan konto"
 
+#: kombo_parking/templates/kombo_parking/calendarmodal_AVAILABLE.html:12
+msgid "Available spaces"
+msgstr "Lediga"
+
+#: kombo_parking/templates/kombo_parking/calendarmodal_AVAILABLE.html:15
+#: kombo_parking/templates/kombo_parking/calendarmodal_BOOKINGS.html:18
+#: kombo_parking/templates/kombo_parking/registerBookingForm.html:42
+msgid "Space"
+msgstr "Plats"
+
+#: kombo_parking/templates/kombo_parking/calendarmodal_AVAILABLE.html:27
+#: kombo_parking/templates/kombo_parking/calendarmodal_BOOKINGS.html:31
+#: kombo_parking/templates/kombo_parking/calendarmodal_REQUESTS.html:31
+msgid "Remove"
+msgstr "Ta bort"
+
+#: kombo_parking/templates/kombo_parking/calendarmodal_AVAILABLE.html:29
+msgid "Book"
+msgstr "Bokningar"
+
+#: kombo_parking/templates/kombo_parking/calendarmodal_AVAILABLE.html:42
+#: kombo_parking/templates/kombo_parking/calendarmodal_REQUESTS.html:57
+msgid "Close"
+msgstr "Stäng"
+
 #: kombo_parking/templates/kombo_parking/calendarmodal_BOOKINGS.html:15
 msgid "Your bookings"
 msgstr "Dina Bokningar"
+
+#: kombo_parking/templates/kombo_parking/calendarmodal_BOOKINGS.html:42
+msgid "has booked space"
+msgstr "har bokat plats"
+
+#: kombo_parking/templates/kombo_parking/calendarmodal_BOOKINGS.html:42
+msgid "from"
+msgstr "från"
+
+#: kombo_parking/templates/kombo_parking/calendarmodal_BOOKINGS.html:42
+#| msgid "Stop"
+msgid "to"
+msgstr "till"
+
+#: kombo_parking/templates/kombo_parking/calendarmodal_BOOKINGS.html:43
+msgid "Contact"
+msgstr "Kontaktuppgifter"
 
 #: kombo_parking/templates/kombo_parking/calendarmodal_REQUESTS.html:12
 msgid "Requested spaces"
@@ -55,29 +97,18 @@ msgid "Stop"
 msgstr "Till"
 
 #: kombo_parking/templates/kombo_parking/calendarmodal_REQUESTS.html:18
-#, fuzzy
-#| msgid "No spaces to lend"
 msgid "Space to give"
 msgstr "Plats"
 
-#: kombo_parking/templates/kombo_parking/calendarmodal_REQUESTS.html:31
-msgid "Remove"
-msgstr "Ta bort"
-
 #: kombo_parking/templates/kombo_parking/calendarmodal_REQUESTS.html:43
 msgid "Give space"
-msgstr "Önska plats"
+msgstr "Ge plats"
 
 #: kombo_parking/templates/kombo_parking/calendarmodal_REQUESTS.html:45
 msgid "No spaces to lend"
 msgstr "Du äger inga platser"
 
-#: kombo_parking/templates/kombo_parking/calendarmodal_REQUESTS.html:57
-msgid "Close"
-msgstr "Stäng"
-
 #: kombo_parking/templates/kombo_parking/navbar.html:16
-#: kombo_parking/views.py:217
 msgid "Requests"
 msgstr "Förfrågningar"
 
@@ -97,10 +128,6 @@ msgstr "Låna ut plats"
 msgid "Request space"
 msgstr "Önska plats"
 
-#: kombo_parking/templates/kombo_parking/registerBookingForm.html:42
-msgid "Space"
-msgstr "Plats"
-
 #: kombo_parking/templates/kombo_parking/registerBookingForm.html:44
 msgid "Upload"
 msgstr "Ladda upp"
@@ -110,18 +137,6 @@ msgstr "Ladda upp"
 #| msgid "Requests"
 msgid "Request"
 msgstr "Förfrågningar"
-
-#: kombo_parking/views.py:236
-#, fuzzy
-#| msgid "Bookings: %s"
-msgid "Bookings"
-msgstr "Bokningar"
-
-#: kombo_parking/views.py:249
-#, fuzzy
-#| msgid "Available: %s"
-msgid "Available"
-msgstr "Lediga"
 
 #: parking/settings.py:16
 msgid "English"
