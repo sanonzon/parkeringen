@@ -14,9 +14,15 @@
             <div id="wrapper">
                 <form action="{%url 'kombo_parking:calendar' %}" method="POST" enctype='multipart/form-data'>
                     {% csrf_token %}              
-                    <!-- <div id="register-booking-form"> -->
-                      {% include 'kombo_parking/registerBookingForm.html' %}
-                    <!-- </div> -->
+
+                    {{ rentout.as_p }}
+
+                    <input class="hidden" name="form_content_check" value="rentout_parking_space">
+                    <div class="footer">
+                        <div>         
+                            <input id="submit_button" class="btn btn-success green pull-right" role="button"  value="{% trans "Request" %}" type="submit" name="" />
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
@@ -25,9 +31,15 @@
             <div id="wrapper">
                 <form action="{%url 'kombo_parking:calendar' %}" method="POST" enctype='multipart/form-data'>
                     {% csrf_token %}
-                    <!-- <div id="request-space-form"> -->
-                    {% include 'kombo_parking/requestSpaceForm.html' %}
-                    <!-- </div>                              -->
+
+                    {{ request_form.as_p }}
+
+                    <input class="hidden" name="form_content_check" value="request_parking_space">
+                    <div class="footer">
+                        <div>         
+                            <input id="submit_button" class="btn btn-success green pull-right" role="button"  value="{% trans "Request" %}" type="submit" name="" />
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
