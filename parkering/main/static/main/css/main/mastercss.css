@@ -142,11 +142,13 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
     border-color: #FFFFFF;
     border-style: solid;
     border-width: 2px;
-    color: white;
+    color: white;    
 }
 
 #footerPargrah {
     margin-top: 20px;
+    margin-right: 10px;
+    text-align: right;
 }
 #calenderFooter {
     background-color: #333;
