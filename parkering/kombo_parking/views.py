@@ -210,7 +210,6 @@ def rentout_your_space_to_people(request):
 
 @login_required(login_url='/not_authorized',redirect_field_name=None)
 def calendar(request):   
-    activate('sv')
     ''' START CALENDAR EVENTS '''
     bookings = Booking.objects.all().order_by('start_date')
     requests = Requested_Space.objects.all().order_by('start_date')

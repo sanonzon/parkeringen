@@ -15,7 +15,7 @@
                 <h2>{% trans "Your bookings" %}</h2>
                 <table class="table">
                     <tr>
-                        <th class="text-center">Space</th>
+                        <th class="text-center">{% trans "Space" %}</th>
                         <th class="text-center">Start</th>
                         <th class="text-center">Stop</th>            
                         <th></th>            
@@ -28,7 +28,7 @@
                         <td>{{booking.number}}</td>
                         <td>{{booking.start_date}}</td>
                         <td>{{booking.stop_date}}</td>
-                        <td><button class="btn btn-danger fancyButtonclicker">Remove</button></td>
+                        <td><button class="btn btn-danger fancyButtonclicker">{% trans "Remove" %}</button></td>
                     </tr>                          
                     {% endif %}                
                 {% endfor %}  
@@ -39,8 +39,8 @@
             {% for booking in bookings %}              
                 {% if not booking.booked_user.id == request.user.id %}                       
                     <p class="text-left">
-                        {{booking.booked_user.first_name}} {{booking.booked_user.last_name}} has booked space {{booking.number}} from {{booking.start_date}} to {{booking.stop_date}}.<br>
-                        Contact: {{booking.booked_user_data.phone_number}}
+                        {{booking.booked_user.first_name}} {{booking.booked_user.last_name}} {% trans "has booked space" %} {{booking.number}} {% trans "from" %} {{booking.start_date}} {% trans "to" %} {{booking.stop_date}}.<br>
+                        {% trans "Contact" %}: {{booking.booked_user_data.phone_number}}
                     </p>                         
                 {% endif %}            
             {% endfor %}        
