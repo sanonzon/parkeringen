@@ -1,20 +1,11 @@
 {% load i18n %}
     <div class="StartTime">
         <label class="control-label">{% trans "Start" %}</label>
-        <p class="RentStartDate">
+        <div class="RentStartDate">
         {{rentout.rentout_start_date}}
-            <script>
-                $( function() {
-                    $( "#id_rentout_start_date" ).datepicker({
-                        beforeShow: function(input, inst) {
-                            var widget = $(inst).datepicker('widget');
-                            widget.css('margin-right', $(input).outerWidth() - widget.outerWidth());
-                        }
-                    });
-                } );
-            </script>        
+                  
         {{rentout.rentout_start_date.errors}}
-        </p>
+        </div>
         <i class="glyphicons glyphicons-car form-control-feedback"></i>
     </div>
 
@@ -22,16 +13,7 @@
         <label class="control-label">{% trans "Stop" %}</label>
         <div class="RentStopDate">
         {{rentout.rentout_stop_date}} 
-            <script>
-                $( function() {
-                    $( "#id_rentout_stop_date" ).datepicker({
-                        beforeShow: function(input, inst) {
-                            var widget = $(inst).datepicker('widget');
-                            widget.css('margin-right', $(input).outerWidth() - widget.outerWidth());
-                        }
-                    });
-                } );
-            </script>
+           
         {{rentout.rentout_stop_date.errors}}
         </div>
         <i class="glyphicons glyphicons-car form-control-feedback"></i>
@@ -46,4 +28,4 @@
     </div>
     
 
-    
+ 

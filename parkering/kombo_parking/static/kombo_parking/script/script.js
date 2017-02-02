@@ -14,4 +14,33 @@ $(document).ready(function () {
      }
      return cookieValue;
     }
+
+    $( "#id_rentout_stop_date" ).datepicker({
+        beforeShow: function(input, inst) {
+            var widget = $(inst).datepicker('widget');
+            widget.css('margin-right', $(input).outerWidth() - widget.outerWidth());
+        }
+    })
+
+    $( "#id_rentout_start_date" ).datepicker({
+        beforeShow: function(input, inst) {
+            var widget = $(inst).datepicker('widget');
+            widget.css('margin-right', $(input).outerWidth() - widget.outerWidth());
+        }
+    })
+
+    $( "#id_request_stop_date" ).datepicker({
+        beforeShow: function(input, inst) {
+            var widget = $(inst).datepicker('widget');
+            widget.css('margin-right', $(input).outerWidth() - widget.outerWidth());
+        }
+    })
+
+    $( "#id_request_start_date" ).datepicker({
+        beforeShow: function(input, inst) {
+            var widget = $(inst).datepicker('widget');
+            widget.css('margin-right', $(input).outerWidth() - widget.outerWidth());
+        }
+    })
+
 });

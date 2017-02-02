@@ -1,39 +1,21 @@
 {% load i18n %}
     <div class="StartTime">
         <label class="control-label">{% trans "Start" %}</label>
-        <p class="RentStartDate">
+        <div class="RentStartDate">
         {{request_form.request_start_date}} 
-            <script>
-                $( function() {
-                    $( "#id_request_start_date" ).datepicker({
-                        beforeShow: function(input, inst) {
-                            var widget = $(inst).datepicker('widget');
-                            widget.css('margin-right', $(input).outerWidth() - widget.outerWidth());
-                        }
-                    });
-                } );
-            </script>
+
         {{rentout.request_start_date.errors}}
-        </p>
+        </div>
         <i class="glyphicons glyphicons-car form-control-feedback"></i>
     </div>
 
     <div class="EndTime">
         <label class="control-label">{% trans "Stop" %}</label>
-        <p class="RentStopDate">
+        <div class="RentStopDate">
         {{request_form.request_stop_date}} 
-            <script>
-                $( function() {
-                    $( "#id_request_stop_date" ).datepicker({
-                        beforeShow: function(input, inst) {
-                            var widget = $(inst).datepicker('widget');
-                            widget.css('margin-right', $(input).outerWidth() - widget.outerWidth());
-                        }
-                    });
-                } );
-            </script>        
+       
         {{request_form.request_stop_date.errors}}
-        </p>
+        </div>
         <i class="glyphicons glyphicons-car form-control-feedback"></i>
     </div>
     <input class="hidden" name="form_content_check" value="request_parking_space">
