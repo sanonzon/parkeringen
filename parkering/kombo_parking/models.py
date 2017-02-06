@@ -22,7 +22,7 @@ class Booking(models.Model):
     stop_date = models.DateTimeField()
 
     def clean(self):
-        if self.start_date >= self.stop_date:
+        if self.start_date > self.stop_date:
             raise ValidationError("Stop date cannot be earlier than the start date!")
 
     def save(self, *args, **kwargs):
@@ -43,7 +43,7 @@ class Requested_Space(models.Model):
     stop_date = models.DateTimeField()
         
     def clean(self):
-        if self.start_date >= self.stop_date:
+        if self.start_date > self.stop_date:
             raise ValidationError("Stop date cannot be earlier than the start date!")
 
     def save(self, *args, **kwargs):

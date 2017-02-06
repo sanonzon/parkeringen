@@ -11,7 +11,7 @@ from django.contrib.auth.views import password_reset, password_reset_confirm
 from django.core.urlresolvers import reverse
 from .forms import Rent_space_form, Request_space_form, Request_to_own_Parking_space, Unregister_Parking_Space
 from django.template import loader
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
 from django.utils.translation import ugettext as _
 from django.utils.translation import activate
@@ -298,13 +298,25 @@ def calendar(request):
                 #stop_m = int(rent_space_form.cleaned_data['stop_minute'])
                 
                 #fixed_start = start_date.replace(hour=start_h, minute=start_m)
-                #fixed_stop = stop_date.replace(hour=stop_h, minute=stop_m)     
+                #fixed_stop = stop_date.replace(hour=stop_h, minute=stop_m)   
+
+               
+                if start_date != stop_date:
+                    booking = Booking()
+                    booking.space = space
+                    booking.start_date = start_date
+                    booking.stop_date = start_date + timedelta(days=1)
+                    booking.save()
                 
-                booking = Booking()
-                booking.space = space
-                booking.start_date = start_date
-                booking.stop_date = stop_date
-                booking.save()
+                
+                while start_date != stop_date:
+                    start_date = start_date + timedelta(days=1)
+                
+                    booking = Booking()
+                    booking.space = space
+                    booking.start_date = start_date
+                    booking.stop_date = start_date + timedelta(days=1)
+                    booking.save()                               
                 
                 return redirect('/calendar')
     
@@ -324,12 +336,27 @@ def calendar(request):
                 #fixed_start = start_date.replace(hour=start_h, minute=start_m)
                 #fixed_stop = stop_date.replace(hour=stop_h, minute=stop_m)                               
                 
-                request_space = Requested_Space()
-                request_space.renter = request.user            
-                request_space.start_date = start_date
-                request_space.stop_date = stop_date
-              
-                request_space.save()
+                
+                if start_date != stop_date:
+                    request_space = Requested_Space()
+                    request_space.renter = request.user            
+                    request_space.start_date = start_date
+                    request_space.stop_date = start_date + timedelta(days=1)
+                  
+                    request_space.save()
+                
+                
+                while start_date != stop_date:
+                    start_date = start_date + timedelta(days=1)
+                
+                    request_space = Requested_Space()
+                    request_space.renter = request.user            
+                    request_space.start_date = start_date
+                    request_space.stop_date = start_date + timedelta(days=1)
+                  
+                    request_space.save()
+                
+                
                 
                 return redirect('/calendar')
             
