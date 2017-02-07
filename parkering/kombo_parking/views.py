@@ -301,7 +301,7 @@ def calendar(request):
                 #fixed_stop = stop_date.replace(hour=stop_h, minute=stop_m)   
 
                
-                if start_date != stop_date:
+                if start_date < stop_date:
                     booking = Booking()
                     booking.space = space
                     booking.start_date = start_date
@@ -309,14 +309,14 @@ def calendar(request):
                     booking.save()
                 
                 
-                while start_date != stop_date:
-                    start_date = start_date + timedelta(days=1)
-                
-                    booking = Booking()
-                    booking.space = space
-                    booking.start_date = start_date
-                    booking.stop_date = start_date + timedelta(days=1)
-                    booking.save()                               
+                    while start_date + timedelta(days=1) < stop_date:
+                        start_date = start_date + timedelta(days=1)
+                    
+                        booking = Booking()
+                        booking.space = space
+                        booking.start_date = start_date
+                        booking.stop_date = start_date + timedelta(days=1)
+                        booking.save()                               
                 
                 return redirect('/calendar')
     
@@ -337,7 +337,7 @@ def calendar(request):
                 #fixed_stop = stop_date.replace(hour=stop_h, minute=stop_m)                               
                 
                 
-                if start_date != stop_date:
+                if start_date < stop_date:
                     request_space = Requested_Space()
                     request_space.renter = request.user            
                     request_space.start_date = start_date
@@ -346,15 +346,14 @@ def calendar(request):
                     request_space.save()
                 
                 
-                while start_date != stop_date:
-                    start_date = start_date + timedelta(days=1)
-                
-                    request_space = Requested_Space()
-                    request_space.renter = request.user            
-                    request_space.start_date = start_date
-                    request_space.stop_date = start_date + timedelta(days=1)
-                  
-                    request_space.save()
+                    while start_date + timedelta(days=1) < stop_date:
+                        start_date = start_date + timedelta(days=1)                
+                        request_space = Requested_Space()
+                        request_space.renter = request.user            
+                        request_space.start_date = start_date
+                        request_space.stop_date = start_date + timedelta(days=1)
+                      
+                        request_space.save()
                 
                 
                 

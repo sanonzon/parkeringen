@@ -61,7 +61,7 @@ class Rent_space_form(forms.Form):
         super(Rent_space_form, self).__init__()
         self.arg = arg """
         
-    def clean_stop_date(self):
+    def clean_rentout_stop_date(self):
         start = self.cleaned_data['rentout_start_date']
         stop = self.cleaned_data['rentout_stop_date']
         
